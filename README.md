@@ -1,6 +1,6 @@
 ## [![hero][]][hero]
 [![paypal][]][paypal account] [![flutter][]][web flutter]
-Animation countdown timer for Flutter.
+\ Animation countdown timer for Flutter.
 
 ---
 
@@ -65,7 +65,7 @@ SizedBox.expand(
 );
 ```
 ## Output
-## [![output][]][output]
+#### [![output][]][output]
 
 
 [hero]:https://github.com/farhanfadila1717/flutter_package/blob/master/display/slide_coutdown/hero.gif
