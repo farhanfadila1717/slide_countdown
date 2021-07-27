@@ -65,7 +65,7 @@ SizedBox.expand(
 );
 ```
 ## Output
-<img src="https://user-images.githubusercontent.com/link-to-your-image.png" height="600" />
+<img src="https://github.com/farhanfadila1717/flutter_package/blob/master/display/slide_coutdown/output.gif" height="600" />
 
 ### 🚧 Maintener 
 <a href="https://github.com/farhanfadila1717"><img src="https://avatars.githubusercontent.com/u/43161050?s=100" width="80px;" alt="Farhan Fadila"/></a><br>
