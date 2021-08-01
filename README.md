@@ -85,7 +85,7 @@ SizedBox.expand(
 ---
 
 ### 🚧 Maintener 
-[![account avatar][]][github account]
+[![account avatar][]][github account] <br>
 **Farhan Fadila** <br>
 📫 How to reach me: farhan.fadila1717@gmail.com
 
