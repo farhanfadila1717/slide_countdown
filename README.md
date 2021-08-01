@@ -1,5 +1,5 @@
 ## [![hero][]][hero]
-[![paypal][]][paypal account] [![flutter][]][web flutter] <br>
+[![flutter][]][web flutter] [![paypal][]][paypal account] <br>
 Animation countdown timer for Flutter.
 
 ---
@@ -27,6 +27,21 @@ SizedBox.expand(
         onDone: () {
           print('Countdown done!');
         },
+      ),
+      ////---------Fade Animation & Custom TextSyle---------------
+      const Padding(padding: const EdgeInsets.only(top: 20)),
+      Text('Fade Animation & Custom TextSyle'),
+      const Padding(padding: const EdgeInsets.only(top: 10)),
+      SlideCountdown(
+        duration: const Duration(days: 11),
+        fade: true,
+        decoration: BoxDecoration(
+          color: Colors.black87,
+        ),
+        textStyle: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       ////----------With icon, SeparatorType.title-----------------
       const Padding(padding: const EdgeInsets.only(top: 20)),
@@ -62,13 +77,15 @@ SizedBox.expand(
       ),
     ],
   ),
-);
+),
 ```
 ## Output
-<img src="https://github.com/farhanfadila1717/flutter_package/blob/master/display/slide_coutdown/output.gif" height="600" />
+[![output][]][output]
+
+---
 
 ### 🚧 Maintener 
-<a href="https://github.com/farhanfadila1717"><img src="https://avatars.githubusercontent.com/u/43161050?s=100" width="80px;" alt="Farhan Fadila"/></a><br>
+[![account avatar][]][github account]
 **Farhan Fadila** <br>
 📫 How to reach me: farhan.fadila1717@gmail.com
 
@@ -79,3 +96,5 @@ SizedBox.expand(
 [web flutter]: https://flutter.dev
 [paypal]: https://img.shields.io/badge/Donate-PayPal-00457C?logo=paypal
 [paypal account]: https://www.paypal.me/farhanfadila1717
+[account avatar]: https://avatars.githubusercontent.com/u/43161050?s=80
+[github account]: https://github.com/farhanfadila1717
