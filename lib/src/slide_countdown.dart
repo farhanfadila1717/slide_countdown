@@ -3,9 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:stream_duration/stream_duration.dart';
 
-part 'text_animation.dart';
-part 'clip_half_rect.dart';
 part 'duration_title.dart';
+part 'text_animation.dart';
+part 'text_offset_animation.dart';
 
 enum SlideDirection { up, down }
 enum SeparatorType { symbol, title }
@@ -35,6 +35,7 @@ class SlideCountdown extends StatefulWidget {
     this.padding = const EdgeInsets.all(5),
     this.separatorPadding = const EdgeInsets.symmetric(horizontal: 3),
     this.showZeroValue = false,
+    this.fade = false,
     this.decoration = const BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(20)),
       color: Color(0xFFF23333),
@@ -53,6 +54,7 @@ class SlideCountdown extends StatefulWidget {
   final EdgeInsets padding;
   final EdgeInsets separatorPadding;
   final bool showZeroValue;
+  final bool fade;
   final SlideDirection slideDirection;
 
   @override
@@ -222,11 +224,13 @@ class _SlideCountdownState extends State<SlideCountdown> {
                   return Row(
                     children: [
                       TextAnimation(
+                        fade: widget.fade,
                         value: _daysFirstDigitNotifier,
                         textStyle: widget.textStyle,
                         slideDirection: widget.slideDirection,
                       ),
                       TextAnimation(
+                        fade: widget.fade,
                         value: _daysSecondDigitNotifier,
                         textStyle: widget.textStyle,
                         slideDirection: widget.slideDirection,
@@ -254,11 +258,13 @@ class _SlideCountdownState extends State<SlideCountdown> {
                   return Row(
                     children: [
                       TextAnimation(
+                        fade: widget.fade,
                         value: _hoursFirstDigitNotifier,
                         textStyle: widget.textStyle,
                         slideDirection: widget.slideDirection,
                       ),
                       TextAnimation(
+                        fade: widget.fade,
                         value: _hoursSecondDigitNotifier,
                         textStyle: widget.textStyle,
                         slideDirection: widget.slideDirection,
@@ -287,6 +293,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
                   return Row(
                     children: [
                       TextAnimation(
+                        fade: widget.fade,
                         value: _minutesFirstDigitNotifier,
                         textStyle: widget.textStyle,
                         slideDirection: widget.slideDirection,
@@ -294,6 +301,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
                             widget.separatorType == SeparatorType.title),
                       ),
                       TextAnimation(
+                        fade: widget.fade,
                         value: _minutesSecondDigitNotifier,
                         textStyle: widget.textStyle,
                         slideDirection: widget.slideDirection,
@@ -315,11 +323,13 @@ class _SlideCountdownState extends State<SlideCountdown> {
                 }
               }),
               TextAnimation(
+                fade: widget.fade,
                 value: _secondsFirstDigitNotifier,
                 textStyle: widget.textStyle,
                 slideDirection: widget.slideDirection,
               ),
               TextAnimation(
+                fade: widget.fade,
                 value: _secondsSecondDigitNotifier,
                 textStyle: widget.textStyle,
                 slideDirection: widget.slideDirection,
