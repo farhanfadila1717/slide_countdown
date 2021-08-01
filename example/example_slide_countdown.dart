@@ -47,6 +47,21 @@ class ExampleSlideCountdown extends StatelessWidget {
                 print('Countdown done!');
               },
             ),
+            ////---------Fade Animation & Custom TextSyle---------------
+            const Padding(padding: const EdgeInsets.only(top: 20)),
+            Text('Fade Animation & Custom TextSyle'),
+            const Padding(padding: const EdgeInsets.only(top: 10)),
+            SlideCountdown(
+              duration: const Duration(days: 11),
+              fade: true,
+              decoration: BoxDecoration(
+                color: Colors.black87,
+              ),
+              textStyle: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             ////----------With icon, SeparatorType.title-----------------
             const Padding(padding: const EdgeInsets.only(top: 20)),
             Text('With icon, SeparatorType.title'),
