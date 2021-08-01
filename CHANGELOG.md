@@ -2,3 +2,7 @@
 
 * First publish
 * Internal testing
+
+## 0.0.1
+
+* Add fade transition
