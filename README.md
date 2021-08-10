@@ -1,4 +1,4 @@
-## [![hero][]][hero]
+## [![cover][]][pubdev]
 [![flutter][]][web flutter] [![badge paypal][]][paypal account] <br>
 Animation countdown timer for Flutter.
 
@@ -93,7 +93,8 @@ SizedBox.expand(
 [![badge paypal][]][paypal account] [![badge linktree][]][linktree account]
 
 
-[hero]:https://github.com/farhanfadila1717/flutter_package/blob/master/display/slide_coutdown/hero.gif
+[cover]:https://github.com/farhanfadila1717/flutter_package/blob/master/display/slide_coutdown/slide_countdown.png
+[pubdev]: https://pub.dev/packages/slide_countdown
 [output]: https://github.com/farhanfadila1717/flutter_package/blob/master/display/slide_coutdown/output.gif
 [flutter]: https://img.shields.io/badge/Platform-Flutter-02569B?logo=flutter
 [web flutter]: https://flutter.dev
