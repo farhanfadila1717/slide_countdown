@@ -6,3 +6,7 @@
 ## 0.0.1
 
 * Add fade transition
+
+## 0.0.2
+
+* Improve fade transition

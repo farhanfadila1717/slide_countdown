@@ -8,7 +8,7 @@ class TextAnimation extends StatefulWidget {
     required this.slideDirection,
     this.initValue = 0,
     this.showZeroValue = true,
-    this.fade = false,
+    this.curve = Curves.easeOut,
   }) : super(key: key);
 
   final ValueNotifier<int> value;
@@ -16,7 +16,7 @@ class TextAnimation extends StatefulWidget {
   final int initValue;
   final SlideDirection slideDirection;
   final bool showZeroValue;
-  final bool fade;
+  final Curve curve;
 
   @override
   _TextAnimationState createState() => _TextAnimationState();
@@ -27,9 +27,6 @@ class _TextAnimationState extends State<TextAnimation>
   late AnimationController _animationController;
   late Animation<Offset> _offsetAnimationOne;
   late Animation<Offset> _offsetAnimationTwo;
-  late LinearGradient _shaderGradient;
-  late Color _fontColor;
-  late double _size;
   int currentValue = 0;
   int nextValue = 0;
 
@@ -42,33 +39,17 @@ class _TextAnimationState extends State<TextAnimation>
       begin: const Offset(0.0, -1.0),
       end: const Offset(0.0, 0.0),
     ).animate(
-        CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
+        CurvedAnimation(parent: _animationController, curve: widget.curve));
 
     _offsetAnimationTwo = Tween<Offset>(
       begin: const Offset(0.0, 0.0),
       end: const Offset(0.0, 1.0),
-    ).animate(
-        CurvedAnimation(parent: _animationController, curve: Curves.easeInOut))
+    ).animate(CurvedAnimation(parent: _animationController, curve: widget.curve)
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           _animationController.reset();
         }
-      });
-
-    _fontColor = widget.textStyle.color ?? Colors.white;
-    _size = widget.textStyle.fontSize ?? 14;
-
-    _shaderGradient = LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      stops: [0.05, 0.3, 0.7, 0.95],
-      colors: [
-        _fontColor.withOpacity(0.0),
-        _fontColor,
-        _fontColor,
-        _fontColor.withOpacity(0.0),
-      ],
-    );
+      }));
 
     widget.value.addListener(() {
       if (!_animationController.isCompleted) {
@@ -98,14 +79,6 @@ class _TextAnimationState extends State<TextAnimation>
   }
 
   @override
-  void didUpdateWidget(covariant TextAnimation oldWidget) {
-    if (oldWidget.textStyle != widget.textStyle) {
-      _size = widget.textStyle.fontSize ?? 14;
-    }
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
   void dispose() {
     _animationController.dispose();
     super.dispose();
@@ -116,48 +89,36 @@ class _TextAnimationState extends State<TextAnimation>
     return ValueListenableBuilder(
       valueListenable: widget.value,
       builder: (BuildContext context, int value, Widget? child) {
-        return Visibility(
-          visible: widget.fade,
-          child: AnimatedBuilder(
-            animation: _animationController,
-            builder: (context, textWidget) {
-              _digit(value);
-              return ClipRect(
-                child: ShaderMask(
-                  shaderCallback: (Rect bounds) {
-                    return _shaderGradient.createShader(bounds);
-                  },
-                  child: SizedBox(
-                    height: _size + (_size * 0.35),
-                    child: TextOffsetAnimation(
-                      slideDirection: widget.slideDirection,
-                      textStyle: widget.textStyle,
-                      offsetAnimationOne: _offsetAnimationOne,
-                      nextValue: nextValue,
-                      offsetAnimationTwo: _offsetAnimationTwo,
-                      currentValue: currentValue,
-                    ),
+        return AnimatedBuilder(
+          animation: _animationController,
+          builder: (context, textWidget) {
+            _digit(value);
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                FractionalTranslation(
+                  translation: widget.slideDirection == SlideDirection.down
+                      ? _offsetAnimationOne.value
+                      : -_offsetAnimationOne.value,
+                  child: Text(
+                    '$nextValue',
+                    style: widget.textStyle,
+                    textScaleFactor: 1.0,
                   ),
                 ),
-              );
-            },
-          ),
-          replacement: AnimatedBuilder(
-            animation: _animationController,
-            builder: (context, textWidget) {
-              _digit(value);
-              return ClipRect(
-                child: TextOffsetAnimation(
-                  slideDirection: widget.slideDirection,
-                  textStyle: widget.textStyle,
-                  offsetAnimationOne: _offsetAnimationOne,
-                  nextValue: nextValue,
-                  offsetAnimationTwo: _offsetAnimationTwo,
-                  currentValue: currentValue,
+                FractionalTranslation(
+                  translation: widget.slideDirection == SlideDirection.down
+                      ? _offsetAnimationTwo.value
+                      : -_offsetAnimationTwo.value,
+                  child: Text(
+                    '$currentValue',
+                    style: widget.textStyle,
+                    textScaleFactor: 1.0,
+                  ),
                 ),
-              );
-            },
-          ),
+              ],
+            );
+          },
         );
       },
     );

@@ -1,23 +1,10 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:stream_duration/stream_duration.dart';
 
 part 'duration_title.dart';
+part 'enum.dart';
+part 'notifiy_duration.dart';
 part 'text_animation.dart';
-part 'text_offset_animation.dart';
-
-enum SlideDirection { up, down }
-enum SeparatorType { symbol, title }
-
-class NotifiyDuration extends ValueNotifier<Duration> {
-  NotifiyDuration(Duration value) : super(value);
-
-  streamDuration(Duration duration) {
-    value = duration;
-    notifyListeners();
-  }
-}
 
 class SlideCountdown extends StatefulWidget {
   const SlideCountdown({
@@ -40,6 +27,7 @@ class SlideCountdown extends StatefulWidget {
       borderRadius: BorderRadius.all(Radius.circular(20)),
       color: Color(0xFFF23333),
     ),
+    this.curve = Curves.easeOut,
   }) : super(key: key);
 
   final Duration duration;
@@ -56,16 +44,13 @@ class SlideCountdown extends StatefulWidget {
   final bool showZeroValue;
   final bool fade;
   final SlideDirection slideDirection;
+  final Curve curve;
 
   @override
   _SlideCountdownState createState() => _SlideCountdownState();
 }
 
 class _SlideCountdownState extends State<SlideCountdown> {
-  late StreamDuration _streamDuration;
-
-  late NotifiyDuration _notifiyDuration;
-
   ValueNotifier<int> _daysFirstDigitNotifier = ValueNotifier<int>(0);
   ValueNotifier<int> _daysSecondDigitNotifier = ValueNotifier<int>(0);
   ValueNotifier<int> _hoursFirstDigitNotifier = ValueNotifier<int>(0);
@@ -75,8 +60,11 @@ class _SlideCountdownState extends State<SlideCountdown> {
   ValueNotifier<int> _secondsFirstDigitNotifier = ValueNotifier<int>(0);
   ValueNotifier<int> _secondsSecondDigitNotifier = ValueNotifier<int>(0);
 
-  ////--------------------------
   late DurationTitle _durationTitle;
+  late StreamDuration _streamDuration;
+  late NotifiyDuration _notifiyDuration;
+  late Color _textColor;
+  late Color _fadeColor;
 
   @override
   void initState() {
@@ -104,12 +92,20 @@ class _SlideCountdownState extends State<SlideCountdown> {
     });
 
     _durationTitle = widget.durationTitle ?? DurationTitle.en();
+    _textColor = widget.textStyle.color ?? Colors.white;
+    _fadeColor = (widget.textStyle.color ?? Colors.white)
+        .withOpacity(widget.fade ? 0 : 1);
   }
 
   @override
   void didUpdateWidget(covariant SlideCountdown oldWidget) {
     if (widget.durationTitle != null) {
       _durationTitle = widget.durationTitle ?? DurationTitle.en();
+    }
+    if (widget.textStyle != oldWidget.textStyle) {
+      _textColor = widget.textStyle.color ?? Colors.white;
+      _fadeColor = (widget.textStyle.color ?? Colors.white)
+          .withOpacity(widget.fade ? 0 : 1);
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -205,150 +201,172 @@ class _SlideCountdownState extends State<SlideCountdown> {
     return ValueListenableBuilder(
       valueListenable: _notifiyDuration,
       builder: (BuildContext context, Duration duration, Widget? child) {
-        return AnimatedContainer(
-          padding: widget.padding,
+        return DecoratedBox(
           decoration: widget.decoration,
-          duration: const Duration(milliseconds: 300),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Visibility(
-                visible: widget.icon != null,
-                child: widget.icon ?? const SizedBox.shrink(),
-              ),
-              Builder(builder: (context) {
-                if (duration.inDays < 1 && !widget.showZeroValue) {
-                  return const SizedBox.shrink();
-                } else {
-                  return Row(
-                    children: [
-                      TextAnimation(
-                        fade: widget.fade,
-                        value: _daysFirstDigitNotifier,
-                        textStyle: widget.textStyle,
-                        slideDirection: widget.slideDirection,
-                      ),
-                      TextAnimation(
-                        fade: widget.fade,
-                        value: _daysSecondDigitNotifier,
-                        textStyle: widget.textStyle,
-                        slideDirection: widget.slideDirection,
-                        showZeroValue: !(duration.inHours < 1 &&
-                            widget.separatorType == SeparatorType.title),
-                      ),
-                      Visibility(
-                        visible: widget.separatorType == SeparatorType.symbol,
-                        child: Text(widget.separator ?? ':',
-                            style: widget.textStyle),
-                        replacement: Padding(
-                          padding: widget.separatorPadding,
-                          child: Text(_durationTitle.days,
-                              style: widget.textStyle),
-                        ),
-                      ),
-                    ],
-                  );
-                }
-              }),
-              Builder(builder: (context) {
-                if (duration.inHours < 1 && !widget.showZeroValue) {
-                  return const SizedBox.shrink();
-                } else {
-                  return Row(
-                    children: [
-                      TextAnimation(
-                        fade: widget.fade,
-                        value: _hoursFirstDigitNotifier,
-                        textStyle: widget.textStyle,
-                        slideDirection: widget.slideDirection,
-                      ),
-                      TextAnimation(
-                        fade: widget.fade,
-                        value: _hoursSecondDigitNotifier,
-                        textStyle: widget.textStyle,
-                        slideDirection: widget.slideDirection,
-                        showZeroValue: !(duration.inHours < 1 &&
-                            widget.separatorType == SeparatorType.title),
-                      ),
-                      Visibility(
-                        visible: widget.separatorType == SeparatorType.symbol,
-                        child: Text(widget.separator ?? ':',
-                            style: widget.textStyle),
-                        replacement: Padding(
-                          padding: widget.separatorPadding,
-                          child: Text(_durationTitle.hours,
-                              style: widget.textStyle),
-                        ),
-                      ),
-                    ],
-                  );
-                }
-              }),
-              Builder(builder: (context) {
-                if (duration.inMinutes < 1 &&
-                    widget.separatorType == SeparatorType.title) {
-                  return const SizedBox.shrink();
-                } else {
-                  return Row(
-                    children: [
-                      TextAnimation(
-                        fade: widget.fade,
-                        value: _minutesFirstDigitNotifier,
-                        textStyle: widget.textStyle,
-                        slideDirection: widget.slideDirection,
-                        showZeroValue: !(duration.inMinutes < 1 &&
-                            widget.separatorType == SeparatorType.title),
-                      ),
-                      TextAnimation(
-                        fade: widget.fade,
-                        value: _minutesSecondDigitNotifier,
-                        textStyle: widget.textStyle,
-                        slideDirection: widget.slideDirection,
-                        showZeroValue: !(duration.inMinutes < 1 &&
-                            widget.separatorType == SeparatorType.title),
-                      ),
-                      Visibility(
-                        visible: widget.separatorType == SeparatorType.symbol,
-                        child: Text(widget.separator ?? ':',
-                            style: widget.textStyle),
-                        replacement: Padding(
-                          padding: widget.separatorPadding,
-                          child: Text(_durationTitle.minutes,
-                              style: widget.textStyle),
-                        ),
-                      ),
-                    ],
-                  );
-                }
-              }),
-              TextAnimation(
-                fade: widget.fade,
-                value: _secondsFirstDigitNotifier,
-                textStyle: widget.textStyle,
-                slideDirection: widget.slideDirection,
-              ),
-              TextAnimation(
-                fade: widget.fade,
-                value: _secondsSecondDigitNotifier,
-                textStyle: widget.textStyle,
-                slideDirection: widget.slideDirection,
-              ),
-              Visibility(
-                visible: widget.separatorType == SeparatorType.title,
-                child: Padding(
-                  padding: widget.separatorPadding,
-                  child: Text(_durationTitle.seconds, style: widget.textStyle),
+          child: ClipRect(
+            child: ShaderMask(
+              shaderCallback: (Rect rect) {
+                return LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    _fadeColor,
+                    _textColor,
+                    _textColor,
+                    _fadeColor,
+                  ],
+                  stops: [0.05, 0.3, 0.7, 0.95],
+                ).createShader(rect);
+              },
+              child: Padding(
+                padding: widget.padding,
+                child: Visibility(
+                  visible: widget.fade,
+                  child: countdown(duration),
+                  replacement: ClipRect(
+                    child: countdown(duration),
+                  ),
                 ),
               ),
-              Visibility(
-                visible: widget.sufixIcon != null,
-                child: widget.sufixIcon ?? const SizedBox.shrink(),
-              ),
-            ],
+            ),
           ),
         );
       },
+    );
+  }
+
+  Widget countdown(Duration duration) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Visibility(
+          visible: widget.icon != null,
+          child: widget.icon ?? const SizedBox.shrink(),
+        ),
+        Builder(builder: (context) {
+          if (duration.inDays < 1 && !widget.showZeroValue) {
+            return const SizedBox.shrink();
+          } else {
+            return Row(
+              children: [
+                TextAnimation(
+                  value: _daysFirstDigitNotifier,
+                  textStyle: widget.textStyle,
+                  slideDirection: widget.slideDirection,
+                  curve: widget.curve,
+                ),
+                TextAnimation(
+                  value: _daysSecondDigitNotifier,
+                  textStyle: widget.textStyle,
+                  slideDirection: widget.slideDirection,
+                  curve: widget.curve,
+                  showZeroValue: !(duration.inHours < 1 &&
+                      widget.separatorType == SeparatorType.title),
+                ),
+                Visibility(
+                  visible: widget.separatorType == SeparatorType.symbol,
+                  child: Text(widget.separator ?? ':', style: widget.textStyle),
+                  replacement: Padding(
+                    padding: widget.separatorPadding,
+                    child: Text(_durationTitle.days, style: widget.textStyle),
+                  ),
+                ),
+              ],
+            );
+          }
+        }),
+        Builder(builder: (context) {
+          if (duration.inHours < 1 && !widget.showZeroValue) {
+            return const SizedBox.shrink();
+          } else {
+            return Row(
+              children: [
+                TextAnimation(
+                  value: _hoursFirstDigitNotifier,
+                  textStyle: widget.textStyle,
+                  slideDirection: widget.slideDirection,
+                  curve: widget.curve,
+                ),
+                TextAnimation(
+                  value: _hoursSecondDigitNotifier,
+                  textStyle: widget.textStyle,
+                  slideDirection: widget.slideDirection,
+                  curve: widget.curve,
+                  showZeroValue: !(duration.inHours < 1 &&
+                      widget.separatorType == SeparatorType.title),
+                ),
+                Visibility(
+                  visible: widget.separatorType == SeparatorType.symbol,
+                  child: Text(widget.separator ?? ':', style: widget.textStyle),
+                  replacement: Padding(
+                    padding: widget.separatorPadding,
+                    child: Text(_durationTitle.hours, style: widget.textStyle),
+                  ),
+                ),
+              ],
+            );
+          }
+        }),
+        Builder(builder: (context) {
+          if (duration.inMinutes < 1 &&
+              widget.separatorType == SeparatorType.title) {
+            return const SizedBox.shrink();
+          } else {
+            return Row(
+              children: [
+                TextAnimation(
+                  value: _minutesFirstDigitNotifier,
+                  textStyle: widget.textStyle,
+                  slideDirection: widget.slideDirection,
+                  curve: widget.curve,
+                  showZeroValue: !(duration.inMinutes < 1 &&
+                      widget.separatorType == SeparatorType.title),
+                ),
+                TextAnimation(
+                  value: _minutesSecondDigitNotifier,
+                  textStyle: widget.textStyle,
+                  slideDirection: widget.slideDirection,
+                  curve: widget.curve,
+                  showZeroValue: !(duration.inMinutes < 1 &&
+                      widget.separatorType == SeparatorType.title),
+                ),
+                Visibility(
+                  visible: widget.separatorType == SeparatorType.symbol,
+                  child: Text(widget.separator ?? ':', style: widget.textStyle),
+                  replacement: Padding(
+                    padding: widget.separatorPadding,
+                    child:
+                        Text(_durationTitle.minutes, style: widget.textStyle),
+                  ),
+                ),
+              ],
+            );
+          }
+        }),
+        TextAnimation(
+          value: _secondsFirstDigitNotifier,
+          textStyle: widget.textStyle,
+          slideDirection: widget.slideDirection,
+          curve: widget.curve,
+        ),
+        TextAnimation(
+          value: _secondsSecondDigitNotifier,
+          textStyle: widget.textStyle,
+          slideDirection: widget.slideDirection,
+          curve: widget.curve,
+        ),
+        Visibility(
+          visible: widget.separatorType == SeparatorType.title,
+          child: Padding(
+            padding: widget.separatorPadding,
+            child: Text(_durationTitle.seconds, style: widget.textStyle),
+          ),
+        ),
+        Visibility(
+          visible: widget.sufixIcon != null,
+          child: widget.sufixIcon ?? const SizedBox.shrink(),
+        ),
+      ],
     );
   }
 }

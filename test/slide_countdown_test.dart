@@ -8,7 +8,6 @@ void main() {
     await tester.pumpWidget(MyApp());
     expect(find.byWidget(SlideCountdown(duration: const Duration(days: 11))),
         Widget);
-    expect(find.text('1'), findsNothing);
     await tester.pump();
   });
 }
