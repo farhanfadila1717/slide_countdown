@@ -1,5 +1,5 @@
 ## [![hero][]][hero]
-[![flutter][]][web flutter] [![paypal][]][paypal account] <br>
+[![flutter][]][web flutter] [![badge paypal][]][paypal account] <br>
 Animation countdown timer for Flutter.
 
 ---
@@ -89,12 +89,17 @@ SizedBox.expand(
 **Farhan Fadila** <br>
 📫 How to reach me: farhan.fadila1717@gmail.com
 
+### ❤️ Suport Maintener
+[![badge paypal][]][paypal account] [![badge linktree][]][linktree account]
+
 
 [hero]:https://github.com/farhanfadila1717/flutter_package/blob/master/display/slide_coutdown/hero.gif
 [output]: https://github.com/farhanfadila1717/flutter_package/blob/master/display/slide_coutdown/output.gif
 [flutter]: https://img.shields.io/badge/Platform-Flutter-02569B?logo=flutter
 [web flutter]: https://flutter.dev
-[paypal]: https://img.shields.io/badge/Donate-PayPal-00457C?logo=paypal
-[paypal account]: https://www.paypal.me/farhanfadila1717
 [account avatar]: https://avatars.githubusercontent.com/u/43161050?s=80
 [github account]: https://github.com/farhanfadila1717
+[badge linktree]: https://img.shields.io/badge/Donate-farhanfadila-orange
+[linktree account]: https://linktr.ee/farhanfadila
+[badge paypal]: https://img.shields.io/badge/Donate-PayPal-00457C?logo=paypal
+[paypal account]: https://www.paypal.me/farhanfadila1717
