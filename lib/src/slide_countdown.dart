@@ -102,7 +102,8 @@ class _SlideCountdownState extends State<SlideCountdown> {
     if (widget.durationTitle != null) {
       _durationTitle = widget.durationTitle ?? DurationTitle.en();
     }
-    if (widget.textStyle != oldWidget.textStyle) {
+    if (widget.textStyle != oldWidget.textStyle ||
+        widget.fade != oldWidget.fade) {
       _textColor = widget.textStyle.color ?? Colors.white;
       _fadeColor = (widget.textStyle.color ?? Colors.white)
           .withOpacity(widget.fade ? 0 : 1);

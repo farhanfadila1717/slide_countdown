@@ -10,3 +10,6 @@
 ## 0.0.2
 
 * Improve fade transition
+
+## 0.0.3
+* Fix animation issue

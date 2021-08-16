@@ -53,7 +53,9 @@ class _TextAnimationState extends State<TextAnimation>
 
     widget.value.addListener(() {
       if (!_animationController.isCompleted) {
-        _animationController.forward();
+        if (mounted) {
+          _animationController.forward();
+        }
       }
     });
   }
