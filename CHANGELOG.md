@@ -1,3 +1,9 @@
+## 0.0.4
+* Fix separator padding
+* Add documentation
+* Change package description
+* New Example
+
 ## 0.0.4-dev.2
 * Fix example 
 * Change package description
