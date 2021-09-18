@@ -30,20 +30,61 @@ class SlideCountdown extends StatefulWidget {
     this.curve = Curves.easeOut,
   }) : super(key: key);
 
+  /// [Duration] is the duration of the countdown slide,
+  /// if the duration has finished it will call [onDone]
   final Duration duration;
+
+  /// [TextStyle] is a parameter for all existing text,
+  /// if this is null [SlideCountdown] has a default
+  /// text style which will be of all text
   final TextStyle textStyle;
+
+  /// [icon] is a parameter that can be initialized by any widget e.g [Icon],
+  /// this will be in the first order, default empty widget
   final Widget? icon;
+
+  /// [icon] is a parameter that can be initialized by any widget e.g [Icon],
+  /// this will be in the end order, default empty widget
   final Widget? sufixIcon;
+
+  /// Separator is a parameter that will separate each [duration],
+  /// e.g hours by minutes, and you can change the [SeparatorType] of the symbol or title
   final String? separator;
+
+  /// function [onDone] will be called when countdown is complete
   final VoidCallback? onDone;
+
+  /// if you want to change the separator type, change this value to
+  /// [SeparatorType.title] or [SeparatorType.symbol].
+  /// [SeparatorType.title] will display title between duration,
+  /// e.g minutes or you can change to another language, by changing the value in [DurationTitle]
   final SeparatorType separatorType;
+
+  /// change [Duration Title] if you want to change the default language,
+  /// which is English, to another language, for example, into Indonesian
+  /// pro tips: if you change to Indonesian, we have default values [DurationTitle.id()]
   final DurationTitle? durationTitle;
+
+  /// The decoration to paint in front of the [child].
   final Decoration decoration;
+
+  /// The amount of space by which to inset the child.
   final EdgeInsets padding;
+
+  /// The amount of space by which to inset the [separator].
   final EdgeInsets separatorPadding;
+
+  /// if you initialize it with false, the duration which is empty will not be displayed
   final bool showZeroValue;
+
+  /// if you want [slideDirection] animation that is not rough set this value to true
   final bool fade;
+
+  /// you can change the slide animation up or down by changing the enum value in this property
   final SlideDirection slideDirection;
+
+  /// to customize curve in [TextAnimation] you can change the default value
+  /// default [Curves.easeOut]
   final Curve curve;
 
   @override
@@ -264,12 +305,14 @@ class _SlideCountdownState extends State<SlideCountdown> {
                   showZeroValue: !(duration.inHours < 1 &&
                       widget.separatorType == SeparatorType.title),
                 ),
-                Visibility(
-                  visible: widget.separatorType == SeparatorType.symbol,
-                  child: Text(widget.separator ?? ':', style: widget.textStyle),
-                  replacement: Padding(
-                    padding: widget.separatorPadding,
-                    child: Text(_durationTitle.days, style: widget.textStyle),
+                Padding(
+                  padding: widget.separatorPadding,
+                  child: Visibility(
+                    visible: widget.separatorType == SeparatorType.symbol,
+                    child:
+                        Text(widget.separator ?? ':', style: widget.textStyle),
+                    replacement:
+                        Text(_durationTitle.days, style: widget.textStyle),
                   ),
                 ),
               ],
@@ -296,12 +339,14 @@ class _SlideCountdownState extends State<SlideCountdown> {
                   showZeroValue: !(duration.inHours < 1 &&
                       widget.separatorType == SeparatorType.title),
                 ),
-                Visibility(
-                  visible: widget.separatorType == SeparatorType.symbol,
-                  child: Text(widget.separator ?? ':', style: widget.textStyle),
-                  replacement: Padding(
-                    padding: widget.separatorPadding,
-                    child: Text(_durationTitle.hours, style: widget.textStyle),
+                Padding(
+                  padding: widget.separatorPadding,
+                  child: Visibility(
+                    visible: widget.separatorType == SeparatorType.symbol,
+                    child:
+                        Text(widget.separator ?? ':', style: widget.textStyle),
+                    replacement:
+                        Text(_durationTitle.hours, style: widget.textStyle),
                   ),
                 ),
               ],
@@ -331,12 +376,13 @@ class _SlideCountdownState extends State<SlideCountdown> {
                   showZeroValue: !(duration.inMinutes < 1 &&
                       widget.separatorType == SeparatorType.title),
                 ),
-                Visibility(
-                  visible: widget.separatorType == SeparatorType.symbol,
-                  child: Text(widget.separator ?? ':', style: widget.textStyle),
-                  replacement: Padding(
-                    padding: widget.separatorPadding,
+                Padding(
+                  padding: widget.separatorPadding,
+                  child: Visibility(
+                    visible: widget.separatorType == SeparatorType.symbol,
                     child:
+                        Text(widget.separator ?? ':', style: widget.textStyle),
+                    replacement:
                         Text(_durationTitle.minutes, style: widget.textStyle),
                   ),
                 ),
