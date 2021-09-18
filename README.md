@@ -1,6 +1,6 @@
 ## [![cover][]][pubdev]
 [![flutter][]][web flutter] [![badge paypal][]][paypal account] [![badge linktree][]][linktree account] <br>
-A Flutter package to create easy animation countdown timer.
+A Flutter package to create easy slide animation countdown timer.
 
 ---
 
