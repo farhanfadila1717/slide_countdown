@@ -6,78 +6,92 @@ A Flutter package to create easy slide animation countdown timer.
 
 ## Example
 ```dart
-SizedBox.expand(
-  child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-      ////------------------Default--------------------------------
-      Text('Default'),
-      const Padding(padding: const EdgeInsets.only(top: 10)),
-      SlideCountdown(
-        duration: const Duration(days: 11),
+const defaultDuration = Duration(days: 2, hours: 2, minutes: 30);
+const defaultPadding = EdgeInsets.symmetric(horizontal: 10, vertical: 5);
+
+class ExampleSlideCountdown extends StatelessWidget {
+  const ExampleSlideCountdown({Key? key}) : super(key: key);
+  @override
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("My Space"),
       ),
-      ////-----------SlideDirection.up, & onDone-------------------
-      const Padding(padding: const EdgeInsets.only(top: 20)),
-      Text('SlideDirection.up, & onDone'),
-      const Padding(padding: const EdgeInsets.only(top: 10)),
-      SlideCountdown(
-        duration: const Duration(days: 11),
-        slideDirection: SlideDirection.up,
-        onDone: () {
-          print('Countdown done!');
-        },
-      ),
-      ////---------Fade Animation & Custom TextSyle---------------
-      const Padding(padding: const EdgeInsets.only(top: 20)),
-      Text('Fade Animation & Custom TextSyle'),
-      const Padding(padding: const EdgeInsets.only(top: 10)),
-      SlideCountdown(
-        duration: const Duration(days: 11),
-        fade: true,
-        decoration: BoxDecoration(
-          color: Colors.black87,
+      body: SizedBox.expand(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(top: 20, bottom: 10),
+              child: Text('Default'),
+            ),
+            const SlideCountdown(
+              duration: defaultDuration,
+              padding: defaultPadding,
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 20, bottom: 10),
+              child: Text('With Icon, Fade true, & SlideDirection.up'),
+            ),
+            const SlideCountdown(
+              duration: defaultDuration,
+              padding: defaultPadding,
+              slideDirection: SlideDirection.up,
+              fade: true,
+              icon: Padding(
+                padding: EdgeInsets.only(right: 5),
+                child: Icon(
+                  Icons.alarm,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 20, bottom: 10),
+              child: Text('Custom BoxDecoration & SeparatorType.title'),
+            ),
+            const SlideCountdown(
+              duration: defaultDuration,
+              padding: defaultPadding,
+              fade: true,
+              separatorType: SeparatorType.title,
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 20, bottom: 10),
+              child: Text('Localization Custom Duration Title'),
+            ),
+            SlideCountdown(
+              duration: defaultDuration,
+              padding: defaultPadding,
+              fade: true,
+              separatorType: SeparatorType.title,
+              durationTitle: DurationTitle.id(),
+              icon: const Padding(
+                padding: EdgeInsets.only(right: 5),
+                child: Icon(
+                  Icons.alarm,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+              decoration: const BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+              ),
+            ),
+          ],
         ),
-        textStyle: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-        ),
       ),
-      ////----------With icon, SeparatorType.title-----------------
-      const Padding(padding: const EdgeInsets.only(top: 20)),
-      Text('With icon, SeparatorType.title'),
-      const Padding(padding: const EdgeInsets.only(top: 10)),
-      SlideCountdown(
-        duration: const Duration(days: 11),
-        icon: Icon(Icons.alarm_rounded, color: Colors.white),
-        durationTitle: DurationTitle.en(),
-        slideDirection: SlideDirection.up,
-        separatorType: SeparatorType.title,
-        onDone: () {
-          print('Countdown done!');
-        },
-      ),
-      ////-----------------Custom decoration------------------------
-      const Padding(padding: const EdgeInsets.only(top: 20)),
-      Text('Custom decoration'),
-      const Padding(padding: const EdgeInsets.only(top: 10)),
-      SlideCountdown(
-        duration: const Duration(hours: 4, minutes: 20),
-        icon: Icon(Icons.alarm_rounded, color: Colors.white),
-        durationTitle: DurationTitle.en(),
-        decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: const BorderRadius.all(Radius.circular(3)),
-        ),
-        slideDirection: SlideDirection.up,
-        separatorType: SeparatorType.title,
-        onDone: () {
-          print('Countdown done!');
-        },
-      ),
-    ],
-  ),
-),
+    );
+  }
+}
 ```
 ## Output
 [![output][]][output]
