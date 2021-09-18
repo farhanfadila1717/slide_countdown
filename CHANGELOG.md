@@ -1,3 +1,7 @@
+## 0.0.4-dev.2
+* Fix example 
+* Change package description
+
 ## 0.0.4-dev.1
 * Refactor document
 * Fix separator padding
