@@ -5,6 +5,7 @@ part 'duration_title.dart';
 part 'enum.dart';
 part 'notifiy_duration.dart';
 part 'text_animation.dart';
+part 'slide_countdown_separated.dart';
 
 class SlideCountdown extends StatefulWidget {
   const SlideCountdown({
@@ -92,14 +93,14 @@ class SlideCountdown extends StatefulWidget {
 }
 
 class _SlideCountdownState extends State<SlideCountdown> {
-  ValueNotifier<int> _daysFirstDigitNotifier = ValueNotifier<int>(0);
-  ValueNotifier<int> _daysSecondDigitNotifier = ValueNotifier<int>(0);
-  ValueNotifier<int> _hoursFirstDigitNotifier = ValueNotifier<int>(0);
-  ValueNotifier<int> _hoursSecondDigitNotifier = ValueNotifier<int>(0);
-  ValueNotifier<int> _minutesFirstDigitNotifier = ValueNotifier<int>(0);
-  ValueNotifier<int> _minutesSecondDigitNotifier = ValueNotifier<int>(0);
-  ValueNotifier<int> _secondsFirstDigitNotifier = ValueNotifier<int>(0);
-  ValueNotifier<int> _secondsSecondDigitNotifier = ValueNotifier<int>(0);
+  final ValueNotifier<int> _daysFirstDigitNotifier = ValueNotifier<int>(0);
+  final ValueNotifier<int> _daysSecondDigitNotifier = ValueNotifier<int>(0);
+  final ValueNotifier<int> _hoursFirstDigitNotifier = ValueNotifier<int>(0);
+  final ValueNotifier<int> _hoursSecondDigitNotifier = ValueNotifier<int>(0);
+  final ValueNotifier<int> _minutesFirstDigitNotifier = ValueNotifier<int>(0);
+  final ValueNotifier<int> _minutesSecondDigitNotifier = ValueNotifier<int>(0);
+  final ValueNotifier<int> _secondsFirstDigitNotifier = ValueNotifier<int>(0);
+  final ValueNotifier<int> _secondsSecondDigitNotifier = ValueNotifier<int>(0);
 
   late DurationTitle _durationTitle;
   late StreamDuration _streamDuration;
@@ -257,7 +258,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
                     _textColor,
                     _fadeColor,
                   ],
-                  stops: [0.05, 0.3, 0.7, 0.95],
+                  stops: const [0.05, 0.3, 0.7, 0.95],
                 ).createShader(rect);
               },
               child: Padding(
