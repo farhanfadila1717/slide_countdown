@@ -1,3 +1,7 @@
+## 0.0.5-dev.1
+* Add: SlidecountdownSeparated
+* Fix: example
+
 ## 0.0.4
 * Fix separator padding
 * Add documentation
