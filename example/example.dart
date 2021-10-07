@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ExampleSlideCountdown(),
+      home: const ExampleSlideCountdown(),
     );
   }
 }
@@ -21,7 +21,6 @@ const defaultPadding = EdgeInsets.symmetric(horizontal: 10, vertical: 5);
 
 class ExampleSlideCountdown extends StatelessWidget {
   const ExampleSlideCountdown({Key? key}) : super(key: key);
-  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +37,14 @@ class ExampleSlideCountdown extends StatelessWidget {
               child: Text('Default'),
             ),
             const SlideCountdown(
+              duration: defaultDuration,
+              padding: defaultPadding,
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 20, bottom: 10),
+              child: Text('Default SlideCountdownSeparated'),
+            ),
+            const SlideCountdownSeparated(
               duration: defaultDuration,
               padding: defaultPadding,
             ),
