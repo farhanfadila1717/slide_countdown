@@ -29,6 +29,8 @@ class SlideCountdown extends StatefulWidget {
       color: Color(0xFFF23333),
     ),
     this.curve = Curves.easeOut,
+    this.countUp = false,
+    this.infinityCountUp = false,
   }) : super(key: key);
 
   /// [Duration] is the duration of the countdown slide,
@@ -88,6 +90,14 @@ class SlideCountdown extends StatefulWidget {
   /// default [Curves.easeOut]
   final Curve curve;
 
+  ///this property allows you to do a count up, give it a value of true to do it
+  final bool countUp;
+
+  /// if you set this property value to true, it will do the count up continuously or infinity
+  /// and the [onDone] property will never be executed,
+  /// before doing that you need to set true to the [countUp] property,
+  final bool infinityCountUp;
+
   @override
   _SlideCountdownState createState() => _SlideCountdownState();
 }
@@ -112,11 +122,16 @@ class _SlideCountdownState extends State<SlideCountdown> {
   void initState() {
     super.initState();
     _notifiyDuration = NotifiyDuration(widget.duration);
-    _streamDuration = StreamDuration(widget.duration, () {
-      if (widget.onDone != null) {
-        widget.onDone!();
-      }
-    });
+    _streamDuration = StreamDuration(
+      widget.duration,
+      onDone: () {
+        if (widget.onDone != null) {
+          widget.onDone!();
+        }
+      },
+      countUp: widget.countUp,
+      infinity: widget.infinityCountUp,
+    );
 
     _streamDuration.durationLeft.listen((event) {
       _notifiyDuration.streamDuration(event);
@@ -149,6 +164,11 @@ class _SlideCountdownState extends State<SlideCountdown> {
       _textColor = widget.textStyle.color ?? Colors.white;
       _fadeColor = (widget.textStyle.color ?? Colors.white)
           .withOpacity(widget.fade ? 0 : 1);
+    }
+    if (widget.countUp != oldWidget.countUp ||
+        widget.infinityCountUp != oldWidget.infinityCountUp ||
+        widget.duration != oldWidget.duration) {
+      debugPrint("This change need hot restart!");
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -297,12 +317,14 @@ class _SlideCountdownState extends State<SlideCountdown> {
                   textStyle: widget.textStyle,
                   slideDirection: widget.slideDirection,
                   curve: widget.curve,
+                  countUp: widget.countUp,
                 ),
                 TextAnimation(
                   value: _daysSecondDigitNotifier,
                   textStyle: widget.textStyle,
                   slideDirection: widget.slideDirection,
                   curve: widget.curve,
+                  countUp: widget.countUp,
                   showZeroValue: !(duration.inHours < 1 &&
                       widget.separatorType == SeparatorType.title),
                 ),
@@ -331,12 +353,14 @@ class _SlideCountdownState extends State<SlideCountdown> {
                   textStyle: widget.textStyle,
                   slideDirection: widget.slideDirection,
                   curve: widget.curve,
+                  countUp: widget.countUp,
                 ),
                 TextAnimation(
                   value: _hoursSecondDigitNotifier,
                   textStyle: widget.textStyle,
                   slideDirection: widget.slideDirection,
                   curve: widget.curve,
+                  countUp: widget.countUp,
                   showZeroValue: !(duration.inHours < 1 &&
                       widget.separatorType == SeparatorType.title),
                 ),
@@ -366,6 +390,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
                   textStyle: widget.textStyle,
                   slideDirection: widget.slideDirection,
                   curve: widget.curve,
+                  countUp: widget.countUp,
                   showZeroValue: !(duration.inMinutes < 1 &&
                       widget.separatorType == SeparatorType.title),
                 ),
@@ -374,6 +399,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
                   textStyle: widget.textStyle,
                   slideDirection: widget.slideDirection,
                   curve: widget.curve,
+                  countUp: widget.countUp,
                   showZeroValue: !(duration.inMinutes < 1 &&
                       widget.separatorType == SeparatorType.title),
                 ),
@@ -396,12 +422,14 @@ class _SlideCountdownState extends State<SlideCountdown> {
           textStyle: widget.textStyle,
           slideDirection: widget.slideDirection,
           curve: widget.curve,
+          countUp: widget.countUp,
         ),
         TextAnimation(
           value: _secondsSecondDigitNotifier,
           textStyle: widget.textStyle,
           slideDirection: widget.slideDirection,
           curve: widget.curve,
+          countUp: widget.countUp,
         ),
         Visibility(
           visible: widget.separatorType == SeparatorType.title,

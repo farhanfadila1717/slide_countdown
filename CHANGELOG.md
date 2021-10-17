@@ -1,3 +1,6 @@
+## 0.0.6-dev.1
+* Add: countup, countup infinity
+
 ## 0.0.5
 * release: SlidecountdownSeparated
 

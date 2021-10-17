@@ -9,6 +9,7 @@ class TextAnimation extends StatefulWidget {
     this.initValue = 0,
     this.showZeroValue = true,
     this.curve = Curves.easeOut,
+    this.countUp = true,
   }) : super(key: key);
 
   final ValueNotifier<int> value;
@@ -17,6 +18,7 @@ class TextAnimation extends StatefulWidget {
   final SlideDirection slideDirection;
   final bool showZeroValue;
   final Curve curve;
+  final bool countUp;
 
   @override
   _TextAnimationState createState() => _TextAnimationState();
@@ -64,7 +66,11 @@ class _TextAnimationState extends State<TextAnimation>
     if (currentValue != value) {
       nextValue = value;
       if (value < 9) {
-        currentValue = value + 1;
+        currentValue = widget.countUp
+            ? value < 1
+                ? value
+                : value - 1
+            : value + 1;
       } else {
         currentValue = 0;
       }
