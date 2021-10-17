@@ -33,6 +33,14 @@ class ExampleSlideCountdown extends StatelessWidget {
             ),
             const Padding(
               padding: EdgeInsets.only(top: 20, bottom: 10),
+              child: Text('Default SlideCountdownSeparated'),
+            ),
+            const SlideCountdownSeparated(
+              duration: defaultDuration,
+              padding: defaultPadding,
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 20, bottom: 10),
               child: Text('With Icon, Fade true, & SlideDirection.up'),
             ),
             const SlideCountdown(
