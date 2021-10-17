@@ -1,3 +1,6 @@
+## 0.0.5
+* release: SlidecountdownSeparated
+
 ## 0.0.5-dev.1
 * Add: SlidecountdownSeparated
 * Fix: example
