@@ -122,6 +122,33 @@ class _SlideCountdownState extends State<SlideCountdown> {
   void initState() {
     super.initState();
     _notifiyDuration = NotifiyDuration(widget.duration);
+    _streamDurationListener();
+    _durationTitle = widget.durationTitle ?? DurationTitle.en();
+    _textColor = widget.textStyle.color ?? Colors.white;
+    _fadeColor = (widget.textStyle.color ?? Colors.white)
+        .withOpacity(widget.fade ? 0 : 1);
+  }
+
+  @override
+  void didUpdateWidget(covariant SlideCountdown oldWidget) {
+    if (widget.durationTitle != null) {
+      _durationTitle = widget.durationTitle ?? DurationTitle.en();
+    }
+    if (widget.textStyle != oldWidget.textStyle ||
+        widget.fade != oldWidget.fade) {
+      _textColor = widget.textStyle.color ?? Colors.white;
+      _fadeColor = (widget.textStyle.color ?? Colors.white)
+          .withOpacity(widget.fade ? 0 : 1);
+    }
+    if (widget.countUp != oldWidget.countUp ||
+        widget.infinityCountUp != oldWidget.infinityCountUp ||
+        widget.duration != oldWidget.duration) {
+      _streamDurationListener();
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  void _streamDurationListener() {
     _streamDuration = StreamDuration(
       widget.duration,
       onDone: () {
@@ -147,30 +174,6 @@ class _SlideCountdownState extends State<SlideCountdown> {
       _secondsFirstDigit(event);
       _secondsSecondDigit(event);
     });
-
-    _durationTitle = widget.durationTitle ?? DurationTitle.en();
-    _textColor = widget.textStyle.color ?? Colors.white;
-    _fadeColor = (widget.textStyle.color ?? Colors.white)
-        .withOpacity(widget.fade ? 0 : 1);
-  }
-
-  @override
-  void didUpdateWidget(covariant SlideCountdown oldWidget) {
-    if (widget.durationTitle != null) {
-      _durationTitle = widget.durationTitle ?? DurationTitle.en();
-    }
-    if (widget.textStyle != oldWidget.textStyle ||
-        widget.fade != oldWidget.fade) {
-      _textColor = widget.textStyle.color ?? Colors.white;
-      _fadeColor = (widget.textStyle.color ?? Colors.white)
-          .withOpacity(widget.fade ? 0 : 1);
-    }
-    if (widget.countUp != oldWidget.countUp ||
-        widget.infinityCountUp != oldWidget.infinityCountUp ||
-        widget.duration != oldWidget.duration) {
-      debugPrint("This change need hot restart!");
-    }
-    super.didUpdateWidget(oldWidget);
   }
 
   void _daysFirstDigit(Duration duration) {
