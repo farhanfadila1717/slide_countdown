@@ -1,3 +1,8 @@
+## 0.0.6
+* release: countUp, countup infinity
+* change: default padding slidecountdown
+* docs: update readme.md
+
 ## 0.0.6-dev.2
 * Refactor codebase
 
