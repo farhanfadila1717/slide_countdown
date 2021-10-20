@@ -20,7 +20,7 @@ class SlideCountdown extends StatefulWidget {
     this.durationTitle,
     this.separatorType = SeparatorType.symbol,
     this.slideDirection = SlideDirection.down,
-    this.padding = const EdgeInsets.all(5),
+    this.padding = const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
     this.separatorPadding = const EdgeInsets.symmetric(horizontal: 3),
     this.showZeroValue = false,
     this.fade = false,
