@@ -141,8 +141,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
           .withOpacity(widget.fade ? 0 : 1);
     }
     if (widget.countUp != oldWidget.countUp ||
-        widget.infinityCountUp != oldWidget.infinityCountUp ||
-        widget.duration != oldWidget.duration) {
+        widget.infinityCountUp != oldWidget.infinityCountUp) {
       _streamDurationListener();
     }
     super.didUpdateWidget(oldWidget);
