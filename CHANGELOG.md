@@ -1,3 +1,6 @@
+## 0.0.7
+fix: unconstant value
+
 ## 0.0.6
 * release: countUp, countup infinity
 * change: default padding slidecountdown

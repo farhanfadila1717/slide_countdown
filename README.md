@@ -23,7 +23,7 @@ SlideCountdownSeparated(
   duration: const Duration(days: 2),
 )
 ```
-#### Output SlideCountdown(Default)
+#### Output SlideCountdownSeparated(Default)
 [![slidecountdown separated][]][slidecountdown separated]
 
 <br>
