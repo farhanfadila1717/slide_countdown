@@ -207,9 +207,14 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
 
   void _daysFirstDigit(Duration duration) {
     try {
-      int calculate = (duration.inDays) ~/ 10;
-      if (calculate != _daysFirstDigitNotifier.value) {
-        _daysFirstDigitNotifier.value = calculate;
+      if (duration.inDays == 0) {
+        _daysFirstDigitNotifier.value = 0;
+        return;
+      } else {
+        int calculate = (duration.inDays) ~/ 10;
+        if (calculate != _daysFirstDigitNotifier.value) {
+          _daysFirstDigitNotifier.value = calculate;
+        }
       }
     } catch (ex) {
       debugPrint(ex.toString());
@@ -218,9 +223,14 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
 
   void _daysSecondDigit(Duration duration) {
     try {
-      int calculate = (duration.inDays) % 10;
-      if (calculate != _daysSecondDigitNotifier.value) {
-        _daysSecondDigitNotifier.value = calculate;
+      if (duration.inDays == 0) {
+        _daysSecondDigitNotifier.value = 0;
+        return;
+      } else {
+        int calculate = (duration.inDays) % 10;
+        if (calculate != _daysSecondDigitNotifier.value) {
+          _daysSecondDigitNotifier.value = calculate;
+        }
       }
     } catch (ex) {
       debugPrint(ex.toString());
@@ -229,9 +239,14 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
 
   void _hoursFirstDigit(Duration duration) {
     try {
-      int calculate = (duration.inHours % 24) ~/ 10;
-      if (calculate != _hoursFirstDigitNotifier.value) {
-        _hoursFirstDigitNotifier.value = calculate;
+      if (duration.inHours == 0) {
+        _hoursFirstDigitNotifier.value = 0;
+        return;
+      } else {
+        int calculate = (duration.inHours % 24) ~/ 10;
+        if (calculate != _hoursFirstDigitNotifier.value) {
+          _hoursFirstDigitNotifier.value = calculate;
+        }
       }
     } catch (ex) {
       debugPrint(ex.toString());
@@ -240,9 +255,14 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
 
   void _hoursSecondDigit(Duration duration) {
     try {
-      int calculate = (duration.inHours % 24) % 10;
-      if (calculate != _hoursSecondDigitNotifier.value) {
-        _hoursSecondDigitNotifier.value = calculate;
+      if (duration.inHours == 0) {
+        _hoursSecondDigitNotifier.value = 0;
+        return;
+      } else {
+        int calculate = (duration.inHours % 24) % 10;
+        if (calculate != _hoursSecondDigitNotifier.value) {
+          _hoursSecondDigitNotifier.value = calculate;
+        }
       }
     } catch (ex) {
       debugPrint(ex.toString());
@@ -251,9 +271,14 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
 
   void _minutesFirstDigit(Duration duration) {
     try {
-      int calculate = (duration.inMinutes % 60) ~/ 10;
-      if (calculate != _minutesFirstDigitNotifier.value) {
-        _minutesFirstDigitNotifier.value = calculate;
+      if (duration.inMinutes == 0) {
+        _minutesFirstDigitNotifier.value = 0;
+        return;
+      } else {
+        int calculate = (duration.inMinutes % 60) ~/ 10;
+        if (calculate != _minutesFirstDigitNotifier.value) {
+          _minutesFirstDigitNotifier.value = calculate;
+        }
       }
     } catch (ex) {
       debugPrint(ex.toString());
@@ -262,9 +287,14 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
 
   void _minutesSecondDigit(Duration duration) {
     try {
-      int calculate = (duration.inMinutes % 60) % 10;
-      if (calculate != _minutesSecondDigitNotifier.value) {
-        _minutesSecondDigitNotifier.value = calculate;
+      if (duration.inMinutes == 0) {
+        _minutesSecondDigitNotifier.value = 0;
+        return;
+      } else {
+        int calculate = (duration.inMinutes % 60) % 10;
+        if (calculate != _minutesSecondDigitNotifier.value) {
+          _minutesSecondDigitNotifier.value = calculate;
+        }
       }
     } catch (ex) {
       debugPrint(ex.toString());
@@ -273,9 +303,14 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
 
   void _secondsFirstDigit(Duration duration) {
     try {
-      int calculate = (duration.inSeconds % 60) ~/ 10;
-      if (calculate != _secondsFirstDigitNotifier.value) {
-        _secondsFirstDigitNotifier.value = calculate;
+      if (duration.inSeconds == 0) {
+        _secondsFirstDigitNotifier.value = 0;
+        return;
+      } else {
+        int calculate = (duration.inSeconds % 60) ~/ 10;
+        if (calculate != _secondsFirstDigitNotifier.value) {
+          _secondsFirstDigitNotifier.value = calculate;
+        }
       }
     } catch (ex) {
       debugPrint(ex.toString());
@@ -284,9 +319,14 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
 
   void _secondsSecondDigit(Duration duration) {
     try {
-      int calculate = (duration.inSeconds % 60) % 10;
-      if (calculate != _secondsSecondDigitNotifier.value) {
-        _secondsSecondDigitNotifier.value = calculate;
+      if (duration.inSeconds == 0) {
+        _secondsSecondDigitNotifier.value = 0;
+        return;
+      } else {
+        int calculate = (duration.inSeconds % 60) % 10;
+        if (calculate != _secondsSecondDigitNotifier.value) {
+          _secondsSecondDigitNotifier.value = calculate;
+        }
       }
     } catch (ex) {
       debugPrint(ex.toString());
