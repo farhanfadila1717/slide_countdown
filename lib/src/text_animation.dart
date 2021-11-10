@@ -6,6 +6,7 @@ class TextAnimation extends StatefulWidget {
     required this.value,
     required this.textStyle,
     required this.slideDirection,
+    required this.slideAnimationDuration,
     this.initValue = 0,
     this.showZeroValue = true,
     this.curve = Curves.easeOut,
@@ -19,6 +20,7 @@ class TextAnimation extends StatefulWidget {
   final bool showZeroValue;
   final Curve curve;
   final bool countUp;
+  final Duration slideAnimationDuration;
 
   @override
   _TextAnimationState createState() => _TextAnimationState();
@@ -31,12 +33,14 @@ class _TextAnimationState extends State<TextAnimation>
   late Animation<Offset> _offsetAnimationTwo;
   int currentValue = 0;
   int nextValue = 0;
+  bool disposed = false;
 
   @override
   void initState() {
     super.initState();
+    disposed = false;
     _animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 300));
+        vsync: this, duration: widget.slideAnimationDuration);
     _offsetAnimationOne = Tween<Offset>(
       begin: const Offset(0.0, -1.0),
       end: const Offset(0.0, 0.0),
@@ -53,13 +57,15 @@ class _TextAnimationState extends State<TextAnimation>
         }
       }));
 
-    widget.value.addListener(() {
-      if (!_animationController.isCompleted) {
-        if (mounted) {
-          _animationController.forward();
+    if (!disposed) {
+      widget.value.addListener(() {
+        if (!_animationController.isCompleted) {
+          if (mounted) {
+            _animationController.forward();
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   void _digit(int value) {
@@ -88,6 +94,7 @@ class _TextAnimationState extends State<TextAnimation>
 
   @override
   void dispose() {
+    disposed = true;
     _animationController.dispose();
     super.dispose();
   }

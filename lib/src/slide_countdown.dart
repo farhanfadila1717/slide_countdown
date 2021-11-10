@@ -31,6 +31,7 @@ class SlideCountdown extends StatefulWidget {
     this.curve = Curves.easeOut,
     this.countUp = false,
     this.infinityCountUp = false,
+    this.slideAnimationDuration = const Duration(milliseconds: 300),
   }) : super(key: key);
 
   /// [Duration] is the duration of the countdown slide,
@@ -98,6 +99,9 @@ class SlideCountdown extends StatefulWidget {
   /// before doing that you need to set true to the [countUp] property,
   final bool infinityCountUp;
 
+  /// SlideAnimationDuration which will be the duration of the slide animation from above or below
+  final Duration slideAnimationDuration;
+
   @override
   _SlideCountdownState createState() => _SlideCountdownState();
 }
@@ -117,11 +121,13 @@ class _SlideCountdownState extends State<SlideCountdown> {
   late NotifiyDuration _notifiyDuration;
   late Color _textColor;
   late Color _fadeColor;
+  bool disposed = false;
 
   @override
   void initState() {
     super.initState();
     _notifiyDuration = NotifiyDuration(widget.duration);
+    disposed = false;
     _streamDurationListener();
     _durationTitle = widget.durationTitle ?? DurationTitle.en();
     _textColor = widget.textStyle.color ?? Colors.white;
@@ -159,75 +165,114 @@ class _SlideCountdownState extends State<SlideCountdown> {
       infinity: widget.infinityCountUp,
     );
 
-    _streamDuration.durationLeft.listen((event) {
-      _notifiyDuration.streamDuration(event);
-      _daysFirstDigit(event);
-      _daysSecondDigit(event);
+    if (!disposed) {
+      try {
+        _streamDuration.durationLeft.listen((event) {
+          _notifiyDuration.streamDuration(event);
 
-      _hoursFirstDigit(event);
-      _hoursSecondDigit(event);
+          _daysFirstDigit(event);
+          _daysSecondDigit(event);
 
-      _minutesFirstDigit(event);
-      _minutesSecondDigit(event);
+          _hoursFirstDigit(event);
+          _hoursSecondDigit(event);
 
-      _secondsFirstDigit(event);
-      _secondsSecondDigit(event);
-    });
+          _minutesFirstDigit(event);
+          _minutesSecondDigit(event);
+
+          _secondsFirstDigit(event);
+          _secondsSecondDigit(event);
+        });
+      } catch (ex) {
+        debugPrint(ex.toString());
+      }
+    }
   }
 
   void _daysFirstDigit(Duration duration) {
-    int calculate = (duration.inDays) ~/ 10;
-    if (calculate != _daysFirstDigitNotifier.value) {
-      _daysFirstDigitNotifier.value = calculate;
+    try {
+      int calculate = (duration.inDays) ~/ 10;
+      if (calculate != _daysFirstDigitNotifier.value) {
+        _daysFirstDigitNotifier.value = calculate;
+      }
+    } catch (ex) {
+      debugPrint(ex.toString());
     }
   }
 
   void _daysSecondDigit(Duration duration) {
-    int calculate = (duration.inDays) % 10;
-    if (calculate != _daysSecondDigitNotifier.value) {
-      _daysSecondDigitNotifier.value = calculate;
+    try {
+      int calculate = (duration.inDays) % 10;
+      if (calculate != _daysSecondDigitNotifier.value) {
+        _daysSecondDigitNotifier.value = calculate;
+      }
+    } catch (ex) {
+      debugPrint(ex.toString());
     }
   }
 
   void _hoursFirstDigit(Duration duration) {
-    int calculate = (duration.inHours % 24) ~/ 10;
-    if (calculate != _hoursFirstDigitNotifier.value) {
-      _hoursFirstDigitNotifier.value = calculate;
+    try {
+      int calculate = (duration.inHours % 24) ~/ 10;
+      if (calculate != _hoursFirstDigitNotifier.value) {
+        _hoursFirstDigitNotifier.value = calculate;
+      }
+    } catch (ex) {
+      debugPrint(ex.toString());
     }
   }
 
   void _hoursSecondDigit(Duration duration) {
-    int calculate = (duration.inHours % 24) % 10;
-    if (calculate != _hoursSecondDigitNotifier.value) {
-      _hoursSecondDigitNotifier.value = calculate;
+    try {
+      int calculate = (duration.inHours % 24) % 10;
+      if (calculate != _hoursSecondDigitNotifier.value) {
+        _hoursSecondDigitNotifier.value = calculate;
+      }
+    } catch (ex) {
+      debugPrint(ex.toString());
     }
   }
 
   void _minutesFirstDigit(Duration duration) {
-    int calculate = (duration.inMinutes % 60) ~/ 10;
-    if (calculate != _minutesFirstDigitNotifier.value) {
-      _minutesFirstDigitNotifier.value = calculate;
+    try {
+      int calculate = (duration.inMinutes % 60) ~/ 10;
+      if (calculate != _minutesFirstDigitNotifier.value) {
+        _minutesFirstDigitNotifier.value = calculate;
+      }
+    } catch (ex) {
+      debugPrint(ex.toString());
     }
   }
 
   void _minutesSecondDigit(Duration duration) {
-    int calculate = (duration.inMinutes % 60) % 10;
-    if (calculate != _minutesSecondDigitNotifier.value) {
-      _minutesSecondDigitNotifier.value = calculate;
+    try {
+      int calculate = (duration.inMinutes % 60) % 10;
+      if (calculate != _minutesSecondDigitNotifier.value) {
+        _minutesSecondDigitNotifier.value = calculate;
+      }
+    } catch (ex) {
+      debugPrint(ex.toString());
     }
   }
 
   void _secondsFirstDigit(Duration duration) {
-    int calculate = (duration.inSeconds % 60) ~/ 10;
-    if (calculate != _secondsFirstDigitNotifier.value) {
-      _secondsFirstDigitNotifier.value = calculate;
+    try {
+      int calculate = (duration.inSeconds % 60) ~/ 10;
+      if (calculate != _secondsFirstDigitNotifier.value) {
+        _secondsFirstDigitNotifier.value = calculate;
+      }
+    } catch (ex) {
+      debugPrint(ex.toString());
     }
   }
 
   void _secondsSecondDigit(Duration duration) {
-    int calculate = (duration.inSeconds % 60) % 10;
-    if (calculate != _secondsSecondDigitNotifier.value) {
-      _secondsSecondDigitNotifier.value = calculate;
+    try {
+      int calculate = (duration.inSeconds % 60) % 10;
+      if (calculate != _secondsSecondDigitNotifier.value) {
+        _secondsSecondDigitNotifier.value = calculate;
+      }
+    } catch (ex) {
+      debugPrint(ex.toString());
     }
   }
 
@@ -253,6 +298,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
 
   @override
   void dispose() {
+    disposed = true;
     _disposeHoursNotifier();
     _disposeMinutesNotifier();
     _disposeSecondsNotifier();
@@ -315,6 +361,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
             return Row(
               children: [
                 TextAnimation(
+                  slideAnimationDuration: widget.slideAnimationDuration,
                   value: _daysFirstDigitNotifier,
                   textStyle: widget.textStyle,
                   slideDirection: widget.slideDirection,
@@ -322,6 +369,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
                   countUp: widget.countUp,
                 ),
                 TextAnimation(
+                  slideAnimationDuration: widget.slideAnimationDuration,
                   value: _daysSecondDigitNotifier,
                   textStyle: widget.textStyle,
                   slideDirection: widget.slideDirection,
@@ -351,6 +399,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
             return Row(
               children: [
                 TextAnimation(
+                  slideAnimationDuration: widget.slideAnimationDuration,
                   value: _hoursFirstDigitNotifier,
                   textStyle: widget.textStyle,
                   slideDirection: widget.slideDirection,
@@ -358,6 +407,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
                   countUp: widget.countUp,
                 ),
                 TextAnimation(
+                  slideAnimationDuration: widget.slideAnimationDuration,
                   value: _hoursSecondDigitNotifier,
                   textStyle: widget.textStyle,
                   slideDirection: widget.slideDirection,
@@ -388,6 +438,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
             return Row(
               children: [
                 TextAnimation(
+                  slideAnimationDuration: widget.slideAnimationDuration,
                   value: _minutesFirstDigitNotifier,
                   textStyle: widget.textStyle,
                   slideDirection: widget.slideDirection,
@@ -397,6 +448,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
                       widget.separatorType == SeparatorType.title),
                 ),
                 TextAnimation(
+                  slideAnimationDuration: widget.slideAnimationDuration,
                   value: _minutesSecondDigitNotifier,
                   textStyle: widget.textStyle,
                   slideDirection: widget.slideDirection,
@@ -420,6 +472,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
           }
         }),
         TextAnimation(
+          slideAnimationDuration: widget.slideAnimationDuration,
           value: _secondsFirstDigitNotifier,
           textStyle: widget.textStyle,
           slideDirection: widget.slideDirection,
@@ -427,6 +480,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
           countUp: widget.countUp,
         ),
         TextAnimation(
+          slideAnimationDuration: widget.slideAnimationDuration,
           value: _secondsSecondDigitNotifier,
           textStyle: widget.textStyle,
           slideDirection: widget.slideDirection,
