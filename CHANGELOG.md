@@ -1,3 +1,7 @@
+## 0.0.8-dev.2
+* fix: value listener null value
+* add: slideAnimationDuration
+
 ## 0.0.8-dev.1
 * fix: value listener null value
 * add: slideAnimationDuration
