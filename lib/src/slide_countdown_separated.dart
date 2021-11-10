@@ -165,6 +165,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
     }
     if (widget.countUp != oldWidget.countUp ||
         widget.infinityCountUp != oldWidget.infinityCountUp) {
+      _streamDuration.dispose();
       _streamDurationListener();
     }
     super.didUpdateWidget(oldWidget);
