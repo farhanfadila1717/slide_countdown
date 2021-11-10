@@ -1,9 +1,9 @@
 ## 0.0.8-dev.1
-fix: value listener null value
-add: slideAnimationDuration
+* fix: value listener null value
+* add: slideAnimationDuration
 
 ## 0.0.7
-fix: unconstant value
+* fix: unconstant value
 
 ## 0.0.6
 * release: countUp, countup infinity
