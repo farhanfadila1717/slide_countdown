@@ -538,8 +538,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
 
   Widget minutesWidget(Duration duration) {
     return Builder(builder: (context) {
-      if (duration.inMinutes < 1 &&
-          widget.separatorType == SeparatorType.title) {
+      if (duration.inMinutes < 1 && !widget.showZeroValue) {
         return const SizedBox.shrink();
       } else {
         return boxDecoration(

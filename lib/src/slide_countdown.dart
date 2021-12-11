@@ -472,8 +472,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
           }
         }),
         Builder(builder: (context) {
-          if (duration.inMinutes < 1 &&
-              widget.separatorType == SeparatorType.title) {
+          if (duration.inMinutes < 1 && !widget.showZeroValue) {
             return const SizedBox.shrink();
           } else {
             return Row(
