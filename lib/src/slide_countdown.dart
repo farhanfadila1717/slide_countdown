@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:stream_duration/stream_duration.dart';
 
@@ -32,6 +34,7 @@ class SlideCountdown extends StatefulWidget {
     this.countUp = false,
     this.infinityCountUp = false,
     this.slideAnimationDuration = const Duration(milliseconds: 300),
+    this.onDurationChanged,
   }) : super(key: key);
 
   /// [Duration] is the duration of the countdown slide,
@@ -102,6 +105,8 @@ class SlideCountdown extends StatefulWidget {
   /// SlideAnimationDuration which will be the duration of the slide animation from above or below
   final Duration slideAnimationDuration;
 
+  /// this method allows you to stream from remaining [Duration]  or current [Duration]
+  final Function(Duration)? onDurationChanged;
   @override
   _SlideCountdownState createState() => _SlideCountdownState();
 }
@@ -147,7 +152,8 @@ class _SlideCountdownState extends State<SlideCountdown> {
           .withOpacity(widget.fade ? 0 : 1);
     }
     if (widget.countUp != oldWidget.countUp ||
-        widget.infinityCountUp != oldWidget.infinityCountUp) {
+        widget.infinityCountUp != oldWidget.infinityCountUp ||
+        widget.onDurationChanged != oldWidget.onDurationChanged) {
       _streamDuration.dispose();
       _streamDurationListener();
     }
@@ -169,6 +175,9 @@ class _SlideCountdownState extends State<SlideCountdown> {
     if (!disposed) {
       try {
         _streamDuration.durationLeft.listen((event) {
+          if (widget.onDurationChanged != null) {
+            widget.onDurationChanged!(event);
+          }
           _notifiyDuration.streamDuration(event);
 
           _daysFirstDigit(event);
