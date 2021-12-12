@@ -1,3 +1,6 @@
+## 0.0.8-dev.4
+* add: onDurationChanged 
+
 ## 0.0.8-dev.3
 * fix: [#3](https://github.com/farhanfadila1717/slide_countdown/issues/3#issue-1077536704)
 
