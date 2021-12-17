@@ -1,3 +1,6 @@
+## 0.0.9-dev.1
+* Fix: (Countdown) default text from 0 to actual duration
+
 ## 0.0.8
 * add: slideAnimationDuration, onDurationChanged
 * fix: value listener null value, [#3](https://github.com/farhanfadila1717/slide_countdown/issues/3#issue-1077536704) 
