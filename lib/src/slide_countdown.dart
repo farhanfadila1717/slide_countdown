@@ -161,6 +161,10 @@ class _SlideCountdownState extends State<SlideCountdown> {
   }
 
   void _streamDurationListener() {
+    if (!widget.countUp) {
+      _updateValue(widget.duration);
+    }
+    _updateValue(widget.duration);
     _streamDuration = StreamDuration(
       widget.duration,
       onDone: () {
@@ -179,18 +183,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
             widget.onDurationChanged!(event);
           }
           _notifiyDuration.streamDuration(event);
-
-          _daysFirstDigit(event);
-          _daysSecondDigit(event);
-
-          _hoursFirstDigit(event);
-          _hoursSecondDigit(event);
-
-          _minutesFirstDigit(event);
-          _minutesSecondDigit(event);
-
-          _secondsFirstDigit(event);
-          _secondsSecondDigit(event);
+          _updateValue(event);
         });
       } catch (ex) {
         debugPrint(ex.toString());
@@ -344,6 +337,20 @@ class _SlideCountdownState extends State<SlideCountdown> {
   void _disposeSecondsNotifier() {
     _secondsFirstDigitNotifier.dispose();
     _secondsSecondDigitNotifier.dispose();
+  }
+
+  void _updateValue(Duration duration) {
+    _daysFirstDigit(duration);
+    _daysSecondDigit(duration);
+
+    _hoursFirstDigit(duration);
+    _hoursSecondDigit(duration);
+
+    _minutesFirstDigit(duration);
+    _minutesSecondDigit(duration);
+
+    _secondsFirstDigit(duration);
+    _secondsSecondDigit(duration);
   }
 
   @override
