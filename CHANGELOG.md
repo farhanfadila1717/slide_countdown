@@ -1,3 +1,6 @@
+## 0.0.9
+* Release: (Countdown) default text from 0 to actual duration
+
 ## 0.0.9-dev.1
 * Fix: (Countdown) default text from 0 to actual duration
 
