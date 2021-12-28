@@ -1,3 +1,6 @@
+## 0.1.1-dev.1
+* Upgrade: stream_duration package to ver 1.2.0
+
 ## 0.0.9
 * Release: (Countdown) default text from 0 to actual duration
 
