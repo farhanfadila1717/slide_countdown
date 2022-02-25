@@ -1,3 +1,6 @@
+## 0.1.2
+* Upgrade: Fix Linter
+
 ## 0.1.1
 * Upgrade: stream_duration package
 
