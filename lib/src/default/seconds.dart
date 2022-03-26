@@ -38,54 +38,48 @@ class SecondsDigit extends BaseDigits {
         );
 
   @override
-  State<SecondsDigit> createState() => _SecondsDigitState();
-}
-
-class _SecondsDigitState extends State<SecondsDigit> {
-  @override
   Widget build(BuildContext context) {
     final firstDigit = TextAnimation(
-      slideAnimationDuration: widget.slideAnimationDuration,
-      value: widget.firstDigit,
-      textStyle: widget.textStyle,
-      slideDirection: widget.slideDirection,
-      curve: widget.curve,
-      countUp: widget.countUp,
-      showZeroValue: widget.showZeroValue,
+      slideAnimationDuration: slideAnimationDuration,
+      value: this.firstDigit,
+      textStyle: textStyle,
+      slideDirection: slideDirection,
+      curve: curve,
+      countUp: countUp,
+      showZeroValue: showZeroValue,
     );
 
     final secondDigit = TextAnimation(
-      slideAnimationDuration: widget.slideAnimationDuration,
-      value: widget.secondDigit,
-      textStyle: widget.textStyle,
-      slideDirection: widget.slideDirection,
-      curve: widget.curve,
-      countUp: widget.countUp,
-      showZeroValue: widget.showZeroValue,
+      slideAnimationDuration: slideAnimationDuration,
+      value: this.secondDigit,
+      textStyle: textStyle,
+      slideDirection: slideDirection,
+      curve: curve,
+      countUp: countUp,
+      showZeroValue: showZeroValue,
     );
 
     final separator = Padding(
-      padding: widget.separatorPadding ?? EdgeInsets.zero,
+      padding: separatorPadding ?? EdgeInsets.zero,
       child: Visibility(
-        visible: widget.separatorType == SeparatorType.symbol,
-        child: Text(widget.separator ?? ':', style: widget.textStyle),
-        replacement:
-            Text(widget.durationTitle.seconds, style: widget.textStyle),
+        visible: separatorType == SeparatorType.symbol,
+        child: Text(this.separator ?? ':', style: textStyle),
+        replacement: Text(durationTitle.seconds, style: textStyle),
       ),
     );
 
-    List<Widget> children = widget.textDirection != null &&
-            widget.textDirection == TextDirection.rtl
-        ? [
-            separator,
-            secondDigit,
-            firstDigit,
-          ]
-        : [
-            firstDigit,
-            secondDigit,
-            separator,
-          ];
+    List<Widget> children =
+        textDirection != null && textDirection == TextDirection.rtl
+            ? [
+                separator,
+                secondDigit,
+                firstDigit,
+              ]
+            : [
+                firstDigit,
+                secondDigit,
+                separator,
+              ];
 
     return Row(
       mainAxisSize: MainAxisSize.min,

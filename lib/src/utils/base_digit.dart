@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'duration_title.dart';
 import 'enum.dart';
 
-abstract class BaseDigits extends StatefulWidget {
+abstract class BaseDigits extends StatelessWidget {
   const BaseDigits({
     Key? key,
     required this.duration,

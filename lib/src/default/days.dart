@@ -38,57 +38,51 @@ class DaysDigit extends BaseDigits {
         );
 
   @override
-  State<DaysDigit> createState() => _DaysDigitState();
-}
-
-class _DaysDigitState extends State<DaysDigit> {
-  @override
   Widget build(BuildContext context) {
-    final duration = widget.duration;
-    if (duration.inDays < 1 && !widget.showZeroValue) {
+    if (duration.inDays < 1 && !showZeroValue) {
       return const SizedBox.shrink();
     }
     final firstDigit = TextAnimation(
-      slideAnimationDuration: widget.slideAnimationDuration,
-      value: widget.firstDigit,
-      textStyle: widget.textStyle,
-      slideDirection: widget.slideDirection,
-      curve: widget.curve,
-      countUp: widget.countUp,
+      slideAnimationDuration: slideAnimationDuration,
+      value: this.firstDigit,
+      textStyle: textStyle,
+      slideDirection: slideDirection,
+      curve: curve,
+      countUp: countUp,
     );
 
     final secondDigit = TextAnimation(
-      slideAnimationDuration: widget.slideAnimationDuration,
-      value: widget.secondDigit,
-      textStyle: widget.textStyle,
-      slideDirection: widget.slideDirection,
-      curve: widget.curve,
-      countUp: widget.countUp,
-      showZeroValue: !(duration.inHours < 1 &&
-          widget.separatorType == SeparatorType.title),
+      slideAnimationDuration: slideAnimationDuration,
+      value: this.secondDigit,
+      textStyle: textStyle,
+      slideDirection: slideDirection,
+      curve: curve,
+      countUp: countUp,
+      showZeroValue:
+          !(duration.inHours < 1 && separatorType == SeparatorType.title),
     );
 
     final separator = Padding(
-      padding: widget.separatorPadding ?? EdgeInsets.zero,
+      padding: separatorPadding ?? EdgeInsets.zero,
       child: Visibility(
-        visible: widget.separatorType == SeparatorType.symbol,
-        child: Text(widget.separator ?? ':', style: widget.textStyle),
-        replacement: Text(widget.durationTitle.days, style: widget.textStyle),
+        visible: separatorType == SeparatorType.symbol,
+        child: Text(this.separator ?? ':', style: textStyle),
+        replacement: Text(durationTitle.days, style: textStyle),
       ),
     );
 
-    List<Widget> children = widget.textDirection != null &&
-            widget.textDirection == TextDirection.rtl
-        ? [
-            separator,
-            secondDigit,
-            firstDigit,
-          ]
-        : [
-            firstDigit,
-            secondDigit,
-            separator,
-          ];
+    List<Widget> children =
+        textDirection != null && textDirection == TextDirection.rtl
+            ? [
+                separator,
+                secondDigit,
+                firstDigit,
+              ]
+            : [
+                firstDigit,
+                secondDigit,
+                separator,
+              ];
 
     return Row(
       mainAxisSize: MainAxisSize.min,

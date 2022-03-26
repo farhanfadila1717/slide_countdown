@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'duration_title.dart';
 import 'enum.dart';
 
-abstract class BaseDigitsSeparated extends StatefulWidget {
+abstract class BaseDigitsSeparated extends StatelessWidget {
   const BaseDigitsSeparated({
     Key? key,
     required this.height,

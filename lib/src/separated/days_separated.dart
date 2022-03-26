@@ -50,54 +50,47 @@ class DaysSeparatedDigit extends BaseDigitsSeparated {
         );
 
   @override
-  State<DaysSeparatedDigit> createState() => _DaysSeparatedDigitState();
-}
-
-class _DaysSeparatedDigitState extends State<DaysSeparatedDigit> {
-  @override
   Widget build(BuildContext context) {
-    final duration = widget.duration;
-    if (duration.inDays < 1 && !widget.showZeroValue) {
+    if (duration.inDays < 1 && !showZeroValue) {
       return const SizedBox.shrink();
     }
     final firstDigit = TextAnimation(
-      slideAnimationDuration: widget.slideAnimationDuration,
-      value: widget.firstDigit,
-      textStyle: widget.textStyle,
-      slideDirection: widget.slideDirection,
-      curve: widget.curve,
-      countUp: widget.countUp,
+      slideAnimationDuration: slideAnimationDuration,
+      value: this.firstDigit,
+      textStyle: textStyle,
+      slideDirection: slideDirection,
+      curve: curve,
+      countUp: countUp,
     );
 
     final secondDigit = TextAnimation(
-      slideAnimationDuration: widget.slideAnimationDuration,
-      value: widget.secondDigit,
-      textStyle: widget.textStyle,
-      slideDirection: widget.slideDirection,
-      curve: widget.curve,
-      countUp: widget.countUp,
+      slideAnimationDuration: slideAnimationDuration,
+      value: this.secondDigit,
+      textStyle: textStyle,
+      slideDirection: slideDirection,
+      curve: curve,
+      countUp: countUp,
     );
 
     final separator = Separator(
-      padding: widget.separatorPadding,
+      padding: separatorPadding,
       show: true,
-      separator: widget.separatorType == SeparatorType.title
-          ? widget.durationTitle.days
-          : widget.separator ?? ':',
-      style: widget.separatorStyle,
+      separator: separatorType == SeparatorType.title
+          ? durationTitle.days
+          : this.separator ?? ':',
+      style: separatorStyle,
     );
 
     final box = BoxSeparated(
-      height: widget.height,
-      width: widget.width,
-      decoration: widget.decoration,
-      gradientColors: widget.gradientColor,
-      fade: widget.fade ?? false,
+      height: height,
+      width: width,
+      decoration: decoration,
+      gradientColors: gradientColor,
+      fade: fade ?? false,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: widget.textDirection != null &&
-                widget.textDirection == TextDirection.rtl
+        children: textDirection != null && textDirection == TextDirection.rtl
             ? [secondDigit, firstDigit]
             : [firstDigit, secondDigit],
       ),
