@@ -1,5 +1,3 @@
-part of 'slide_countdown.dart';
-
 ///Duration Title is a class that contains day, hour, minute, second properties.
 ///which will later show in the view if you assign a value of [SeparatorType.title] to the [SeparatorType] enum
 ///and you can change the title of the day, hour, minute, and second. For example, you change to Indonesian.

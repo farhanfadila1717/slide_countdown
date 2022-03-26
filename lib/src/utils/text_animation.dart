@@ -1,4 +1,6 @@
-part of 'slide_countdown.dart';
+import 'package:flutter/material.dart';
+
+import 'enum.dart';
 
 class TextAnimation extends StatefulWidget {
   const TextAnimation({

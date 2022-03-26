@@ -1,4 +1,4 @@
-part of 'slide_countdown.dart';
+import 'package:flutter/foundation.dart';
 
 class NotifiyDuration extends ValueNotifier<Duration> {
   NotifiyDuration(Duration value) : super(value);

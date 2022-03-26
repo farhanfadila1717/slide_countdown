@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:stream_duration/stream_duration.dart';
 
-part 'duration_title.dart';
-part 'enum.dart';
-part 'notifiy_duration.dart';
-part 'text_animation.dart';
-part 'slide_countdown_separated.dart';
+import 'default/default.dart';
+import 'utils/countdown_mixin.dart';
+import 'utils/duration_title.dart';
+import 'utils/enum.dart';
+import 'utils/notifiy_duration.dart';
 
 class SlideCountdown extends StatefulWidget {
   const SlideCountdown({
@@ -32,7 +32,7 @@ class SlideCountdown extends StatefulWidget {
     this.countUp = false,
     this.infinityCountUp = false,
     this.slideAnimationDuration = const Duration(milliseconds: 300),
-    this.onDurationChanged,
+    this.textDirection,
   }) : super(key: key);
 
   /// [Duration] is the duration of the countdown slide,
@@ -103,23 +103,16 @@ class SlideCountdown extends StatefulWidget {
   /// SlideAnimationDuration which will be the duration of the slide animation from above or below
   final Duration slideAnimationDuration;
 
-  /// this method allows you to stream from remaining [Duration]  or current [Duration]
-  final Function(Duration)? onDurationChanged;
+  /// Text direction for change row positions of each item
+  /// ltr => [01] : [02] : [03]
+  /// rtl => [03] : [02] : [01]
+  final TextDirection? textDirection;
+
   @override
   _SlideCountdownState createState() => _SlideCountdownState();
 }
 
-class _SlideCountdownState extends State<SlideCountdown> {
-  final ValueNotifier<int> _daysFirstDigitNotifier = ValueNotifier<int>(0);
-  final ValueNotifier<int> _daysSecondDigitNotifier = ValueNotifier<int>(0);
-  final ValueNotifier<int> _hoursFirstDigitNotifier = ValueNotifier<int>(0);
-  final ValueNotifier<int> _hoursSecondDigitNotifier = ValueNotifier<int>(0);
-  final ValueNotifier<int> _minutesFirstDigitNotifier = ValueNotifier<int>(0);
-  final ValueNotifier<int> _minutesSecondDigitNotifier = ValueNotifier<int>(0);
-  final ValueNotifier<int> _secondsFirstDigitNotifier = ValueNotifier<int>(0);
-  final ValueNotifier<int> _secondsSecondDigitNotifier = ValueNotifier<int>(0);
-
-  late DurationTitle _durationTitle;
+class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
   late StreamDuration _streamDuration;
   late NotifiyDuration _notifiyDuration;
   late Color _textColor;
@@ -132,7 +125,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
     _notifiyDuration = NotifiyDuration(widget.duration);
     disposed = false;
     _streamDurationListener();
-    _durationTitle = widget.durationTitle ?? DurationTitle.en();
+
     _textColor = widget.textStyle.color ?? Colors.white;
     _fadeColor = (widget.textStyle.color ?? Colors.white)
         .withOpacity(widget.fade ? 0 : 1);
@@ -140,9 +133,6 @@ class _SlideCountdownState extends State<SlideCountdown> {
 
   @override
   void didUpdateWidget(covariant SlideCountdown oldWidget) {
-    if (widget.durationTitle != null) {
-      _durationTitle = widget.durationTitle ?? DurationTitle.en();
-    }
     if (widget.textStyle != oldWidget.textStyle ||
         widget.fade != oldWidget.fade) {
       _textColor = widget.textStyle.color ?? Colors.white;
@@ -150,8 +140,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
           .withOpacity(widget.fade ? 0 : 1);
     }
     if (widget.countUp != oldWidget.countUp ||
-        widget.infinityCountUp != oldWidget.infinityCountUp ||
-        widget.onDurationChanged != oldWidget.onDurationChanged) {
+        widget.infinityCountUp != oldWidget.infinityCountUp) {
       _streamDuration.dispose();
       _streamDurationListener();
     }
@@ -159,10 +148,6 @@ class _SlideCountdownState extends State<SlideCountdown> {
   }
 
   void _streamDurationListener() {
-    if (!widget.countUp) {
-      _updateValue(widget.duration);
-    }
-    _updateValue(widget.duration);
     _streamDuration = StreamDuration(
       widget.duration,
       onDone: () {
@@ -176,188 +161,21 @@ class _SlideCountdownState extends State<SlideCountdown> {
 
     if (!disposed) {
       try {
-        _streamDuration.durationLeft.listen((event) {
-          if (widget.onDurationChanged != null) {
-            widget.onDurationChanged!(event);
-          }
-          _notifiyDuration.streamDuration(event);
-          _updateValue(event);
-        });
+        _streamDuration.durationLeft.listen(
+          (duration) {
+            _notifiyDuration.streamDuration(duration);
+            updateValue(duration);
+          },
+        );
       } catch (ex) {
         debugPrint(ex.toString());
       }
     }
   }
 
-  void _daysFirstDigit(Duration duration) {
-    try {
-      if (duration.inDays == 0) {
-        _daysFirstDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inDays) ~/ 10;
-        if (calculate != _daysFirstDigitNotifier.value) {
-          _daysFirstDigitNotifier.value = calculate;
-        }
-      }
-    } catch (ex) {
-      debugPrint(ex.toString());
-    }
-  }
-
-  void _daysSecondDigit(Duration duration) {
-    try {
-      if (duration.inDays == 0) {
-        _daysSecondDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inDays) % 10;
-        if (calculate != _daysSecondDigitNotifier.value) {
-          _daysSecondDigitNotifier.value = calculate;
-        }
-      }
-    } catch (ex) {
-      debugPrint(ex.toString());
-    }
-  }
-
-  void _hoursFirstDigit(Duration duration) {
-    try {
-      if (duration.inHours == 0) {
-        _hoursFirstDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inHours % 24) ~/ 10;
-        if (calculate != _hoursFirstDigitNotifier.value) {
-          _hoursFirstDigitNotifier.value = calculate;
-        }
-      }
-    } catch (ex) {
-      debugPrint(ex.toString());
-    }
-  }
-
-  void _hoursSecondDigit(Duration duration) {
-    try {
-      if (duration.inHours == 0) {
-        _hoursSecondDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inHours % 24) % 10;
-        if (calculate != _hoursSecondDigitNotifier.value) {
-          _hoursSecondDigitNotifier.value = calculate;
-        }
-      }
-    } catch (ex) {
-      debugPrint(ex.toString());
-    }
-  }
-
-  void _minutesFirstDigit(Duration duration) {
-    try {
-      if (duration.inMinutes == 0) {
-        _minutesFirstDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inMinutes % 60) ~/ 10;
-        if (calculate != _minutesFirstDigitNotifier.value) {
-          _minutesFirstDigitNotifier.value = calculate;
-        }
-      }
-    } catch (ex) {
-      debugPrint(ex.toString());
-    }
-  }
-
-  void _minutesSecondDigit(Duration duration) {
-    try {
-      if (duration.inMinutes == 0) {
-        _minutesSecondDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inMinutes % 60) % 10;
-        if (calculate != _minutesSecondDigitNotifier.value) {
-          _minutesSecondDigitNotifier.value = calculate;
-        }
-      }
-    } catch (ex) {
-      debugPrint(ex.toString());
-    }
-  }
-
-  void _secondsFirstDigit(Duration duration) {
-    try {
-      if (duration.inSeconds == 0) {
-        _secondsFirstDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inSeconds % 60) ~/ 10;
-        if (calculate != _secondsFirstDigitNotifier.value) {
-          _secondsFirstDigitNotifier.value = calculate;
-        }
-      }
-    } catch (ex) {
-      debugPrint(ex.toString());
-    }
-  }
-
-  void _secondsSecondDigit(Duration duration) {
-    try {
-      if (duration.inSeconds == 0) {
-        _secondsSecondDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inSeconds % 60) % 10;
-        if (calculate != _secondsSecondDigitNotifier.value) {
-          _secondsSecondDigitNotifier.value = calculate;
-        }
-      }
-    } catch (ex) {
-      debugPrint(ex.toString());
-    }
-  }
-
-  void _disposeDaysNotifier() {
-    _daysFirstDigitNotifier.dispose();
-    _daysSecondDigitNotifier.dispose();
-  }
-
-  void _disposeHoursNotifier() {
-    _hoursFirstDigitNotifier.dispose();
-    _hoursSecondDigitNotifier.dispose();
-  }
-
-  void _disposeMinutesNotifier() {
-    _minutesFirstDigitNotifier.dispose();
-    _minutesSecondDigitNotifier.dispose();
-  }
-
-  void _disposeSecondsNotifier() {
-    _secondsFirstDigitNotifier.dispose();
-    _secondsSecondDigitNotifier.dispose();
-  }
-
-  void _updateValue(Duration duration) {
-    _daysFirstDigit(duration);
-    _daysSecondDigit(duration);
-
-    _hoursFirstDigit(duration);
-    _hoursSecondDigit(duration);
-
-    _minutesFirstDigit(duration);
-    _minutesSecondDigit(duration);
-
-    _secondsFirstDigit(duration);
-    _secondsSecondDigit(duration);
-  }
-
   @override
   void dispose() {
     disposed = true;
-    _disposeHoursNotifier();
-    _disposeMinutesNotifier();
-    _disposeSecondsNotifier();
-    _disposeDaysNotifier();
     _streamDuration.dispose();
     super.dispose();
   }
@@ -409,144 +227,73 @@ class _SlideCountdownState extends State<SlideCountdown> {
           visible: widget.icon != null,
           child: widget.icon ?? const SizedBox.shrink(),
         ),
-        Builder(builder: (context) {
-          if (duration.inDays < 1 && !widget.showZeroValue) {
-            return const SizedBox.shrink();
-          } else {
-            return Row(
-              children: [
-                TextAnimation(
-                  slideAnimationDuration: widget.slideAnimationDuration,
-                  value: _daysFirstDigitNotifier,
-                  textStyle: widget.textStyle,
-                  slideDirection: widget.slideDirection,
-                  curve: widget.curve,
-                  countUp: widget.countUp,
-                ),
-                TextAnimation(
-                  slideAnimationDuration: widget.slideAnimationDuration,
-                  value: _daysSecondDigitNotifier,
-                  textStyle: widget.textStyle,
-                  slideDirection: widget.slideDirection,
-                  curve: widget.curve,
-                  countUp: widget.countUp,
-                  showZeroValue: !(duration.inHours < 1 &&
-                      widget.separatorType == SeparatorType.title),
-                ),
-                Padding(
-                  padding: widget.separatorPadding,
-                  child: Visibility(
-                    visible: widget.separatorType == SeparatorType.symbol,
-                    child:
-                        Text(widget.separator ?? ':', style: widget.textStyle),
-                    replacement:
-                        Text(_durationTitle.days, style: widget.textStyle),
-                  ),
-                ),
-              ],
-            );
-          }
-        }),
-        Builder(builder: (context) {
-          if (duration.inHours < 1 && !widget.showZeroValue) {
-            return const SizedBox.shrink();
-          } else {
-            return Row(
-              children: [
-                TextAnimation(
-                  slideAnimationDuration: widget.slideAnimationDuration,
-                  value: _hoursFirstDigitNotifier,
-                  textStyle: widget.textStyle,
-                  slideDirection: widget.slideDirection,
-                  curve: widget.curve,
-                  countUp: widget.countUp,
-                ),
-                TextAnimation(
-                  slideAnimationDuration: widget.slideAnimationDuration,
-                  value: _hoursSecondDigitNotifier,
-                  textStyle: widget.textStyle,
-                  slideDirection: widget.slideDirection,
-                  curve: widget.curve,
-                  countUp: widget.countUp,
-                  showZeroValue: !(duration.inHours < 1 &&
-                      widget.separatorType == SeparatorType.title),
-                ),
-                Padding(
-                  padding: widget.separatorPadding,
-                  child: Visibility(
-                    visible: widget.separatorType == SeparatorType.symbol,
-                    child:
-                        Text(widget.separator ?? ':', style: widget.textStyle),
-                    replacement:
-                        Text(_durationTitle.hours, style: widget.textStyle),
-                  ),
-                ),
-              ],
-            );
-          }
-        }),
-        Builder(builder: (context) {
-          if (duration.inMinutes < 1 && !widget.showZeroValue) {
-            return const SizedBox.shrink();
-          } else {
-            return Row(
-              children: [
-                TextAnimation(
-                  slideAnimationDuration: widget.slideAnimationDuration,
-                  value: _minutesFirstDigitNotifier,
-                  textStyle: widget.textStyle,
-                  slideDirection: widget.slideDirection,
-                  curve: widget.curve,
-                  countUp: widget.countUp,
-                  showZeroValue: !(duration.inMinutes < 1 &&
-                      widget.separatorType == SeparatorType.title),
-                ),
-                TextAnimation(
-                  slideAnimationDuration: widget.slideAnimationDuration,
-                  value: _minutesSecondDigitNotifier,
-                  textStyle: widget.textStyle,
-                  slideDirection: widget.slideDirection,
-                  curve: widget.curve,
-                  countUp: widget.countUp,
-                  showZeroValue: !(duration.inMinutes < 1 &&
-                      widget.separatorType == SeparatorType.title),
-                ),
-                Padding(
-                  padding: widget.separatorPadding,
-                  child: Visibility(
-                    visible: widget.separatorType == SeparatorType.symbol,
-                    child:
-                        Text(widget.separator ?? ':', style: widget.textStyle),
-                    replacement:
-                        Text(_durationTitle.minutes, style: widget.textStyle),
-                  ),
-                ),
-              ],
-            );
-          }
-        }),
-        TextAnimation(
-          slideAnimationDuration: widget.slideAnimationDuration,
-          value: _secondsFirstDigitNotifier,
+        DaysDigit(
+          duration: duration,
+          firstDigit: daysFirstDigitNotifier,
+          secondDigit: daysSecondDigitNotifier,
           textStyle: widget.textStyle,
+          initValue: 0,
           slideDirection: widget.slideDirection,
+          showZeroValue: widget.showZeroValue,
           curve: widget.curve,
           countUp: widget.countUp,
-        ),
-        TextAnimation(
           slideAnimationDuration: widget.slideAnimationDuration,
-          value: _secondsSecondDigitNotifier,
+          separatorType: widget.separatorType,
+          separatorPadding: widget.separatorPadding,
+          separator: widget.separator,
+          durationTitle: widget.durationTitle ?? DurationTitle.en(),
+          textDirection: widget.textDirection,
+        ),
+        HoursDigit(
+          duration: duration,
+          firstDigit: hoursFirstDigitNotifier,
+          secondDigit: hoursSecondDigitNotifier,
           textStyle: widget.textStyle,
+          initValue: 0,
           slideDirection: widget.slideDirection,
+          showZeroValue: widget.showZeroValue,
           curve: widget.curve,
           countUp: widget.countUp,
+          slideAnimationDuration: widget.slideAnimationDuration,
+          separatorType: widget.separatorType,
+          separatorPadding: widget.separatorPadding,
+          separator: widget.separator,
+          durationTitle: widget.durationTitle ?? DurationTitle.en(),
+          textDirection: widget.textDirection,
         ),
-        Visibility(
-          visible: widget.separatorType == SeparatorType.title,
-          child: Padding(
-            padding: widget.separatorPadding,
-            child: Text(_durationTitle.seconds, style: widget.textStyle),
-          ),
+        MinutesDigit(
+          duration: duration,
+          firstDigit: minutesFirstDigitNotifier,
+          secondDigit: minutesSecondDigitNotifier,
+          textStyle: widget.textStyle,
+          initValue: 0,
+          slideDirection: widget.slideDirection,
+          showZeroValue: widget.showZeroValue,
+          curve: widget.curve,
+          countUp: widget.countUp,
+          slideAnimationDuration: widget.slideAnimationDuration,
+          separatorType: widget.separatorType,
+          separatorPadding: widget.separatorPadding,
+          separator: widget.separator,
+          durationTitle: widget.durationTitle ?? DurationTitle.en(),
+          textDirection: widget.textDirection,
+        ),
+        SecondsDigit(
+          duration: duration,
+          firstDigit: secondsFirstDigitNotifier,
+          secondDigit: secondsSecondDigitNotifier,
+          textStyle: widget.textStyle,
+          initValue: 0,
+          slideDirection: widget.slideDirection,
+          showZeroValue: widget.showZeroValue,
+          curve: widget.curve,
+          countUp: widget.countUp,
+          slideAnimationDuration: widget.slideAnimationDuration,
+          separatorType: widget.separatorType,
+          separatorPadding: widget.separatorPadding,
+          separator: widget.separator,
+          durationTitle: widget.durationTitle ?? DurationTitle.en(),
+          textDirection: widget.textDirection,
         ),
         Visibility(
           visible: widget.sufixIcon != null,

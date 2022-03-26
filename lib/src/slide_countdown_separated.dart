@@ -1,4 +1,12 @@
-part of 'slide_countdown.dart';
+import 'package:flutter/material.dart';
+import 'package:stream_duration/stream_duration.dart';
+import 'separated/separated.dart';
+
+import 'utils/countdown_mixin.dart';
+import 'utils/duration_title.dart';
+import 'utils/enum.dart';
+import 'utils/notifiy_duration.dart';
+import 'utils/text_animation.dart';
 
 class SlideCountdownSeparated extends StatefulWidget {
   const SlideCountdownSeparated({
@@ -30,7 +38,7 @@ class SlideCountdownSeparated extends StatefulWidget {
     this.countUp = false,
     this.infinityCountUp = false,
     this.slideAnimationDuration = const Duration(milliseconds: 300),
-    this.onDurationChanged,
+    this.textDirection,
   }) : super(key: key);
 
   /// [Duration] is the duration of the countdown slide,
@@ -120,29 +128,23 @@ class SlideCountdownSeparated extends StatefulWidget {
   /// SlideAnimationDuration which will be the duration of the slide animation from above or below
   final Duration slideAnimationDuration;
 
-  /// this method allows you to stream from remaining [Duration]  or current [Duration]
-  final Function(Duration)? onDurationChanged;
+  /// Text direction for change row positions of each item
+  /// ltr => [01] : [02] : [03]
+  /// rtl => [03] : [02] : [01]
+  final TextDirection? textDirection;
 
   @override
   _SlideCountdownSeparatedState createState() =>
       _SlideCountdownSeparatedState();
 }
 
-class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
-  final ValueNotifier<int> _daysFirstDigitNotifier = ValueNotifier<int>(0);
-  final ValueNotifier<int> _daysSecondDigitNotifier = ValueNotifier<int>(0);
-  final ValueNotifier<int> _hoursFirstDigitNotifier = ValueNotifier<int>(0);
-  final ValueNotifier<int> _hoursSecondDigitNotifier = ValueNotifier<int>(0);
-  final ValueNotifier<int> _minutesFirstDigitNotifier = ValueNotifier<int>(0);
-  final ValueNotifier<int> _minutesSecondDigitNotifier = ValueNotifier<int>(0);
-  final ValueNotifier<int> _secondsFirstDigitNotifier = ValueNotifier<int>(0);
-  final ValueNotifier<int> _secondsSecondDigitNotifier = ValueNotifier<int>(0);
-
-  late DurationTitle _durationTitle;
+class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
+    with CountdownMixin {
   late StreamDuration _streamDuration;
   late NotifiyDuration _notifiyDuration;
   late Color _textColor;
   late Color _fadeColor;
+  late List<Color> _gradienColors;
   bool disposed = false;
 
   @override
@@ -150,36 +152,29 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
     super.initState();
     _notifiyDuration = NotifiyDuration(widget.duration);
     _streamDurationListener();
-    _durationTitle = widget.durationTitle ?? DurationTitle.en();
     _textColor = widget.textStyle.color ?? Colors.white;
     _fadeColor = (widget.textStyle.color ?? Colors.white)
         .withOpacity(widget.fade ? 0 : 1);
+    _gradienColors = [_fadeColor, _textColor, _textColor, _fadeColor];
   }
 
   @override
   void didUpdateWidget(covariant SlideCountdownSeparated oldWidget) {
-    if (widget.durationTitle != null) {
-      _durationTitle = widget.durationTitle ?? DurationTitle.en();
-    }
     if (widget.textStyle != oldWidget.textStyle ||
         widget.fade != oldWidget.fade) {
       _textColor = widget.textStyle.color ?? Colors.white;
       _fadeColor = (widget.textStyle.color ?? Colors.white)
           .withOpacity(widget.fade ? 0 : 1);
+      _gradienColors = [_fadeColor, _textColor, _textColor, _fadeColor];
     }
     if (widget.countUp != oldWidget.countUp ||
-        widget.infinityCountUp != oldWidget.infinityCountUp ||
-        widget.onDurationChanged != oldWidget.onDurationChanged) {
-      _streamDuration.dispose();
+        widget.infinityCountUp != oldWidget.infinityCountUp) {
       _streamDurationListener();
     }
     super.didUpdateWidget(oldWidget);
   }
 
   void _streamDurationListener() {
-    if (!widget.countUp) {
-      _updateValue(widget.duration);
-    }
     _streamDuration = StreamDuration(
       widget.duration,
       onDone: () {
@@ -193,13 +188,9 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
 
     if (!disposed) {
       try {
-        _streamDuration.durationLeft.listen((event) {
-          if (widget.onDurationChanged != null) {
-            widget.onDurationChanged!(event);
-          }
-
-          _notifiyDuration.streamDuration(event);
-          _updateValue(event);
+        _streamDuration.durationLeft.listen((duration) {
+          _notifiyDuration.streamDuration(duration);
+          updateValue(duration);
         });
       } catch (ex) {
         debugPrint(ex.toString());
@@ -207,175 +198,9 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
     }
   }
 
-  void _daysFirstDigit(Duration duration) {
-    try {
-      if (duration.inDays == 0) {
-        _daysFirstDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inDays) ~/ 10;
-        if (calculate != _daysFirstDigitNotifier.value) {
-          _daysFirstDigitNotifier.value = calculate;
-        }
-      }
-    } catch (ex) {
-      debugPrint(ex.toString());
-    }
-  }
-
-  void _daysSecondDigit(Duration duration) {
-    try {
-      if (duration.inDays == 0) {
-        _daysSecondDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inDays) % 10;
-        if (calculate != _daysSecondDigitNotifier.value) {
-          _daysSecondDigitNotifier.value = calculate;
-        }
-      }
-    } catch (ex) {
-      debugPrint(ex.toString());
-    }
-  }
-
-  void _hoursFirstDigit(Duration duration) {
-    try {
-      if (duration.inHours == 0) {
-        _hoursFirstDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inHours % 24) ~/ 10;
-        if (calculate != _hoursFirstDigitNotifier.value) {
-          _hoursFirstDigitNotifier.value = calculate;
-        }
-      }
-    } catch (ex) {
-      debugPrint(ex.toString());
-    }
-  }
-
-  void _hoursSecondDigit(Duration duration) {
-    try {
-      if (duration.inHours == 0) {
-        _hoursSecondDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inHours % 24) % 10;
-        if (calculate != _hoursSecondDigitNotifier.value) {
-          _hoursSecondDigitNotifier.value = calculate;
-        }
-      }
-    } catch (ex) {
-      debugPrint(ex.toString());
-    }
-  }
-
-  void _minutesFirstDigit(Duration duration) {
-    try {
-      if (duration.inMinutes == 0) {
-        _minutesFirstDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inMinutes % 60) ~/ 10;
-        if (calculate != _minutesFirstDigitNotifier.value) {
-          _minutesFirstDigitNotifier.value = calculate;
-        }
-      }
-    } catch (ex) {
-      debugPrint(ex.toString());
-    }
-  }
-
-  void _minutesSecondDigit(Duration duration) {
-    try {
-      if (duration.inMinutes == 0) {
-        _minutesSecondDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inMinutes % 60) % 10;
-        if (calculate != _minutesSecondDigitNotifier.value) {
-          _minutesSecondDigitNotifier.value = calculate;
-        }
-      }
-    } catch (ex) {
-      debugPrint(ex.toString());
-    }
-  }
-
-  void _secondsFirstDigit(Duration duration) {
-    try {
-      if (duration.inSeconds == 0) {
-        _secondsFirstDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inSeconds % 60) ~/ 10;
-        if (calculate != _secondsFirstDigitNotifier.value) {
-          _secondsFirstDigitNotifier.value = calculate;
-        }
-      }
-    } catch (ex) {
-      debugPrint(ex.toString());
-    }
-  }
-
-  void _secondsSecondDigit(Duration duration) {
-    try {
-      if (duration.inSeconds == 0) {
-        _secondsSecondDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inSeconds % 60) % 10;
-        if (calculate != _secondsSecondDigitNotifier.value) {
-          _secondsSecondDigitNotifier.value = calculate;
-        }
-      }
-    } catch (ex) {
-      debugPrint(ex.toString());
-    }
-  }
-
-  void _disposeDaysNotifier() {
-    _daysFirstDigitNotifier.dispose();
-    _daysSecondDigitNotifier.dispose();
-  }
-
-  void _disposeHoursNotifier() {
-    _hoursFirstDigitNotifier.dispose();
-    _hoursSecondDigitNotifier.dispose();
-  }
-
-  void _disposeMinutesNotifier() {
-    _minutesFirstDigitNotifier.dispose();
-    _minutesSecondDigitNotifier.dispose();
-  }
-
-  void _disposeSecondsNotifier() {
-    _secondsFirstDigitNotifier.dispose();
-    _secondsSecondDigitNotifier.dispose();
-  }
-
-  void _updateValue(Duration duration) {
-    _daysFirstDigit(duration);
-    _daysSecondDigit(duration);
-
-    _hoursFirstDigit(duration);
-    _hoursSecondDigit(duration);
-
-    _minutesFirstDigit(duration);
-    _minutesSecondDigit(duration);
-
-    _secondsFirstDigit(duration);
-    _secondsSecondDigit(duration);
-  }
-
   @override
   void dispose() {
     disposed = true;
-    _disposeHoursNotifier();
-    _disposeMinutesNotifier();
-    _disposeSecondsNotifier();
-    _disposeDaysNotifier();
     _streamDuration.dispose();
     super.dispose();
   }
@@ -384,258 +209,114 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: _notifiyDuration,
-      builder: (BuildContext context, Duration duration, Widget? child) {
-        return countdown(duration);
+      builder: (_, Duration duration, __) {
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Visibility(
+              visible: widget.icon != null,
+              child: widget.icon ?? const SizedBox.shrink(),
+            ),
+            DaysSeparatedDigit(
+              height: widget.height,
+              width: widget.width,
+              decoration: widget.decoration,
+              duration: duration,
+              firstDigit: daysFirstDigitNotifier,
+              secondDigit: daysSecondDigitNotifier,
+              textStyle: widget.textStyle,
+              separatorStyle: widget.separatorStyle,
+              initValue: 0,
+              slideDirection: widget.slideDirection,
+              showZeroValue: widget.showZeroValue,
+              curve: widget.curve,
+              countUp: widget.countUp,
+              slideAnimationDuration: widget.slideAnimationDuration,
+              separatorType: widget.separatorType,
+              durationTitle: widget.durationTitle ?? DurationTitle.en(),
+              gradientColor: _gradienColors,
+              fade: widget.fade,
+              separatorPadding: widget.separatorPadding,
+              separator: widget.separator,
+              textDirection: widget.textDirection,
+            ),
+            HoursSeparatedDigit(
+              height: widget.height,
+              width: widget.width,
+              decoration: widget.decoration,
+              duration: duration,
+              firstDigit: hoursFirstDigitNotifier,
+              secondDigit: hoursSecondDigitNotifier,
+              textStyle: widget.textStyle,
+              separatorStyle: widget.separatorStyle,
+              initValue: 0,
+              slideDirection: widget.slideDirection,
+              showZeroValue: widget.showZeroValue,
+              curve: widget.curve,
+              countUp: widget.countUp,
+              slideAnimationDuration: widget.slideAnimationDuration,
+              separatorType: widget.separatorType,
+              durationTitle: widget.durationTitle ?? DurationTitle.en(),
+              gradientColor: _gradienColors,
+              fade: widget.fade,
+              separatorPadding: widget.separatorPadding,
+              separator: widget.separator,
+              textDirection: widget.textDirection,
+            ),
+            MinutesSeparatedDigit(
+              height: widget.height,
+              width: widget.width,
+              decoration: widget.decoration,
+              duration: duration,
+              firstDigit: minutesFirstDigitNotifier,
+              secondDigit: minutesSecondDigitNotifier,
+              textStyle: widget.textStyle,
+              separatorStyle: widget.separatorStyle,
+              initValue: 0,
+              slideDirection: widget.slideDirection,
+              showZeroValue: widget.showZeroValue,
+              curve: widget.curve,
+              countUp: widget.countUp,
+              slideAnimationDuration: widget.slideAnimationDuration,
+              separatorType: widget.separatorType,
+              durationTitle: widget.durationTitle ?? DurationTitle.en(),
+              gradientColor: _gradienColors,
+              fade: widget.fade,
+              separatorPadding: widget.separatorPadding,
+              separator: widget.separator,
+              textDirection: widget.textDirection,
+            ),
+            SecondsSeparatedDigit(
+              height: widget.height,
+              width: widget.width,
+              decoration: widget.decoration,
+              duration: duration,
+              firstDigit: secondsFirstDigitNotifier,
+              secondDigit: secondsSecondDigitNotifier,
+              textStyle: widget.textStyle,
+              separatorStyle: widget.separatorStyle,
+              initValue: 0,
+              slideDirection: widget.slideDirection,
+              showZeroValue: widget.showZeroValue,
+              curve: widget.curve,
+              countUp: widget.countUp,
+              slideAnimationDuration: widget.slideAnimationDuration,
+              separatorType: widget.separatorType,
+              durationTitle: widget.durationTitle ?? DurationTitle.en(),
+              gradientColor: _gradienColors,
+              fade: widget.fade,
+              separatorPadding: widget.separatorPadding,
+              separator: widget.separator,
+              textDirection: widget.textDirection,
+            ),
+            Visibility(
+              visible: widget.sufixIcon != null,
+              child: widget.sufixIcon ?? const SizedBox.shrink(),
+            ),
+          ],
+        );
       },
-    );
-  }
-
-  Widget countdown(Duration duration) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Visibility(
-          visible: widget.icon != null,
-          child: widget.icon ?? const SizedBox.shrink(),
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            daysWidget(duration),
-            separator(
-              title: _durationTitle.days,
-              visible: !(duration.inDays < 1 &&
-                  !widget.showZeroValue &&
-                  !widget.withDays),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            hoursWidget(duration),
-            separator(
-              title: _durationTitle.hours,
-              visible: !(duration.inHours < 1 && !widget.showZeroValue),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            minutesWidget(duration),
-            separator(
-              title: _durationTitle.minutes,
-              visible: !(duration.inMinutes < 1 && !widget.showZeroValue),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            secondsWidget(duration),
-            separatorSeconds(),
-          ],
-        ),
-        Visibility(
-          visible: widget.sufixIcon != null,
-          child: widget.sufixIcon ?? const SizedBox.shrink(),
-        ),
-      ],
-    );
-  }
-
-  Widget boxDecoration({required Widget child}) {
-    return Container(
-      height: widget.height,
-      width: widget.width,
-      decoration: widget.decoration,
-      clipBehavior: Clip.hardEdge,
-      alignment: Alignment.center,
-      child: ShaderMask(
-        shaderCallback: (Rect rect) {
-          return LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              _fadeColor,
-              _textColor,
-              _textColor,
-              _fadeColor,
-            ],
-            stops: const [0.05, 0.3, 0.7, 0.95],
-          ).createShader(rect);
-        },
-        child: Visibility(
-          visible: widget.fade,
-          child: SizedBox.expand(child: child),
-          replacement: ClipRect(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2),
-              child: child,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget daysWidget(Duration duration) {
-    return Builder(builder: (context) {
-      if (duration.inDays < 1 && !widget.showZeroValue && !widget.withDays) {
-        return const SizedBox.shrink();
-      } else {
-        return boxDecoration(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextAnimation(
-                slideAnimationDuration: widget.slideAnimationDuration,
-                value: _daysFirstDigitNotifier,
-                textStyle: widget.textStyle,
-                slideDirection: widget.slideDirection,
-                curve: widget.curve,
-                countUp: widget.countUp,
-              ),
-              TextAnimation(
-                slideAnimationDuration: widget.slideAnimationDuration,
-                value: _daysSecondDigitNotifier,
-                textStyle: widget.textStyle,
-                slideDirection: widget.slideDirection,
-                curve: widget.curve,
-                countUp: widget.countUp,
-                showZeroValue: !(duration.inHours < 1 &&
-                    widget.separatorType == SeparatorType.title),
-              ),
-            ],
-          ),
-        );
-      }
-    });
-  }
-
-  Widget hoursWidget(Duration duration) {
-    return Builder(builder: (context) {
-      if (duration.inHours < 1 && !widget.showZeroValue) {
-        return const SizedBox.shrink();
-      } else {
-        return boxDecoration(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextAnimation(
-                slideAnimationDuration: widget.slideAnimationDuration,
-                value: _hoursFirstDigitNotifier,
-                textStyle: widget.textStyle,
-                slideDirection: widget.slideDirection,
-                curve: widget.curve,
-                countUp: widget.countUp,
-              ),
-              TextAnimation(
-                slideAnimationDuration: widget.slideAnimationDuration,
-                value: _hoursSecondDigitNotifier,
-                textStyle: widget.textStyle,
-                slideDirection: widget.slideDirection,
-                curve: widget.curve,
-                countUp: widget.countUp,
-                showZeroValue: !(duration.inHours < 1 &&
-                    widget.separatorType == SeparatorType.title),
-              ),
-            ],
-          ),
-        );
-      }
-    });
-  }
-
-  Widget minutesWidget(Duration duration) {
-    return Builder(builder: (context) {
-      if (duration.inMinutes < 1 && !widget.showZeroValue) {
-        return const SizedBox.shrink();
-      } else {
-        return boxDecoration(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextAnimation(
-                slideAnimationDuration: widget.slideAnimationDuration,
-                value: _minutesFirstDigitNotifier,
-                textStyle: widget.textStyle,
-                slideDirection: widget.slideDirection,
-                curve: widget.curve,
-                countUp: widget.countUp,
-                showZeroValue: !(duration.inMinutes < 1 &&
-                    widget.separatorType == SeparatorType.title),
-              ),
-              TextAnimation(
-                slideAnimationDuration: widget.slideAnimationDuration,
-                value: _minutesSecondDigitNotifier,
-                textStyle: widget.textStyle,
-                slideDirection: widget.slideDirection,
-                curve: widget.curve,
-                countUp: widget.countUp,
-                showZeroValue: !(duration.inMinutes < 1 &&
-                    widget.separatorType == SeparatorType.title),
-              ),
-            ],
-          ),
-        );
-      }
-    });
-  }
-
-  Widget secondsWidget(Duration duration) {
-    return boxDecoration(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextAnimation(
-            slideAnimationDuration: widget.slideAnimationDuration,
-            value: _secondsFirstDigitNotifier,
-            textStyle: widget.textStyle,
-            slideDirection: widget.slideDirection,
-            curve: widget.curve,
-            countUp: widget.countUp,
-          ),
-          TextAnimation(
-            slideAnimationDuration: widget.slideAnimationDuration,
-            value: _secondsSecondDigitNotifier,
-            textStyle: widget.textStyle,
-            slideDirection: widget.slideDirection,
-            curve: widget.curve,
-            countUp: widget.countUp,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget separator({required String title, bool visible = true}) {
-    return Visibility(
-      visible: visible,
-      child: Padding(
-        padding: widget.separatorPadding,
-        child: Visibility(
-          visible: widget.separatorType == SeparatorType.symbol,
-          child: Text(widget.separator ?? ':', style: widget.separatorStyle),
-          replacement: Text(title, style: widget.separatorStyle),
-        ),
-      ),
-    );
-  }
-
-  Widget separatorSeconds() {
-    return Visibility(
-      visible: widget.separatorType == SeparatorType.title,
-      child: Padding(
-        padding: widget.separatorPadding,
-        child: Text(_durationTitle.seconds, style: widget.separatorStyle),
-      ),
     );
   }
 }
