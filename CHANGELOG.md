@@ -1,3 +1,6 @@
+## 0.2.0-dev.2
+* Change base to stateless
+
 ## 0.2.0-dev.1
 * Refactor codebase
 * Separed widget
