@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  stream_duration: ">=2.0.0"
+  stream_duration: ">=2.0.0 <3.0.0"
 
 dev_dependencies:
   flutter_test:
