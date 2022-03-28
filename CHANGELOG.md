@@ -1,3 +1,6 @@
+## 0.2.0-dev.3
+* TextDirection rtl slot
+
 ## 0.2.0-dev.2
 * Change base to stateless
 
