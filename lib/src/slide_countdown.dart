@@ -14,7 +14,7 @@ class SlideCountdown extends StatefulWidget {
     this.textStyle =
         const TextStyle(color: Color(0xFFFFFFFF), fontWeight: FontWeight.bold),
     this.icon,
-    this.sufixIcon,
+    this.suffixIcon,
     this.separator,
     this.onDone,
     this.durationTitle,
@@ -50,7 +50,7 @@ class SlideCountdown extends StatefulWidget {
 
   /// [icon] is a parameter that can be initialized by any widget e.g [Icon],
   /// this will be in the end order, default empty widget
-  final Widget? sufixIcon;
+  final Widget? suffixIcon;
 
   /// Separator is a parameter that will separate each [duration],
   /// e.g hours by minutes, and you can change the [SeparatorType] of the symbol or title
@@ -220,86 +220,107 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
   }
 
   Widget countdown(Duration duration) {
+    final leadingIcon = Visibility(
+      visible: widget.icon != null,
+      child: widget.icon ?? const SizedBox.shrink(),
+    );
+
+    final suffixIcon = Visibility(
+      visible: widget.suffixIcon != null,
+      child: widget.suffixIcon ?? const SizedBox.shrink(),
+    );
+
+    final days = DaysDigit(
+      duration: duration,
+      firstDigit: daysFirstDigitNotifier,
+      secondDigit: daysSecondDigitNotifier,
+      textStyle: widget.textStyle,
+      initValue: 0,
+      slideDirection: widget.slideDirection,
+      showZeroValue: widget.showZeroValue,
+      curve: widget.curve,
+      countUp: widget.countUp,
+      slideAnimationDuration: widget.slideAnimationDuration,
+      separatorType: widget.separatorType,
+      separatorPadding: widget.separatorPadding,
+      separator: widget.separator,
+      durationTitle: widget.durationTitle ?? DurationTitle.en(),
+      textDirection: widget.textDirection,
+    );
+
+    final hours = HoursDigit(
+      duration: duration,
+      firstDigit: hoursFirstDigitNotifier,
+      secondDigit: hoursSecondDigitNotifier,
+      textStyle: widget.textStyle,
+      initValue: 0,
+      slideDirection: widget.slideDirection,
+      showZeroValue: widget.showZeroValue,
+      curve: widget.curve,
+      countUp: widget.countUp,
+      slideAnimationDuration: widget.slideAnimationDuration,
+      separatorType: widget.separatorType,
+      separatorPadding: widget.separatorPadding,
+      separator: widget.separator,
+      durationTitle: widget.durationTitle ?? DurationTitle.en(),
+      textDirection: widget.textDirection,
+    );
+
+    final minutes = MinutesDigit(
+      duration: duration,
+      firstDigit: minutesFirstDigitNotifier,
+      secondDigit: minutesSecondDigitNotifier,
+      textStyle: widget.textStyle,
+      initValue: 0,
+      slideDirection: widget.slideDirection,
+      showZeroValue: widget.showZeroValue,
+      curve: widget.curve,
+      countUp: widget.countUp,
+      slideAnimationDuration: widget.slideAnimationDuration,
+      separatorType: widget.separatorType,
+      separatorPadding: widget.separatorPadding,
+      separator: widget.separator,
+      durationTitle: widget.durationTitle ?? DurationTitle.en(),
+      textDirection: widget.textDirection,
+    );
+
+    final seconds = SecondsDigit(
+      duration: duration,
+      firstDigit: secondsFirstDigitNotifier,
+      secondDigit: secondsSecondDigitNotifier,
+      textStyle: widget.textStyle,
+      initValue: 0,
+      slideDirection: widget.slideDirection,
+      showZeroValue: widget.showZeroValue,
+      curve: widget.curve,
+      countUp: widget.countUp,
+      slideAnimationDuration: widget.slideAnimationDuration,
+      separatorType: widget.separatorType,
+      separatorPadding: widget.separatorPadding,
+      separator: widget.separator,
+      durationTitle: widget.durationTitle ?? DurationTitle.en(),
+      textDirection: widget.textDirection,
+    );
+
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: [
-        Visibility(
-          visible: widget.icon != null,
-          child: widget.icon ?? const SizedBox.shrink(),
-        ),
-        DaysDigit(
-          duration: duration,
-          firstDigit: daysFirstDigitNotifier,
-          secondDigit: daysSecondDigitNotifier,
-          textStyle: widget.textStyle,
-          initValue: 0,
-          slideDirection: widget.slideDirection,
-          showZeroValue: widget.showZeroValue,
-          curve: widget.curve,
-          countUp: widget.countUp,
-          slideAnimationDuration: widget.slideAnimationDuration,
-          separatorType: widget.separatorType,
-          separatorPadding: widget.separatorPadding,
-          separator: widget.separator,
-          durationTitle: widget.durationTitle ?? DurationTitle.en(),
-          textDirection: widget.textDirection,
-        ),
-        HoursDigit(
-          duration: duration,
-          firstDigit: hoursFirstDigitNotifier,
-          secondDigit: hoursSecondDigitNotifier,
-          textStyle: widget.textStyle,
-          initValue: 0,
-          slideDirection: widget.slideDirection,
-          showZeroValue: widget.showZeroValue,
-          curve: widget.curve,
-          countUp: widget.countUp,
-          slideAnimationDuration: widget.slideAnimationDuration,
-          separatorType: widget.separatorType,
-          separatorPadding: widget.separatorPadding,
-          separator: widget.separator,
-          durationTitle: widget.durationTitle ?? DurationTitle.en(),
-          textDirection: widget.textDirection,
-        ),
-        MinutesDigit(
-          duration: duration,
-          firstDigit: minutesFirstDigitNotifier,
-          secondDigit: minutesSecondDigitNotifier,
-          textStyle: widget.textStyle,
-          initValue: 0,
-          slideDirection: widget.slideDirection,
-          showZeroValue: widget.showZeroValue,
-          curve: widget.curve,
-          countUp: widget.countUp,
-          slideAnimationDuration: widget.slideAnimationDuration,
-          separatorType: widget.separatorType,
-          separatorPadding: widget.separatorPadding,
-          separator: widget.separator,
-          durationTitle: widget.durationTitle ?? DurationTitle.en(),
-          textDirection: widget.textDirection,
-        ),
-        SecondsDigit(
-          duration: duration,
-          firstDigit: secondsFirstDigitNotifier,
-          secondDigit: secondsSecondDigitNotifier,
-          textStyle: widget.textStyle,
-          initValue: 0,
-          slideDirection: widget.slideDirection,
-          showZeroValue: widget.showZeroValue,
-          curve: widget.curve,
-          countUp: widget.countUp,
-          slideAnimationDuration: widget.slideAnimationDuration,
-          separatorType: widget.separatorType,
-          separatorPadding: widget.separatorPadding,
-          separator: widget.separator,
-          durationTitle: widget.durationTitle ?? DurationTitle.en(),
-          textDirection: widget.textDirection,
-        ),
-        Visibility(
-          visible: widget.sufixIcon != null,
-          child: widget.sufixIcon ?? const SizedBox.shrink(),
-        ),
-      ],
+      children: widget.textDirection.isRtl
+          ? [
+              suffixIcon,
+              seconds,
+              minutes,
+              hours,
+              days,
+              leadingIcon,
+            ]
+          : [
+              leadingIcon,
+              days,
+              hours,
+              minutes,
+              seconds,
+              suffixIcon,
+            ],
     );
   }
 }

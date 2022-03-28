@@ -71,18 +71,17 @@ class HoursDigit extends BaseDigits {
       ),
     );
 
-    List<Widget> children =
-        textDirection != null && textDirection == TextDirection.rtl
-            ? [
-                separator,
-                secondDigit,
-                firstDigit,
-              ]
-            : [
-                firstDigit,
-                secondDigit,
-                separator,
-              ];
+    List<Widget> children = textDirection.isRtl
+        ? [
+            separator,
+            secondDigit,
+            firstDigit,
+          ]
+        : [
+            firstDigit,
+            secondDigit,
+            separator,
+          ];
 
     return Row(
       mainAxisSize: MainAxisSize.min,
