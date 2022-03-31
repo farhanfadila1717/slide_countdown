@@ -71,8 +71,8 @@ class SecondsDigit extends BaseDigits {
     List<Widget> children = textDirection.isRtl
         ? [
             separator,
-            secondDigit,
             firstDigit,
+            secondDigit,
           ]
         : [
             firstDigit,

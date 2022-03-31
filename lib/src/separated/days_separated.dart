@@ -90,9 +90,7 @@ class DaysSeparatedDigit extends BaseDigitsSeparated {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: textDirection.isRtl
-            ? [secondDigit, firstDigit]
-            : [firstDigit, secondDigit],
+        children: [firstDigit, secondDigit],
       ),
     );
 
