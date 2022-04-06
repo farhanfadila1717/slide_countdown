@@ -30,6 +30,18 @@ class DurationTitle {
 
   factory DurationTitle.id() => const DurationTitle(
       days: 'hari', hours: 'jam', minutes: 'menit', seconds: 'detik');
+  factory DurationTitle.idShort() => const DurationTitle(
+      days: 'h', hours: 'j', minutes: 'm', seconds: 'd');
   factory DurationTitle.en() => const DurationTitle(
       days: 'days', hours: 'hours', minutes: 'minutes', seconds: 'seconds');
+  factory DurationTitle.enShort() => const DurationTitle(
+      days: 'd', hours: 'h', minutes: 'm', seconds: 's');
+  factory DurationTitle.hy() => const DurationTitle(
+      days: 'օր', hours: 'ժամ', minutes: 'րոպե', seconds: 'վարկյան');
+  factory DurationTitle.hyShort() => const DurationTitle(
+      days: 'օ', hours: 'ժ', minutes: 'ր', seconds: 'վ');
+  factory DurationTitle.ru() => const DurationTitle(
+      days: 'дней', hours: 'часов', minutes: 'минут', seconds: 'секунд');
+  factory DurationTitle.ruShort() => const DurationTitle(
+      days: 'д', hours: 'ч', minutes: 'м', seconds: 'с');
 }
