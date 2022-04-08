@@ -1,3 +1,6 @@
+## 0.2.1
+* [PR #7 Add more localization `DurationTitle`](https://github.com/farhanfadila1717/slide_countdown/pull/7)
+
 ## 0.2.0
 * TextDirection rtl slot
 * Change base to stateless
