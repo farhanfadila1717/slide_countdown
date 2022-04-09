@@ -28,20 +28,75 @@ class DurationTitle {
         seconds: seconds ?? this.seconds,
       );
 
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) {
+      return true;
+    } else if (other is DurationTitle &&
+        days == other.days &&
+        hours == other.hours &&
+        minutes == other.minutes &&
+        seconds == other.seconds) {
+      return true;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode => Object.hash(days, hours, minutes, seconds);
+
   factory DurationTitle.id() => const DurationTitle(
-      days: 'hari', hours: 'jam', minutes: 'menit', seconds: 'detik');
+        days: 'hari',
+        hours: 'jam',
+        minutes: 'menit',
+        seconds: 'detik',
+      );
+
   factory DurationTitle.idShort() => const DurationTitle(
-      days: 'h', hours: 'j', minutes: 'm', seconds: 'd');
+        days: 'h',
+        hours: 'j',
+        minutes: 'm',
+        seconds: 'd',
+      );
+
   factory DurationTitle.en() => const DurationTitle(
-      days: 'days', hours: 'hours', minutes: 'minutes', seconds: 'seconds');
+        days: 'days',
+        hours: 'hours',
+        minutes: 'minutes',
+        seconds: 'seconds',
+      );
+
   factory DurationTitle.enShort() => const DurationTitle(
-      days: 'd', hours: 'h', minutes: 'm', seconds: 's');
+        days: 'd',
+        hours: 'h',
+        minutes: 'm',
+        seconds: 's',
+      );
+
   factory DurationTitle.hy() => const DurationTitle(
-      days: 'օր', hours: 'ժամ', minutes: 'րոպե', seconds: 'վարկյան');
+        days: 'օր',
+        hours: 'ժամ',
+        minutes: 'րոպե',
+        seconds: 'վարկյան',
+      );
+
   factory DurationTitle.hyShort() => const DurationTitle(
-      days: 'օ', hours: 'ժ', minutes: 'ր', seconds: 'վ');
+        days: 'օ',
+        hours: 'ժ',
+        minutes: 'ր',
+        seconds: 'վ',
+      );
   factory DurationTitle.ru() => const DurationTitle(
-      days: 'дней', hours: 'часов', minutes: 'минут', seconds: 'секунд');
+        days: 'дней',
+        hours: 'часов',
+        minutes: 'минут',
+        seconds: 'секунд',
+      );
+
   factory DurationTitle.ruShort() => const DurationTitle(
-      days: 'д', hours: 'ч', minutes: 'м', seconds: 'с');
+        days: 'д',
+        hours: 'ч',
+        minutes: 'м',
+        seconds: 'с',
+      );
 }
