@@ -63,10 +63,10 @@ class SecondsDigit extends BaseDigits {
       digitsNumber: digitsNumber,
     );
 
-    final separator = Padding(
-      padding: separatorPadding ?? EdgeInsets.zero,
-      child: Visibility(
-        visible: separatorType == SeparatorType.title,
+    final separator = Visibility(
+      visible: separatorType == SeparatorType.title,
+      child: Padding(
+        padding: separatorPadding ?? EdgeInsets.zero,
         child: Text(durationTitle.seconds, style: textStyle),
       ),
     );
