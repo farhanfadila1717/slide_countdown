@@ -5,6 +5,7 @@ import 'separated/separated.dart';
 import 'utils/countdown_mixin.dart';
 import 'utils/duration_title.dart';
 import 'utils/enum.dart';
+import 'utils/extensions.dart';
 import 'utils/notifiy_duration.dart';
 import 'utils/text_animation.dart';
 

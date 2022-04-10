@@ -18,6 +18,7 @@ class DaysDigit extends BaseDigits {
     EdgeInsets? separatorPadding,
     String? separator,
     TextDirection? textDirection,
+    List<String>? digitsNumber,
   }) : super(
           key: key,
           duration: duration,
@@ -35,6 +36,7 @@ class DaysDigit extends BaseDigits {
           separatorPadding: separatorPadding,
           separator: separator,
           textDirection: textDirection,
+          digitsNumber: digitsNumber,
         );
 
   @override
@@ -49,6 +51,7 @@ class DaysDigit extends BaseDigits {
       slideDirection: slideDirection,
       curve: curve,
       countUp: countUp,
+      digitsNumber: digitsNumber,
     );
 
     final secondDigit = TextAnimation(
@@ -58,6 +61,7 @@ class DaysDigit extends BaseDigits {
       slideDirection: slideDirection,
       curve: curve,
       countUp: countUp,
+      digitsNumber: digitsNumber,
       showZeroValue:
           !(duration.inHours < 1 && separatorType == SeparatorType.title),
     );

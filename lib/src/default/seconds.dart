@@ -18,6 +18,7 @@ class SecondsDigit extends BaseDigits {
     EdgeInsets? separatorPadding,
     String? separator,
     TextDirection? textDirection,
+    List<String>? digitsNumber,
   }) : super(
           key: key,
           duration: duration,
@@ -35,6 +36,7 @@ class SecondsDigit extends BaseDigits {
           separatorPadding: separatorPadding,
           separator: separator,
           textDirection: textDirection,
+          digitsNumber: digitsNumber,
         );
 
   @override
@@ -47,6 +49,7 @@ class SecondsDigit extends BaseDigits {
       curve: curve,
       countUp: countUp,
       showZeroValue: showZeroValue,
+      digitsNumber: digitsNumber,
     );
 
     final secondDigit = TextAnimation(
@@ -57,6 +60,7 @@ class SecondsDigit extends BaseDigits {
       curve: curve,
       countUp: countUp,
       showZeroValue: showZeroValue,
+      digitsNumber: digitsNumber,
     );
 
     final separator = Padding(

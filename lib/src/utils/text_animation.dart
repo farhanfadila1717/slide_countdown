@@ -13,6 +13,7 @@ class TextAnimation extends StatefulWidget {
     this.showZeroValue = true,
     this.curve = Curves.easeOut,
     this.countUp = true,
+    this.digitsNumber,
   }) : super(key: key);
 
   final ValueNotifier<int> value;
@@ -23,6 +24,7 @@ class TextAnimation extends StatefulWidget {
   final Curve curve;
   final bool countUp;
   final Duration slideAnimationDuration;
+  final List<String>? digitsNumber;
 
   @override
   _TextAnimationState createState() => _TextAnimationState();
@@ -118,7 +120,7 @@ class _TextAnimationState extends State<TextAnimation>
                       ? _offsetAnimationOne.value
                       : -_offsetAnimationOne.value,
                   child: Text(
-                    '$nextValue',
+                    digit(nextValue),
                     style: widget.textStyle,
                     textScaleFactor: 1.0,
                   ),
@@ -128,7 +130,7 @@ class _TextAnimationState extends State<TextAnimation>
                       ? _offsetAnimationTwo.value
                       : -_offsetAnimationTwo.value,
                   child: Text(
-                    '$currentValue',
+                    digit(currentValue),
                     style: widget.textStyle,
                     textScaleFactor: 1.0,
                   ),
@@ -140,4 +142,7 @@ class _TextAnimationState extends State<TextAnimation>
       },
     );
   }
+
+  String digit(int value) =>
+      widget.digitsNumber != null ? widget.digitsNumber![value] : '$value';
 }

@@ -21,6 +21,7 @@ abstract class BaseDigits extends StatelessWidget {
     this.separatorPadding,
     this.separator,
     this.textDirection,
+    this.digitsNumber,
   }) : super(key: key);
 
   final Duration duration;
@@ -38,4 +39,5 @@ abstract class BaseDigits extends StatelessWidget {
   final EdgeInsets? separatorPadding;
   final String? separator;
   final TextDirection? textDirection;
+  final List<String>? digitsNumber;
 }

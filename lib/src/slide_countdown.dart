@@ -5,6 +5,7 @@ import 'default/default.dart';
 import 'utils/countdown_mixin.dart';
 import 'utils/duration_title.dart';
 import 'utils/enum.dart';
+import 'utils/extensions.dart';
 import 'utils/notifiy_duration.dart';
 
 class SlideCountdown extends StatefulWidget {
@@ -33,6 +34,7 @@ class SlideCountdown extends StatefulWidget {
     this.infinityCountUp = false,
     this.slideAnimationDuration = const Duration(milliseconds: 300),
     this.textDirection,
+    this.digitsNumber,
   }) : super(key: key);
 
   /// [Duration] is the duration of the countdown slide,
@@ -107,6 +109,8 @@ class SlideCountdown extends StatefulWidget {
   /// ltr => [01] : [02] : [03]
   /// rtl => [03] : [02] : [01]
   final TextDirection? textDirection;
+
+  final List<String>? digitsNumber;
 
   @override
   _SlideCountdownState createState() => _SlideCountdownState();
