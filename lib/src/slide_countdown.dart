@@ -110,6 +110,8 @@ class SlideCountdown extends StatefulWidget {
   /// rtl => [03] : [02] : [01]
   final TextDirection? textDirection;
 
+  /// Override digits number
+  /// Default 0-9
   final List<String>? digitsNumber;
 
   @override

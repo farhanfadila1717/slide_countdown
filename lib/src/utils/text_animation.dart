@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'enum.dart';
 
 class TextAnimation extends StatefulWidget {
-  const TextAnimation({
+  TextAnimation({
     Key? key,
     required this.value,
     required this.textStyle,
@@ -14,7 +14,9 @@ class TextAnimation extends StatefulWidget {
     this.curve = Curves.easeOut,
     this.countUp = true,
     this.digitsNumber,
-  }) : super(key: key);
+  })  : assert(!(digitsNumber != null && digitsNumber.length == 9),
+            'overwriting the digits of a number must complete a number from 0-9'),
+        super(key: key);
 
   final ValueNotifier<int> value;
   final TextStyle textStyle;

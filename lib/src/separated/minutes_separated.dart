@@ -24,6 +24,7 @@ class MinutesSeparatedDigit extends BaseDigitsSeparated {
     EdgeInsets? separatorPadding,
     String? separator,
     TextDirection? textDirection,
+    List<String>? digitsNumber,
   }) : super(
           key: key,
           height: height,
@@ -47,6 +48,7 @@ class MinutesSeparatedDigit extends BaseDigitsSeparated {
           separatorPadding: separatorPadding,
           separator: separator,
           textDirection: textDirection,
+          digitsNumber: digitsNumber,
         );
 
   @override
@@ -61,6 +63,7 @@ class MinutesSeparatedDigit extends BaseDigitsSeparated {
       slideDirection: slideDirection,
       curve: curve,
       countUp: countUp,
+      digitsNumber: digitsNumber,
     );
 
     final secondDigit = TextAnimation(
@@ -71,6 +74,7 @@ class MinutesSeparatedDigit extends BaseDigitsSeparated {
       curve: curve,
       countUp: countUp,
       showZeroValue: true,
+      digitsNumber: digitsNumber,
     );
 
     final separator = Separator(

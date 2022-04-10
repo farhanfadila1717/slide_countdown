@@ -40,6 +40,7 @@ class SlideCountdownSeparated extends StatefulWidget {
     this.infinityCountUp = false,
     this.slideAnimationDuration = const Duration(milliseconds: 300),
     this.textDirection,
+    this.digitsNumber,
   }) : super(key: key);
 
   /// [Duration] is the duration of the countdown slide,
@@ -133,6 +134,10 @@ class SlideCountdownSeparated extends StatefulWidget {
   /// ltr => [01] : [02] : [03]
   /// rtl => [03] : [02] : [01]
   final TextDirection? textDirection;
+
+  /// Override digits number
+  /// Default 0-9
+  final List<String>? digitsNumber;
 
   @override
   _SlideCountdownSeparatedState createState() =>
@@ -243,6 +248,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
           separatorPadding: widget.separatorPadding,
           separator: widget.separator,
           textDirection: widget.textDirection,
+          digitsNumber: widget.digitsNumber,
         );
 
         final hours = HoursSeparatedDigit(
@@ -267,6 +273,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
           separatorPadding: widget.separatorPadding,
           separator: widget.separator,
           textDirection: widget.textDirection,
+          digitsNumber: widget.digitsNumber,
         );
 
         final minutes = MinutesSeparatedDigit(
@@ -291,6 +298,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
           separatorPadding: widget.separatorPadding,
           separator: widget.separator,
           textDirection: widget.textDirection,
+          digitsNumber: widget.digitsNumber,
         );
 
         final seconds = SecondsSeparatedDigit(
@@ -315,6 +323,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
           separatorPadding: widget.separatorPadding,
           separator: widget.separator,
           textDirection: widget.textDirection,
+          digitsNumber: widget.digitsNumber,
         );
 
         return Row(
