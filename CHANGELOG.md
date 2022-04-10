@@ -1,3 +1,6 @@
+# 0.2.3
+* Allow override digits
+
 # 0.2.2
 * Fix linter
 
