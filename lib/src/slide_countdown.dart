@@ -250,6 +250,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
       separator: widget.separator,
       durationTitle: widget.durationTitle ?? DurationTitle.en(),
       textDirection: widget.textDirection,
+      digitsNumber: widget.digitsNumber,
     );
 
     final hours = HoursDigit(
@@ -268,6 +269,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
       separator: widget.separator,
       durationTitle: widget.durationTitle ?? DurationTitle.en(),
       textDirection: widget.textDirection,
+      digitsNumber: widget.digitsNumber,
     );
 
     final minutes = MinutesDigit(
@@ -286,6 +288,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
       separator: widget.separator,
       durationTitle: widget.durationTitle ?? DurationTitle.en(),
       textDirection: widget.textDirection,
+      digitsNumber: widget.digitsNumber,
     );
 
     final seconds = SecondsDigit(
@@ -304,6 +307,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
       separator: widget.separator,
       durationTitle: widget.durationTitle ?? DurationTitle.en(),
       textDirection: widget.textDirection,
+      digitsNumber: widget.digitsNumber,
     );
 
     return Row(
