@@ -66,13 +66,12 @@ class SecondsDigit extends BaseDigits {
     final separator = Padding(
       padding: separatorPadding ?? EdgeInsets.zero,
       child: Visibility(
-        visible: separatorType == SeparatorType.symbol,
-        child: Text(this.separator ?? ':', style: textStyle),
-        replacement: Text(durationTitle.seconds, style: textStyle),
+        visible: separatorType == SeparatorType.title,
+        child: Text(durationTitle.seconds, style: textStyle),
       ),
     );
 
-    List<Widget> children = textDirection.isRtl
+    final children = textDirection.isRtl
         ? [
             separator,
             firstDigit,
