@@ -51,4 +51,51 @@ void main() {
       );
     },
   );
+
+  group('factory coverage', () {
+    test(
+      'id',
+      () {
+        final id = DurationTitle(
+            days: 'hari', hours: 'jam', minutes: 'menit', seconds: 'detik');
+
+        expect(id == DurationTitle.id(), isTrue);
+        expect(id.hashCode == DurationTitle.id().hashCode, isTrue);
+      },
+    );
+    test(
+      'id short',
+      () {
+        final id =
+            DurationTitle(days: 'h', hours: 'j', minutes: 'm', seconds: 'd');
+
+        expect(id == DurationTitle.idShort(), isTrue);
+        expect(id.hashCode == DurationTitle.idShort().hashCode, isTrue);
+      },
+    );
+
+    test(
+      'en',
+      () {
+        final en = DurationTitle(
+            days: 'days',
+            hours: 'hours',
+            minutes: 'minutes',
+            seconds: 'seconds');
+
+        expect(en == DurationTitle.en(), isTrue);
+        expect(en.hashCode == DurationTitle.en().hashCode, isTrue);
+      },
+    );
+    test(
+      'en short',
+      () {
+        final en =
+            DurationTitle(days: 'd', hours: 'h', minutes: 'm', seconds: 's');
+
+        expect(en == DurationTitle.enShort(), isTrue);
+        expect(en.hashCode == DurationTitle.enShort().hashCode, isTrue);
+      },
+    );
+  });
 }
