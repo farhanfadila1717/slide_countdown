@@ -98,4 +98,25 @@ void main() {
       },
     );
   });
+
+  test('Copywith Test', () {
+    final en = DurationTitle.en();
+
+    expect(en.hours, 'hours');
+    expect(en.days, 'days');
+    expect(en.minutes, 'minutes');
+    expect(en.seconds, 'seconds');
+
+    final newEn = en.copyWith(
+      days: 'Days',
+      hours: 'Hours',
+      minutes: 'Hours',
+      seconds: 'Seconds',
+    );
+
+    expect(newEn.days, 'Days');
+    expect(newEn.hours, 'Hours');
+    expect(newEn.minutes, 'Hours');
+    expect(newEn.seconds, 'Seconds');
+  });
 }
