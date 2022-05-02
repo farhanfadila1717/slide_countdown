@@ -41,6 +41,7 @@ class SlideCountdownSeparated extends StatefulWidget {
     this.slideAnimationDuration = const Duration(milliseconds: 300),
     this.textDirection,
     this.digitsNumber,
+    this.streamDuration,
   }) : super(key: key);
 
   /// [Duration] is the duration of the countdown slide,
@@ -138,6 +139,12 @@ class SlideCountdownSeparated extends StatefulWidget {
   /// Override digits number
   /// Default 0-9
   final List<String>? digitsNumber;
+
+  /// If you ovveride [StreamDuration] package for stream a duration
+  /// property [duration], [countUp], [infinityCountUp], and [onDone] in [SlideCountdownSeparated] not affected
+  /// Example you need use function in [StreamDuration]
+  /// e.g correct, add, and subtract function
+  final StreamDuration? streamDuration;
 
   @override
   _SlideCountdownSeparatedState createState() =>

@@ -35,6 +35,7 @@ class SlideCountdown extends StatefulWidget {
     this.slideAnimationDuration = const Duration(milliseconds: 300),
     this.textDirection,
     this.digitsNumber,
+    this.streamDuration,
   }) : super(key: key);
 
   /// [Duration] is the duration of the countdown slide,
@@ -114,6 +115,12 @@ class SlideCountdown extends StatefulWidget {
   /// Default 0-9
   final List<String>? digitsNumber;
 
+  /// If you ovveride [StreamDuration] package for stream a duration
+  /// property [duration], [countUp], [infinityCountUp], and [onDone] in [SlideCountdown] not affected
+  /// Example you need use function in [StreamDuration]
+  /// e.g correct, add, and subtract function
+  final StreamDuration? streamDuration;
+
   @override
   _SlideCountdownState createState() => _SlideCountdownState();
 }
@@ -154,16 +161,17 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
   }
 
   void _streamDurationListener() {
-    _streamDuration = StreamDuration(
-      widget.duration,
-      onDone: () {
-        if (widget.onDone != null) {
-          widget.onDone!();
-        }
-      },
-      countUp: widget.countUp,
-      infinity: widget.infinityCountUp,
-    );
+    _streamDuration = widget.streamDuration ??
+        StreamDuration(
+          widget.duration,
+          onDone: () {
+            if (widget.onDone != null) {
+              widget.onDone!();
+            }
+          },
+          countUp: widget.countUp,
+          infinity: widget.infinityCountUp,
+        );
 
     if (!disposed) {
       try {
