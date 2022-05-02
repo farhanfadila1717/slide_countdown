@@ -1,3 +1,6 @@
+# 0.2.4-dev.1
+* Add: streamDuration property, test & coverage
+
 # 0.2.3
 * Allow override digits
 

@@ -1,6 +1,6 @@
 name: slide_countdown
 description: A Flutter package to create easy slide animation countdown / countup timer.
-version: 0.2.3
+version: 0.2.4-dev.1
 homepage: https://github.com/farhanfadila1717/slide_countdown
 maintener: Farhan Fadila (@farhanfadila1717)
 
@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  stream_duration: ">=2.0.0 <3.0.0"
+  stream_duration: ">=2.0.2 <3.0.0"
 
 dev_dependencies:
   flutter_test:
