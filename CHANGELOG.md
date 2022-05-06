@@ -1,3 +1,6 @@
+# 0.2.4-dev.2
+* Fix: didUpdateWidget
+
 # 0.2.4-dev.1
 * Add: streamDuration property, test & coverage
 
