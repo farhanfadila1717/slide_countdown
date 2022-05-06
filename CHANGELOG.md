@@ -1,8 +1,6 @@
-# 0.2.4-dev.2
-* Fix: didUpdateWidget
-
-# 0.2.4-dev.1
+# 0.2.4
 * Add: streamDuration property, test & coverage
+* Fix: didUpdateWidget
 
 # 0.2.3
 * Allow override digits
