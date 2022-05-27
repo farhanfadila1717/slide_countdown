@@ -1,3 +1,6 @@
+# 0.2.5
+* Add: SlideDirection.none,
+
 # 0.2.4
 * Add: streamDuration property, test & coverage
 * Fix: didUpdateWidget
