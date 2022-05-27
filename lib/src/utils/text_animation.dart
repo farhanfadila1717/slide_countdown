@@ -58,6 +58,7 @@ class _TextAnimationState extends State<TextAnimation>
       end: const Offset(0.0, 1.0),
     ).animate(CurvedAnimation(parent: _animationController, curve: widget.curve)
       ..addStatusListener((status) {
+        if (widget.slideDirection == SlideDirection.none) return;
         if (status == AnimationStatus.completed) {
           _animationController.reset();
         }
@@ -65,6 +66,7 @@ class _TextAnimationState extends State<TextAnimation>
 
     if (!disposed) {
       widget.value.addListener(() {
+        if (widget.slideDirection == SlideDirection.none) return;
         if (!_animationController.isCompleted) {
           if (mounted) {
             _animationController.forward();
@@ -110,37 +112,52 @@ class _TextAnimationState extends State<TextAnimation>
     return ValueListenableBuilder(
       valueListenable: widget.value,
       builder: (BuildContext context, int value, Widget? child) {
-        return AnimatedBuilder(
-          animation: _animationController,
-          builder: (context, textWidget) {
-            _digit(value);
-            return Stack(
-              alignment: Alignment.center,
-              children: [
-                FractionalTranslation(
-                  translation: widget.slideDirection == SlideDirection.down
-                      ? _offsetAnimationOne.value
-                      : -_offsetAnimationOne.value,
-                  child: Text(
-                    digit(nextValue),
-                    style: widget.textStyle,
-                    textScaleFactor: 1.0,
+        if (widget.slideDirection == SlideDirection.none) {
+          return AnimatedSwitcher(
+            duration: widget.slideAnimationDuration,
+            switchInCurve: widget.curve,
+            switchOutCurve: widget.curve,
+            transitionBuilder: (childSwitcher, animation) => FadeTransition(
+              opacity: animation,
+              child: childSwitcher,
+            ),
+            child: Text(
+              digit(value),
+              key: ValueKey(value),
+              style: widget.textStyle,
+            ),
+          );
+        } else {
+          return AnimatedBuilder(
+            animation: _animationController,
+            builder: (context, textWidget) {
+              _digit(value);
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  FractionalTranslation(
+                    translation: widget.slideDirection == SlideDirection.down
+                        ? _offsetAnimationOne.value
+                        : -_offsetAnimationOne.value,
+                    child: Text(
+                      digit(nextValue),
+                      style: widget.textStyle,
+                    ),
                   ),
-                ),
-                FractionalTranslation(
-                  translation: widget.slideDirection == SlideDirection.down
-                      ? _offsetAnimationTwo.value
-                      : -_offsetAnimationTwo.value,
-                  child: Text(
-                    digit(currentValue),
-                    style: widget.textStyle,
-                    textScaleFactor: 1.0,
+                  FractionalTranslation(
+                    translation: widget.slideDirection == SlideDirection.down
+                        ? _offsetAnimationTwo.value
+                        : -_offsetAnimationTwo.value,
+                    child: Text(
+                      digit(currentValue),
+                      style: widget.textStyle,
+                    ),
                   ),
-                ),
-              ],
-            );
-          },
-        );
+                ],
+              );
+            },
+          );
+        }
       },
     );
   }
