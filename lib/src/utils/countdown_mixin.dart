@@ -10,128 +10,91 @@ mixin CountdownMixin<T extends StatefulWidget> on State<T> {
   final ValueNotifier<int> secondsFirstDigitNotifier = ValueNotifier<int>(0);
   final ValueNotifier<int> secondsSecondDigitNotifier = ValueNotifier<int>(0);
 
-  void daysFirstDigit(Duration duration) {
+  void _daysFirstDigitNotifier(Duration duration) {
     try {
-      if (duration.inDays == 0) {
-        daysFirstDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inDays) ~/ 10;
-        if (calculate != daysFirstDigitNotifier.value) {
-          daysFirstDigitNotifier.value = calculate;
-        }
+      final int digit = daysFirstDigit(duration);
+
+      if (digit != daysFirstDigitNotifier.value) {
+        daysFirstDigitNotifier.value = digit;
       }
     } catch (ex) {
       debugPrint(ex.toString());
     }
   }
 
-  void daysSecondDigit(Duration duration) {
+  void _daysSecondDigitNotifier(Duration duration) {
     try {
-      if (duration.inDays == 0) {
-        daysSecondDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inDays) % 10;
-        if (calculate != daysSecondDigitNotifier.value) {
-          daysSecondDigitNotifier.value = calculate;
-        }
+      final int digit = daysSecondDigit(duration);
+      if (digit != daysSecondDigitNotifier.value) {
+        daysSecondDigitNotifier.value = digit;
       }
     } catch (ex) {
       debugPrint(ex.toString());
     }
   }
 
-  void hoursFirstDigit(Duration duration) {
+  void _hoursFirstDigitNotifier(Duration duration) {
     try {
-      if (duration.inHours == 0) {
-        hoursFirstDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inHours % 24) ~/ 10;
-        if (calculate != hoursFirstDigitNotifier.value) {
-          hoursFirstDigitNotifier.value = calculate;
-        }
+      final int digit = hoursFirstDigit(duration);
+      if (digit != hoursFirstDigitNotifier.value) {
+        hoursFirstDigitNotifier.value = digit;
       }
     } catch (ex) {
       debugPrint(ex.toString());
     }
   }
 
-  void hoursSecondDigit(Duration duration) {
+  void _hoursSecondDigitNotifier(Duration duration) {
     try {
-      if (duration.inHours == 0) {
-        hoursSecondDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inHours % 24) % 10;
-        if (calculate != hoursSecondDigitNotifier.value) {
-          hoursSecondDigitNotifier.value = calculate;
-        }
+      final int digit = hoursSecondDigit(duration);
+
+      if (digit != hoursSecondDigitNotifier.value) {
+        hoursSecondDigitNotifier.value = digit;
       }
     } catch (ex) {
       debugPrint(ex.toString());
     }
   }
 
-  void minutesFirstDigit(Duration duration) {
+  void _minutesFirstDigitNotifier(Duration duration) {
     try {
-      if (duration.inMinutes == 0) {
-        minutesFirstDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inMinutes % 60) ~/ 10;
-        if (calculate != minutesFirstDigitNotifier.value) {
-          minutesFirstDigitNotifier.value = calculate;
-        }
+      final int digit = minutesFirstDigit(duration);
+
+      if (digit != minutesFirstDigitNotifier.value) {
+        minutesFirstDigitNotifier.value = digit;
       }
     } catch (ex) {
       debugPrint(ex.toString());
     }
   }
 
-  void minutesSecondDigit(Duration duration) {
+  void _minutesSecondDigitNotifier(Duration duration) {
     try {
-      if (duration.inMinutes == 0) {
-        minutesSecondDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inMinutes % 60) % 10;
-        if (calculate != minutesSecondDigitNotifier.value) {
-          minutesSecondDigitNotifier.value = calculate;
-        }
+      final int digit = minutesSecondDigit(duration);
+      if (digit != minutesSecondDigitNotifier.value) {
+        minutesSecondDigitNotifier.value = digit;
       }
     } catch (ex) {
       debugPrint(ex.toString());
     }
   }
 
-  void secondsFirstDigit(Duration duration) {
+  void _secondsFirstDigitNotifier(Duration duration) {
     try {
-      if (duration.inSeconds == 0) {
-        secondsFirstDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inSeconds % 60) ~/ 10;
-        if (calculate != secondsFirstDigitNotifier.value) {
-          secondsFirstDigitNotifier.value = calculate;
-        }
+      final int digit = secondsFirstDigit(duration);
+      if (digit != secondsFirstDigitNotifier.value) {
+        secondsFirstDigitNotifier.value = digit;
       }
     } catch (ex) {
       debugPrint(ex.toString());
     }
   }
 
-  void secondsSecondDigit(Duration duration) {
+  void _secondsSecondDigitNotifier(Duration duration) {
     try {
-      if (duration.inSeconds == 0) {
-        secondsSecondDigitNotifier.value = 0;
-        return;
-      } else {
-        int calculate = (duration.inSeconds % 60) % 10;
-        if (calculate != secondsSecondDigitNotifier.value) {
-          secondsSecondDigitNotifier.value = calculate;
-        }
+      final int digit = secondsSecondDigit(duration);
+      if (digit != secondsSecondDigitNotifier.value) {
+        secondsSecondDigitNotifier.value = digit;
       }
     } catch (ex) {
       debugPrint(ex.toString());
@@ -159,17 +122,62 @@ mixin CountdownMixin<T extends StatefulWidget> on State<T> {
   }
 
   void updateValue(Duration duration) {
-    daysFirstDigit(duration);
-    daysSecondDigit(duration);
+    _daysFirstDigitNotifier(duration);
+    _daysSecondDigitNotifier(duration);
 
-    hoursFirstDigit(duration);
-    hoursSecondDigit(duration);
+    _hoursFirstDigitNotifier(duration);
+    _hoursSecondDigitNotifier(duration);
 
-    minutesFirstDigit(duration);
-    minutesSecondDigit(duration);
+    _minutesFirstDigitNotifier(duration);
+    _minutesSecondDigitNotifier(duration);
 
-    secondsFirstDigit(duration);
-    secondsSecondDigit(duration);
+    _secondsFirstDigitNotifier(duration);
+    _secondsSecondDigitNotifier(duration);
+  }
+
+  int daysFirstDigit(Duration duration) {
+    if (duration.inDays <= 0) return 0;
+    return duration.inDays ~/ 10;
+  }
+
+  int daysSecondDigit(Duration duration) {
+    if (duration.inDays <= 0) return 0;
+    return duration.inDays % 10;
+  }
+
+  int hoursFirstDigit(Duration duration) {
+    if (duration.inHours <= 0) return 0;
+    return (duration.inHours % 24) ~/ 10;
+  }
+
+  int hoursSecondDigit(Duration duration) {
+    if (duration.inHours <= 0) return 0;
+    return (duration.inHours % 24) % 10;
+  }
+
+  int minutesFirstDigit(Duration duration) {
+    if (duration.inMinutes <= 0) return 0;
+    return (duration.inMinutes % 60) ~/ 10;
+  }
+
+  int minutesSecondDigit(Duration duration) {
+    if (duration.inMinutes <= 0) return 0;
+    return (duration.inMinutes % 60) % 10;
+  }
+
+  int secondsFirstDigit(Duration duration) {
+    if (duration.inSeconds <= 0) return 0;
+    return (duration.inSeconds % 60) ~/ 10;
+  }
+
+  int secondsSecondDigit(Duration duration) {
+    if (duration.inSeconds <= 0) return 0;
+    return (duration.inSeconds % 60) % 10;
+  }
+
+  bool showWidget(int value, [bool force = false]) {
+    if (force) return true;
+    return value > 0;
   }
 
   @override
