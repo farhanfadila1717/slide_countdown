@@ -1,3 +1,8 @@
+# 0.2.6-dev.1
+* Add: `onChanged` property, `TextWithoutAnimation` widget
+* Change: bump min version `StreamDuration` package
+* Fix: `SlideDirection.none` animation.
+
 # 0.2.5
 * Add: SlideDirection.none,
 
