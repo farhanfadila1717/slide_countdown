@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'duration_title.dart';
 import 'enum.dart';
 
 abstract class BaseDigitsSeparated extends StatelessWidget {
@@ -8,7 +7,6 @@ abstract class BaseDigitsSeparated extends StatelessWidget {
     required this.height,
     required this.width,
     required this.decoration,
-    required this.duration,
     required this.firstDigit,
     required this.secondDigit,
     required this.textStyle,
@@ -19,12 +17,11 @@ abstract class BaseDigitsSeparated extends StatelessWidget {
     required this.curve,
     required this.countUp,
     required this.slideAnimationDuration,
-    required this.separatorType,
-    required this.durationTitle,
     required this.gradientColor,
+    required this.separator,
+    required this.showSeparator,
     this.fade,
     this.separatorPadding,
-    this.separator,
     this.textDirection,
     this.digitsNumber,
   }) : super(key: key);
@@ -32,7 +29,6 @@ abstract class BaseDigitsSeparated extends StatelessWidget {
   final double height;
   final double width;
   final Decoration decoration;
-  final Duration duration;
   final ValueNotifier<int> firstDigit;
   final ValueNotifier<int> secondDigit;
   final TextStyle textStyle;
@@ -43,12 +39,11 @@ abstract class BaseDigitsSeparated extends StatelessWidget {
   final Curve curve;
   final bool countUp;
   final Duration slideAnimationDuration;
-  final SeparatorType separatorType;
-  final DurationTitle durationTitle;
   final List<Color> gradientColor;
+  final String separator;
+  final bool showSeparator;
   final bool? fade;
   final EdgeInsets? separatorPadding;
-  final String? separator;
   final TextDirection? textDirection;
   final List<String>? digitsNumber;
 }

@@ -1,12 +1,11 @@
 part of 'separated.dart';
 
-class SecondsSeparatedDigit extends BaseDigitsSeparated {
-  const SecondsSeparatedDigit({
+class DigitSeparatedItem extends BaseDigitsSeparated {
+  const DigitSeparatedItem({
     Key? key,
     required double height,
     required double width,
     required Decoration decoration,
-    required Duration duration,
     required ValueNotifier<int> firstDigit,
     required ValueNotifier<int> secondDigit,
     required TextStyle textStyle,
@@ -17,12 +16,11 @@ class SecondsSeparatedDigit extends BaseDigitsSeparated {
     required Curve curve,
     required bool countUp,
     required Duration slideAnimationDuration,
-    required SeparatorType separatorType,
-    required DurationTitle durationTitle,
     required List<Color> gradientColor,
+    required String separator,
+    bool? showSeparator,
     bool? fade,
     EdgeInsets? separatorPadding,
-    String? separator,
     TextDirection? textDirection,
     List<String>? digitsNumber,
   }) : super(
@@ -30,7 +28,6 @@ class SecondsSeparatedDigit extends BaseDigitsSeparated {
           height: height,
           width: width,
           decoration: decoration,
-          duration: duration,
           firstDigit: firstDigit,
           secondDigit: secondDigit,
           textStyle: textStyle,
@@ -41,47 +38,54 @@ class SecondsSeparatedDigit extends BaseDigitsSeparated {
           curve: curve,
           countUp: countUp,
           slideAnimationDuration: slideAnimationDuration,
-          separatorType: separatorType,
-          durationTitle: durationTitle,
           gradientColor: gradientColor,
           fade: fade,
           separatorPadding: separatorPadding,
           separator: separator,
+          showSeparator: showSeparator ?? true,
           textDirection: textDirection,
           digitsNumber: digitsNumber,
         );
 
   @override
   Widget build(BuildContext context) {
-    if (duration.inSeconds < 1 && !showZeroValue) {
-      return const SizedBox.shrink();
-    }
-    final firstDigit = TextAnimation(
-      slideAnimationDuration: slideAnimationDuration,
-      value: this.firstDigit,
-      textStyle: textStyle,
-      slideDirection: slideDirection,
-      curve: curve,
-      countUp: countUp,
-      digitsNumber: digitsNumber,
-    );
+    final withOutAnimation = slideDirection == SlideDirection.none;
+    final firstDigitWidget = withOutAnimation
+        ? TextWithoutAnimation(
+            value: firstDigit,
+            textStyle: textStyle,
+            initValue: initValue,
+          )
+        : TextAnimation(
+            slideAnimationDuration: slideAnimationDuration,
+            value: firstDigit,
+            textStyle: textStyle,
+            slideDirection: slideDirection,
+            curve: curve,
+            countUp: countUp,
+            digitsNumber: digitsNumber,
+          );
 
-    final secondDigit = TextAnimation(
-      slideAnimationDuration: slideAnimationDuration,
-      value: this.secondDigit,
-      textStyle: textStyle,
-      slideDirection: slideDirection,
-      curve: curve,
-      countUp: countUp,
-      digitsNumber: digitsNumber,
-    );
+    final secondDigitWidget = withOutAnimation
+        ? TextWithoutAnimation(
+            value: secondDigit,
+            textStyle: textStyle,
+            initValue: initValue,
+          )
+        : TextAnimation(
+            slideAnimationDuration: slideAnimationDuration,
+            value: secondDigit,
+            textStyle: textStyle,
+            slideDirection: slideDirection,
+            curve: curve,
+            countUp: countUp,
+            digitsNumber: digitsNumber,
+          );
 
-    final separator = Separator(
+    final separatorWidget = Separator(
       padding: separatorPadding,
-      show: separatorType == SeparatorType.title,
-      separator: separatorType == SeparatorType.title
-          ? durationTitle.seconds
-          : this.separator ?? ':',
+      show: true,
+      separator: separator,
       style: separatorStyle,
     );
 
@@ -94,21 +98,28 @@ class SecondsSeparatedDigit extends BaseDigitsSeparated {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [firstDigit, secondDigit],
+        children: [
+          firstDigitWidget,
+          secondDigitWidget,
+        ],
       ),
     );
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: textDirection.isRtl
-          ? [
-              separator,
-              box,
-            ]
-          : [
-              box,
-              separator,
-            ],
+    return Visibility(
+      visible: showSeparator,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: textDirection.isRtl
+            ? [
+                separatorWidget,
+                box,
+              ]
+            : [
+                box,
+                separatorWidget,
+              ],
+      ),
+      replacement: box,
     );
   }
 }

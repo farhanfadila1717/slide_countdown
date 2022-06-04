@@ -9,7 +9,6 @@ class TextAnimation extends StatefulWidget {
     required this.textStyle,
     required this.slideDirection,
     required this.slideAnimationDuration,
-    this.initValue = 0,
     this.showZeroValue = true,
     this.curve = Curves.easeOut,
     this.countUp = true,
@@ -20,7 +19,6 @@ class TextAnimation extends StatefulWidget {
 
   final ValueNotifier<int> value;
   final TextStyle textStyle;
-  final int initValue;
   final SlideDirection slideDirection;
   final bool showZeroValue;
   final Curve curve;
@@ -113,19 +111,10 @@ class _TextAnimationState extends State<TextAnimation>
       valueListenable: widget.value,
       builder: (BuildContext context, int value, Widget? child) {
         if (widget.slideDirection == SlideDirection.none) {
-          return AnimatedSwitcher(
-            duration: widget.slideAnimationDuration,
-            switchInCurve: widget.curve,
-            switchOutCurve: widget.curve,
-            transitionBuilder: (childSwitcher, animation) => FadeTransition(
-              opacity: animation,
-              child: childSwitcher,
-            ),
-            child: Text(
-              digit(value),
-              key: ValueKey(value),
-              style: widget.textStyle,
-            ),
+          return Text(
+            digit(value),
+            key: ValueKey(value),
+            style: widget.textStyle,
           );
         } else {
           return AnimatedBuilder(
