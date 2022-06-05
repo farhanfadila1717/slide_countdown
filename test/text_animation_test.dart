@@ -14,6 +14,7 @@ void main() {
 
   testWidgets('Text animation test', (tester) async {
     final widget = TextAnimation(
+      fade: false,
       value: notifier,
       textStyle: TextStyle(),
       slideDirection: SlideDirection.up,
