@@ -1,7 +1,7 @@
-# 0.2.6-dev.1
+# 0.2.6
 * Add: `onChanged` property, `TextWithoutAnimation` widget
 * Change: bump min version `StreamDuration` package
-* Fix: `SlideDirection.none` animation.
+* Fix: `SlideDirection.none` animation, digit clipper, `withDays` property.
 
 # 0.2.5
 * Add: SlideDirection.none,
