@@ -148,6 +148,8 @@ class SlideCountdownSeparated extends StatefulWidget {
   /// e.g correct, add, and subtract function
   final StreamDuration? streamDuration;
 
+  // if you need to stream the remaining available duration,
+  // it will be called every time the duration changes.
   final ValueChanged<Duration>? onChanged;
 
   @override
