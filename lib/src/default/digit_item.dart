@@ -1,22 +1,16 @@
-part of 'separated.dart';
+part of 'default.dart';
 
-class DigitSeparatedItem extends BaseDigitsSeparated {
-  const DigitSeparatedItem({
+class DigitItem extends BaseDigits {
+  const DigitItem({
     Key? key,
-    required double height,
-    required double width,
-    required Decoration decoration,
     required ValueNotifier<int> firstDigit,
     required ValueNotifier<int> secondDigit,
     required TextStyle textStyle,
     required TextStyle separatorStyle,
-    required int initValue,
     required SlideDirection slideDirection,
-    required bool showZeroValue,
     required Curve curve,
     required bool countUp,
     required Duration slideAnimationDuration,
-    required List<Color> gradientColor,
     required String separator,
     required bool fade,
     bool? showSeparator,
@@ -25,24 +19,18 @@ class DigitSeparatedItem extends BaseDigitsSeparated {
     List<String>? digitsNumber,
   }) : super(
           key: key,
-          height: height,
-          width: width,
-          decoration: decoration,
           firstDigit: firstDigit,
           secondDigit: secondDigit,
           textStyle: textStyle,
           separatorStyle: separatorStyle,
-          initValue: initValue,
           slideDirection: slideDirection,
-          showZeroValue: showZeroValue,
           curve: curve,
           countUp: countUp,
           slideAnimationDuration: slideAnimationDuration,
-          gradientColor: gradientColor,
-          fade: fade,
-          separatorPadding: separatorPadding,
           separator: separator,
+          fade: fade,
           showSeparator: showSeparator ?? true,
+          separatorPadding: separatorPadding,
           textDirection: textDirection,
           digitsNumber: digitsNumber,
         );
@@ -54,6 +42,7 @@ class DigitSeparatedItem extends BaseDigitsSeparated {
         ? TextWithoutAnimation(
             value: firstDigit,
             textStyle: textStyle,
+            digitsNumber: digitsNumber,
           )
         : TextAnimation(
             slideAnimationDuration: slideAnimationDuration,
@@ -70,6 +59,7 @@ class DigitSeparatedItem extends BaseDigitsSeparated {
         ? TextWithoutAnimation(
             value: secondDigit,
             textStyle: textStyle,
+            digitsNumber: digitsNumber,
           )
         : TextAnimation(
             slideAnimationDuration: slideAnimationDuration,
@@ -84,42 +74,26 @@ class DigitSeparatedItem extends BaseDigitsSeparated {
 
     final separatorWidget = Separator(
       padding: separatorPadding,
-      show: true,
+      show: showSeparator,
       separator: separator,
       style: separatorStyle,
     );
 
-    final box = BoxSeparated(
-      height: height,
-      width: width,
-      decoration: decoration,
-      gradientColors: gradientColor,
-      fade: fade,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          firstDigitWidget,
-          secondDigitWidget,
-        ],
-      ),
-    );
+    List<Widget> children = textDirection.isRtl
+        ? [
+            separatorWidget,
+            firstDigitWidget,
+            secondDigitWidget,
+          ]
+        : [
+            firstDigitWidget,
+            secondDigitWidget,
+            separatorWidget,
+          ];
 
-    return Visibility(
-      visible: showSeparator,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: textDirection.isRtl
-            ? [
-                separatorWidget,
-                box,
-              ]
-            : [
-                box,
-                separatorWidget,
-              ],
-      ),
-      replacement: box,
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: children,
     );
   }
 }

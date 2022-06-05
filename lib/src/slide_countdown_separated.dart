@@ -104,8 +104,9 @@ class SlideCountdownSeparated extends StatefulWidget {
   /// The amount of space by which to inset the [separator].
   final EdgeInsets separatorPadding;
 
-  /// if you give or the remaining [duration] is less than one hour
-  /// and the property is set to true, the countdown hours will not show
+  /// if the remaining duration is less than one day,
+  /// but you want to display the digits of the day, set the value to true.
+  /// Make sure the [showZeroValue] property is also true
   final bool withDays;
 
   /// if you initialize it with false, the duration which is empty will not be displayed
@@ -169,8 +170,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
     _notifiyDuration = NotifiyDuration(widget.duration);
     _streamDurationListener();
     _textColor = widget.textStyle.color ?? Colors.white;
-    _fadeColor = (widget.textStyle.color ?? Colors.white)
-        .withOpacity(widget.fade ? 0 : 1);
+    _fadeColor = _textColor.withOpacity(widget.fade ? 0 : 1);
     _gradienColors = [_fadeColor, _textColor, _textColor, _fadeColor];
   }
 
@@ -179,8 +179,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
     if (widget.textStyle != oldWidget.textStyle ||
         widget.fade != oldWidget.fade) {
       _textColor = widget.textStyle.color ?? Colors.white;
-      _fadeColor = (widget.textStyle.color ?? Colors.white)
-          .withOpacity(widget.fade ? 0 : 1);
+      _fadeColor = _textColor.withOpacity(widget.fade ? 0 : 1);
       _gradienColors = [_fadeColor, _textColor, _textColor, _fadeColor];
     }
     if (widget.countUp != oldWidget.countUp ||

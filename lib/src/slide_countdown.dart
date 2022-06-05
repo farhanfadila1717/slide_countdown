@@ -14,6 +14,7 @@ class SlideCountdown extends StatefulWidget {
     required this.duration,
     this.textStyle =
         const TextStyle(color: Color(0xFFFFFFFF), fontWeight: FontWeight.bold),
+    this.separatorStyle,
     this.icon,
     this.suffixIcon,
     this.separator,
@@ -23,6 +24,7 @@ class SlideCountdown extends StatefulWidget {
     this.slideDirection = SlideDirection.down,
     this.padding = const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
     this.separatorPadding = const EdgeInsets.symmetric(horizontal: 3),
+    this.withDays = true,
     this.showZeroValue = false,
     this.fade = false,
     this.decoration = const BoxDecoration(
@@ -36,6 +38,7 @@ class SlideCountdown extends StatefulWidget {
     this.textDirection,
     this.digitsNumber,
     this.streamDuration,
+    this.onChanged,
   }) : super(key: key);
 
   /// [Duration] is the duration of the countdown slide,
@@ -46,6 +49,11 @@ class SlideCountdown extends StatefulWidget {
   /// if this is null [SlideCountdown] has a default
   /// text style which will be of all text
   final TextStyle textStyle;
+
+  /// [TextStyle] is a parameter for all existing text,
+  /// if this is null [SlideCountdown] has a default
+  /// text style which will be of all text
+  final TextStyle? separatorStyle;
 
   /// [icon] is a parameter that can be initialized by any widget e.g [Icon],
   /// this will be in the first order, default empty widget
@@ -81,6 +89,11 @@ class SlideCountdown extends StatefulWidget {
 
   /// The amount of space by which to inset the [separator].
   final EdgeInsets separatorPadding;
+
+  /// if the remaining duration is less than one day,
+  /// but you want to display the digits of the day, set the value to true.
+  /// Make sure the [showZeroValue] property is also true
+  final bool withDays;
 
   /// if you initialize it with false, the duration which is empty will not be displayed
   final bool showZeroValue;
@@ -121,6 +134,10 @@ class SlideCountdown extends StatefulWidget {
   /// e.g correct, add, and subtract function
   final StreamDuration? streamDuration;
 
+  // if you need to stream the remaining available duration,
+  // it will be called every time the duration changes.
+  final ValueChanged<Duration>? onChanged;
+
   @override
   _SlideCountdownState createState() => _SlideCountdownState();
 }
@@ -140,8 +157,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
     _streamDurationListener();
 
     _textColor = widget.textStyle.color ?? Colors.white;
-    _fadeColor = (widget.textStyle.color ?? Colors.white)
-        .withOpacity(widget.fade ? 0 : 1);
+    _fadeColor = _textColor.withOpacity(widget.fade ? 0 : 1);
   }
 
   @override
@@ -149,8 +165,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
     if (widget.textStyle != oldWidget.textStyle ||
         widget.fade != oldWidget.fade) {
       _textColor = widget.textStyle.color ?? Colors.white;
-      _fadeColor = (widget.textStyle.color ?? Colors.white)
-          .withOpacity(widget.fade ? 0 : 1);
+      _fadeColor = _textColor.withOpacity(widget.fade ? 0 : 1);
     }
     if (widget.countUp != oldWidget.countUp ||
         widget.infinityCountUp != oldWidget.infinityCountUp) {
@@ -199,44 +214,10 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: _notifiyDuration,
-      builder: (BuildContext context, Duration duration, Widget? child) {
-        return DecoratedBox(
-          decoration: widget.decoration,
-          child: ClipRect(
-            child: ShaderMask(
-              shaderCallback: (Rect rect) {
-                return LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    _fadeColor,
-                    _textColor,
-                    _textColor,
-                    _fadeColor,
-                  ],
-                  stops: const [0.05, 0.3, 0.7, 0.95],
-                ).createShader(rect);
-              },
-              child: Padding(
-                padding: widget.padding,
-                child: Visibility(
-                  visible: widget.fade,
-                  child: countdown(duration),
-                  replacement: ClipRect(
-                    child: countdown(duration),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
+    final durationTitle = widget.durationTitle ?? DurationTitle.en();
+    final gradientColor = [_fadeColor, _textColor, _textColor, _fadeColor];
+    final separator = widget.separator ?? ':';
 
-  Widget countdown(Duration duration) {
     final leadingIcon = Visibility(
       visible: widget.icon != null,
       child: widget.icon ?? const SizedBox.shrink(),
@@ -247,101 +228,146 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
       child: widget.suffixIcon ?? const SizedBox.shrink(),
     );
 
-    final days = DaysDigit(
-      duration: duration,
+    final days = DigitItem(
       firstDigit: daysFirstDigitNotifier,
       secondDigit: daysSecondDigitNotifier,
       textStyle: widget.textStyle,
-      initValue: 0,
+      separatorStyle: widget.separatorStyle ?? widget.textStyle,
       slideDirection: widget.slideDirection,
-      showZeroValue: widget.showZeroValue,
       curve: widget.curve,
       countUp: widget.countUp,
       slideAnimationDuration: widget.slideAnimationDuration,
-      separatorType: widget.separatorType,
+      separator: widget.separatorType == SeparatorType.title
+          ? durationTitle.days
+          : separator,
       separatorPadding: widget.separatorPadding,
-      separator: widget.separator,
-      durationTitle: widget.durationTitle ?? DurationTitle.en(),
       textDirection: widget.textDirection,
+      fade: widget.fade,
       digitsNumber: widget.digitsNumber,
     );
 
-    final hours = HoursDigit(
-      duration: duration,
+    final hours = DigitItem(
       firstDigit: hoursFirstDigitNotifier,
       secondDigit: hoursSecondDigitNotifier,
       textStyle: widget.textStyle,
-      initValue: 0,
+      separatorStyle: widget.separatorStyle ?? widget.textStyle,
       slideDirection: widget.slideDirection,
-      showZeroValue: widget.showZeroValue,
       curve: widget.curve,
       countUp: widget.countUp,
       slideAnimationDuration: widget.slideAnimationDuration,
-      separatorType: widget.separatorType,
+      separator: widget.separatorType == SeparatorType.title
+          ? durationTitle.hours
+          : separator,
       separatorPadding: widget.separatorPadding,
-      separator: widget.separator,
-      durationTitle: widget.durationTitle ?? DurationTitle.en(),
       textDirection: widget.textDirection,
+      fade: widget.fade,
       digitsNumber: widget.digitsNumber,
     );
 
-    final minutes = MinutesDigit(
-      duration: duration,
+    final minutes = DigitItem(
       firstDigit: minutesFirstDigitNotifier,
       secondDigit: minutesSecondDigitNotifier,
       textStyle: widget.textStyle,
-      initValue: 0,
+      separatorStyle: widget.separatorStyle ?? widget.textStyle,
       slideDirection: widget.slideDirection,
-      showZeroValue: widget.showZeroValue,
       curve: widget.curve,
       countUp: widget.countUp,
       slideAnimationDuration: widget.slideAnimationDuration,
-      separatorType: widget.separatorType,
+      separator: widget.separatorType == SeparatorType.title
+          ? durationTitle.minutes
+          : separator,
       separatorPadding: widget.separatorPadding,
-      separator: widget.separator,
-      durationTitle: widget.durationTitle ?? DurationTitle.en(),
       textDirection: widget.textDirection,
+      fade: widget.fade,
       digitsNumber: widget.digitsNumber,
     );
 
-    final seconds = SecondsDigit(
-      duration: duration,
+    final seconds = DigitItem(
       firstDigit: secondsFirstDigitNotifier,
       secondDigit: secondsSecondDigitNotifier,
       textStyle: widget.textStyle,
-      initValue: 0,
+      separatorStyle: widget.separatorStyle ?? widget.textStyle,
       slideDirection: widget.slideDirection,
-      showZeroValue: widget.showZeroValue,
       curve: widget.curve,
       countUp: widget.countUp,
       slideAnimationDuration: widget.slideAnimationDuration,
-      separatorType: widget.separatorType,
+      separator: widget.separatorType == SeparatorType.title
+          ? durationTitle.minutes
+          : separator,
       separatorPadding: widget.separatorPadding,
-      separator: widget.separator,
-      durationTitle: widget.durationTitle ?? DurationTitle.en(),
       textDirection: widget.textDirection,
+      fade: widget.fade,
       digitsNumber: widget.digitsNumber,
+      showSeparator: widget.separatorType == SeparatorType.title,
     );
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: widget.textDirection.isRtl
-          ? [
-              suffixIcon,
-              seconds,
-              minutes,
-              hours,
-              days,
-              leadingIcon,
-            ]
-          : [
-              leadingIcon,
-              days,
-              hours,
-              minutes,
-              seconds,
-              suffixIcon,
-            ],
+    return ValueListenableBuilder(
+      valueListenable: _notifiyDuration,
+      builder: (BuildContext context, Duration duration, Widget? child) {
+        final daysWidget =
+            showWidget(duration.inDays, widget.showZeroValue) && widget.withDays
+                ? days
+                : const SizedBox.shrink();
+        final hoursWidget = showWidget(duration.inHours, widget.showZeroValue)
+            ? hours
+            : const SizedBox.shrink();
+
+        final minutesWidget =
+            showWidget(duration.inMinutes, widget.showZeroValue)
+                ? minutes
+                : const SizedBox.shrink();
+
+        final secondsWidget =
+            showWidget(duration.inSeconds, widget.showZeroValue)
+                ? seconds
+                : const SizedBox.shrink();
+
+        final child = Padding(
+          padding: widget.padding,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: widget.textDirection.isRtl
+                ? [
+                    suffixIcon,
+                    secondsWidget,
+                    minutesWidget,
+                    hoursWidget,
+                    daysWidget,
+                    leadingIcon,
+                  ]
+                : [
+                    leadingIcon,
+                    daysWidget,
+                    hoursWidget,
+                    minutesWidget,
+                    secondsWidget,
+                    suffixIcon,
+                  ],
+          ),
+        );
+        return DecoratedBox(
+          decoration: widget.decoration,
+          child: ClipRect(
+            child: ShaderMask(
+              shaderCallback: (Rect rect) {
+                return LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: gradientColor,
+                  stops: const [0.05, 0.3, 0.7, 0.95],
+                ).createShader(rect);
+              },
+              child: Visibility(
+                visible: widget.fade,
+                child: child,
+                replacement: ClipRect(
+                  child: child,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

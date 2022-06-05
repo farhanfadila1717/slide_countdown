@@ -1,4 +1,4 @@
-part of 'separated.dart';
+import 'package:flutter/widgets.dart';
 
 class Separator extends StatelessWidget {
   const Separator({

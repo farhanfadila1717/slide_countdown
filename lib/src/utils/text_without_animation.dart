@@ -5,13 +5,11 @@ class TextWithoutAnimation extends StatefulWidget {
     Key? key,
     required this.value,
     required this.textStyle,
-    required this.initValue,
     this.digitsNumber,
   }) : super(key: key);
 
   final ValueNotifier<int> value;
   final TextStyle textStyle;
-  final int initValue;
   final List<String>? digitsNumber;
 
   @override

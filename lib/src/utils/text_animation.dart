@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'clip_digit.dart';
 import 'enum.dart';
 
 class TextAnimation extends StatefulWidget {
@@ -9,7 +10,7 @@ class TextAnimation extends StatefulWidget {
     required this.textStyle,
     required this.slideDirection,
     required this.slideAnimationDuration,
-    this.showZeroValue = true,
+    required this.fade,
     this.curve = Curves.easeOut,
     this.countUp = true,
     this.digitsNumber,
@@ -20,11 +21,11 @@ class TextAnimation extends StatefulWidget {
   final ValueNotifier<int> value;
   final TextStyle textStyle;
   final SlideDirection slideDirection;
-  final bool showZeroValue;
   final Curve curve;
   final bool countUp;
   final Duration slideAnimationDuration;
   final List<String>? digitsNumber;
+  final bool fade;
 
   @override
   _TextAnimationState createState() => _TextAnimationState();
@@ -107,46 +108,52 @@ class _TextAnimationState extends State<TextAnimation>
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: widget.value,
-      builder: (BuildContext context, int value, Widget? child) {
-        if (widget.slideDirection == SlideDirection.none) {
-          return Text(
-            digit(value),
-            key: ValueKey(value),
-            style: widget.textStyle,
-          );
-        } else {
-          return AnimatedBuilder(
-            animation: _animationController,
-            builder: (context, textWidget) {
-              _digit(value);
-              return Stack(
-                alignment: Alignment.center,
-                children: [
-                  FractionalTranslation(
-                    translation: widget.slideDirection == SlideDirection.down
-                        ? _offsetAnimationOne.value
-                        : -_offsetAnimationOne.value,
-                    child: Text(
-                      digit(nextValue),
-                      style: widget.textStyle,
-                    ),
-                  ),
-                  FractionalTranslation(
-                    translation: widget.slideDirection == SlideDirection.down
-                        ? _offsetAnimationTwo.value
-                        : -_offsetAnimationTwo.value,
-                    child: Text(
-                      digit(currentValue),
-                      style: widget.textStyle,
-                    ),
-                  ),
-                ],
-              );
-            },
-          );
-        }
+    final isUp = widget.slideDirection == SlideDirection.up;
+    final clipBehavior = widget.fade ? Clip.none : Clip.hardEdge;
+    return AnimatedBuilder(
+      animation: _animationController,
+      builder: (context, _) {
+        _digit(widget.value.value);
+        final nextValueOffset =
+            isUp ? -_offsetAnimationOne.value : _offsetAnimationOne.value;
+        final currentValueOffset =
+            isUp ? -_offsetAnimationTwo.value : _offsetAnimationTwo.value;
+
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            FractionalTranslation(
+              translation: nextValueOffset,
+              child: ClipRect(
+                clipper: ClipHalfRect(
+                  isUp: true,
+                  slideDirection: widget.slideDirection,
+                  percentage: _offsetAnimationOne.value.dy,
+                ),
+                clipBehavior: clipBehavior,
+                child: Text(
+                  digit(nextValue),
+                  style: widget.textStyle,
+                ),
+              ),
+            ),
+            FractionalTranslation(
+              translation: currentValueOffset,
+              child: ClipRect(
+                clipper: ClipHalfRect(
+                  isUp: false,
+                  slideDirection: widget.slideDirection,
+                  percentage: _offsetAnimationTwo.value.dy,
+                ),
+                clipBehavior: clipBehavior,
+                child: Text(
+                  digit(currentValue),
+                  style: widget.textStyle,
+                ),
+              ),
+            ),
+          ],
+        );
       },
     );
   }

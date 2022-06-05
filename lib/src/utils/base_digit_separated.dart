@@ -20,7 +20,7 @@ abstract class BaseDigitsSeparated extends StatelessWidget {
     required this.gradientColor,
     required this.separator,
     required this.showSeparator,
-    this.fade,
+    required this.fade,
     this.separatorPadding,
     this.textDirection,
     this.digitsNumber,
@@ -42,7 +42,7 @@ abstract class BaseDigitsSeparated extends StatelessWidget {
   final List<Color> gradientColor;
   final String separator;
   final bool showSeparator;
-  final bool? fade;
+  final bool fade;
   final EdgeInsets? separatorPadding;
   final TextDirection? textDirection;
   final List<String>? digitsNumber;

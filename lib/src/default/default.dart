@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../utils/text_without_animation.dart';
 import '../utils/base_digit.dart';
-import '../utils/duration_title.dart';
 import '../utils/enum.dart';
 import '../utils/extensions.dart';
 import '../utils/text_animation.dart';
+import '../utils/separator.dart';
 
-part 'days.dart';
-part 'hours.dart';
-part 'minutes.dart';
-part 'seconds.dart';
+part 'digit_item.dart';
