@@ -292,7 +292,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
       countUp: widget.countUp,
       slideAnimationDuration: widget.slideAnimationDuration,
       separator: widget.separatorType == SeparatorType.title
-          ? durationTitle.minutes
+          ? durationTitle.seconds
           : separator,
       separatorPadding: widget.separatorPadding,
       textDirection: widget.textDirection,
