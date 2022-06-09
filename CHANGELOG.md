@@ -1,3 +1,6 @@
+# 0.2.7
+* Change: default value `withDays` to true.
+
 # 0.2.6
 * Add: `onChanged` property, `TextWithoutAnimation` widget
 * Change: bump min version `StreamDuration` package
