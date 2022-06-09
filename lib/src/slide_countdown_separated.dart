@@ -28,7 +28,7 @@ class SlideCountdownSeparated extends StatefulWidget {
     this.slideDirection = SlideDirection.down,
     this.padding = const EdgeInsets.all(5),
     this.separatorPadding = const EdgeInsets.symmetric(horizontal: 3),
-    this.withDays = false,
+    this.withDays = true,
     this.showZeroValue = false,
     this.fade = false,
     this.decoration = const BoxDecoration(
