@@ -1,3 +1,6 @@
+# 0.2.8
+* Fix: [minutes separator](https://github.com/farhanfadila1717/slide_countdown/pull/15) `SlideCountdown` 
+
 # 0.2.7
 * Change: default value `withDays` to true.
 
