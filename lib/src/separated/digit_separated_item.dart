@@ -98,10 +98,12 @@ class DigitSeparatedItem extends BaseDigitsSeparated {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          firstDigitWidget,
-          secondDigitWidget,
-        ],
+        children: textDirection.isRtl
+            ? [secondDigitWidget, firstDigitWidget]
+            : [
+                firstDigitWidget,
+                secondDigitWidget,
+              ],
       ),
     );
 
