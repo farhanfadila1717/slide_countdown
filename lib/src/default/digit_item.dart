@@ -82,8 +82,8 @@ class DigitItem extends BaseDigits {
     List<Widget> children = textDirection.isRtl
         ? [
             separatorWidget,
-            firstDigitWidget,
             secondDigitWidget,
+            firstDigitWidget,
           ]
         : [
             firstDigitWidget,
