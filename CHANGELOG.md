@@ -1,3 +1,6 @@
+# 0.2.9
+* Fix: [Fixed RTL digit directions](https://github.com/farhanfadila1717/slide_countdown/pull/19)
+
 # 0.2.8
 * Fix: [minutes separator](https://github.com/farhanfadila1717/slide_countdown/pull/15) `SlideCountdown` 
 
