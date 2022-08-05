@@ -30,7 +30,7 @@ class SlideCountdownSeparated extends StatefulWidget {
     this.separatorPadding = const EdgeInsets.symmetric(horizontal: 3),
     this.withDays = true,
     this.showZeroValue = false,
-    this.fade = false,
+    @Deprecated("no longer used") this.fade = false,
     this.decoration = const BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(4)),
       color: Color(0xFFF23333),
@@ -161,9 +161,6 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
     with CountdownMixin {
   late StreamDuration _streamDuration;
   late NotifiyDuration _notifiyDuration;
-  late Color _textColor;
-  late Color _fadeColor;
-  late List<Color> _gradienColors;
   bool disposed = false;
 
   @override
@@ -171,19 +168,10 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
     super.initState();
     _notifiyDuration = NotifiyDuration(widget.duration);
     _streamDurationListener();
-    _textColor = widget.textStyle.color ?? Colors.white;
-    _fadeColor = _textColor.withOpacity(widget.fade ? 0 : 1);
-    _gradienColors = [_fadeColor, _textColor, _textColor, _fadeColor];
   }
 
   @override
   void didUpdateWidget(covariant SlideCountdownSeparated oldWidget) {
-    if (widget.textStyle != oldWidget.textStyle ||
-        widget.fade != oldWidget.fade) {
-      _textColor = widget.textStyle.color ?? Colors.white;
-      _fadeColor = _textColor.withOpacity(widget.fade ? 0 : 1);
-      _gradienColors = [_fadeColor, _textColor, _textColor, _fadeColor];
-    }
     if (widget.countUp != oldWidget.countUp ||
         widget.infinityCountUp != oldWidget.infinityCountUp) {
       _streamDurationListener();
@@ -257,7 +245,6 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
       curve: widget.curve,
       countUp: widget.countUp,
       slideAnimationDuration: widget.slideAnimationDuration,
-      gradientColor: _gradienColors,
       fade: widget.fade,
       separatorPadding: widget.separatorPadding,
       separator: widget.separatorType == SeparatorType.title
@@ -281,7 +268,6 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
       curve: widget.curve,
       countUp: widget.countUp,
       slideAnimationDuration: widget.slideAnimationDuration,
-      gradientColor: _gradienColors,
       fade: widget.fade,
       separatorPadding: widget.separatorPadding,
       separator: widget.separatorType == SeparatorType.title
@@ -305,7 +291,6 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
       curve: widget.curve,
       countUp: widget.countUp,
       slideAnimationDuration: widget.slideAnimationDuration,
-      gradientColor: _gradienColors,
       fade: widget.fade,
       separatorPadding: widget.separatorPadding,
       separator: widget.separatorType == SeparatorType.title
@@ -329,7 +314,6 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
       curve: widget.curve,
       countUp: widget.countUp,
       slideAnimationDuration: widget.slideAnimationDuration,
-      gradientColor: _gradienColors,
       fade: widget.fade,
       separatorPadding: widget.separatorPadding,
       separator: widget.separatorType == SeparatorType.title
@@ -343,6 +327,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
     return ValueListenableBuilder(
       valueListenable: _notifiyDuration,
       builder: (_, Duration duration, __) {
+        if (duration.inSeconds <= 0) return SizedBox.shrink();
         final daysWidget =
             showWidget(duration.inDays, widget.showZeroValue) && widget.withDays
                 ? days

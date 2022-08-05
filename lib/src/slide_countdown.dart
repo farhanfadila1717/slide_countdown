@@ -26,7 +26,7 @@ class SlideCountdown extends StatefulWidget {
     this.separatorPadding = const EdgeInsets.symmetric(horizontal: 3),
     this.withDays = true,
     this.showZeroValue = false,
-    this.fade = false,
+    @Deprecated("no longer used") this.fade = false,
     this.decoration = const BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(20)),
       color: Color(0xFFF23333),
@@ -145,8 +145,6 @@ class SlideCountdown extends StatefulWidget {
 class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
   late StreamDuration _streamDuration;
   late NotifiyDuration _notifiyDuration;
-  late Color _textColor;
-  late Color _fadeColor;
   bool disposed = false;
 
   @override
@@ -155,18 +153,10 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
     _notifiyDuration = NotifiyDuration(widget.duration);
     disposed = false;
     _streamDurationListener();
-
-    _textColor = widget.textStyle.color ?? Colors.white;
-    _fadeColor = _textColor.withOpacity(widget.fade ? 0 : 1);
   }
 
   @override
   void didUpdateWidget(covariant SlideCountdown oldWidget) {
-    if (widget.textStyle != oldWidget.textStyle ||
-        widget.fade != oldWidget.fade) {
-      _textColor = widget.textStyle.color ?? Colors.white;
-      _fadeColor = _textColor.withOpacity(widget.fade ? 0 : 1);
-    }
     if (widget.countUp != oldWidget.countUp ||
         widget.infinityCountUp != oldWidget.infinityCountUp) {
       _streamDuration.dispose();
@@ -215,7 +205,6 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
   @override
   Widget build(BuildContext context) {
     final durationTitle = widget.durationTitle ?? DurationTitle.en();
-    final gradientColor = [_fadeColor, _textColor, _textColor, _fadeColor];
     final separator = widget.separator ?? ':';
 
     final leadingIcon = Visibility(
@@ -304,6 +293,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
     return ValueListenableBuilder(
       valueListenable: _notifiyDuration,
       builder: (BuildContext context, Duration duration, Widget? child) {
+        if (duration.inSeconds <= 0) return SizedBox.shrink();
         final daysWidget =
             showWidget(duration.inDays, widget.showZeroValue) && widget.withDays
                 ? days
@@ -347,25 +337,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
         );
         return DecoratedBox(
           decoration: widget.decoration,
-          child: ClipRect(
-            child: ShaderMask(
-              shaderCallback: (Rect rect) {
-                return LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: gradientColor,
-                  stops: const [0.05, 0.3, 0.7, 0.95],
-                ).createShader(rect);
-              },
-              child: Visibility(
-                visible: widget.fade,
-                child: child,
-                replacement: ClipRect(
-                  child: child,
-                ),
-              ),
-            ),
-          ),
+          child: child,
         );
       },
     );

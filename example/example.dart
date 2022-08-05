@@ -56,7 +56,6 @@ class ExampleSlideCountdown extends StatelessWidget {
               duration: defaultDuration,
               padding: defaultPadding,
               slideDirection: SlideDirection.up,
-              fade: true,
               icon: Padding(
                 padding: EdgeInsets.only(right: 5),
                 child: Icon(
@@ -73,7 +72,6 @@ class ExampleSlideCountdown extends StatelessWidget {
             const SlideCountdown(
               duration: defaultDuration,
               padding: defaultPadding,
-              fade: true,
               separatorType: SeparatorType.title,
               decoration: BoxDecoration(
                 color: Colors.black,
@@ -87,7 +85,6 @@ class ExampleSlideCountdown extends StatelessWidget {
             SlideCountdown(
               duration: defaultDuration,
               padding: defaultPadding,
-              fade: true,
               separatorType: SeparatorType.title,
               durationTitle: DurationTitle.id(),
               icon: const Padding(
