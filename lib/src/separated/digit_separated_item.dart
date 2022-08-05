@@ -16,7 +16,6 @@ class DigitSeparatedItem extends BaseDigitsSeparated {
     required Curve curve,
     required bool countUp,
     required Duration slideAnimationDuration,
-    required List<Color> gradientColor,
     required String separator,
     required bool fade,
     bool? showSeparator,
@@ -38,7 +37,6 @@ class DigitSeparatedItem extends BaseDigitsSeparated {
           curve: curve,
           countUp: countUp,
           slideAnimationDuration: slideAnimationDuration,
-          gradientColor: gradientColor,
           fade: fade,
           separatorPadding: separatorPadding,
           separator: separator,
@@ -93,7 +91,6 @@ class DigitSeparatedItem extends BaseDigitsSeparated {
       height: height,
       width: width,
       decoration: decoration,
-      gradientColors: gradientColor,
       fade: fade,
       child: Row(
         mainAxisSize: MainAxisSize.min,
