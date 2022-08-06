@@ -42,9 +42,6 @@ class DurationTitle {
     return false;
   }
 
-  @override
-  int get hashCode => Object.hash(days, hours, minutes, seconds);
-
   factory DurationTitle.id() => const DurationTitle(
         days: 'hari',
         hours: 'jam',
@@ -99,4 +96,7 @@ class DurationTitle {
         minutes: 'м',
         seconds: 'с',
       );
+
+  @override
+  int get hashCode => <String>[days, hours, minutes, seconds].join().hashCode;
 }
