@@ -1,3 +1,6 @@
+## 0.2.12
+* [Add arabic localization](https://github.com/farhanfadila1717/slide_countdown/pull/21)
+
 ## 0.2.11
 * Fix override `hashCode` exception for support Flutter <= 2.5.0
 
