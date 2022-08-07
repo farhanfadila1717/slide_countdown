@@ -27,6 +27,18 @@ void main() {
           expect('seconds', durationTitle.seconds);
         },
       );
+
+      test(
+        'locale ar Test',
+        () {
+          final durationTitle = DurationTitle.ar();
+
+          expect('أيام', durationTitle.days);
+          expect('ساعات', durationTitle.hours);
+          expect('دقائق', durationTitle.minutes);
+          expect('ثواني', durationTitle.seconds);
+        },
+      );
     },
   );
 

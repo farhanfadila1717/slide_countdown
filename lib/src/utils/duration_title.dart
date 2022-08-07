@@ -97,6 +97,20 @@ class DurationTitle {
         seconds: 'с',
       );
 
+  factory DurationTitle.ar() => const DurationTitle(
+        days: 'أيام',
+        hours: 'ساعات',
+        minutes: 'دقائق',
+        seconds: 'ثواني',
+      );
+
+  factory DurationTitle.arShort() => const DurationTitle(
+        days: 'ي',
+        hours: 'س',
+        minutes: 'د',
+        seconds: 'ث',
+      );
+
   @override
   int get hashCode => <String>[days, hours, minutes, seconds].join().hashCode;
 }
