@@ -1,3 +1,6 @@
+## 0.3.0-dev.1
+* Add `ShouldShowItems` to configure what items to show up 
+
 ## 0.2.12
 * [Add arabic localization](https://github.com/farhanfadila1717/slide_countdown/pull/21)
 
