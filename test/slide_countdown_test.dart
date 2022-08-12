@@ -8,66 +8,13 @@ const kFullDuration = Duration(days: 2);
 void main() {
   group('SlideCountDown Test', () {
     testWidgets(
-      'Hide Zero Value is True',
-      (tester) async {
-        final widget = SlideCountdown(
-          duration: kDuration,
-          showZeroValue: false,
-          separatorType: SeparatorType.title,
-        );
-
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: Center(child: widget),
-            ),
-          ),
-        );
-
-        await tester.pumpAndSettle();
-
-        final days = find.text('days');
-
-        expect(days, findsNothing);
-
-        final hours = find.text('hours');
-
-        expect(hours, findsOneWidget);
-      },
-    );
-
-    testWidgets(
-      'Hide Zero Value is False',
-      (tester) async {
-        final widget = SlideCountdown(
-          duration: kDuration,
-          showZeroValue: true,
-          separatorType: SeparatorType.title,
-        );
-
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: Center(child: widget),
-            ),
-          ),
-        );
-
-        await tester.pumpAndSettle();
-
-        final days = find.text('days');
-
-        expect(days, findsOneWidget);
-      },
-    );
-
-    testWidgets(
       'Custom Separator symbol',
       (tester) async {
         final widget = SlideCountdown(
           duration: kDuration,
           separatorType: SeparatorType.symbol,
           separator: '|',
+          shouldShowDays: (_) => false,
         );
 
         await tester.pumpWidget(

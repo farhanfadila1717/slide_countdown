@@ -12,74 +12,13 @@ void main() {
   group(
     'SlideCountDown Test',
     () {
-      testWidgets(
-        'Hide Zero Value is True',
-        (tester) async {
-          final widget = SlideCountdownSeparated(
-            duration: kDurationHours,
-            showZeroValue: false,
-            separatorType: SeparatorType.title,
-          );
-
-          await tester.pumpWidget(
-            MaterialApp(
-              home: Scaffold(
-                body: Center(child: widget),
-              ),
-            ),
-          );
-
-          await tester.pumpAndSettle();
-
-          final separated = find.byType(SlideCountdownSeparated);
-
-          expect(separated, findsOneWidget);
-
-          final days = find.text('days');
-
-          expect(days, findsNothing);
-
-          final hours = find.text('hours');
-
-          expect(hours, findsOneWidget);
-        },
-      );
-
-      testWidgets(
-        'Hide Zero Value is False',
-        (tester) async {
-          final widget = SlideCountdownSeparated(
-            duration: kFullDuration,
-            showZeroValue: false,
-            separatorType: SeparatorType.title,
-          );
-
-          await tester.pumpWidget(
-            MaterialApp(
-              home: Scaffold(
-                body: Center(child: widget),
-              ),
-            ),
-          );
-
-          await tester.pumpAndSettle();
-
-          final separated = find.byType(SlideCountdownSeparated);
-
-          expect(separated, findsOneWidget);
-
-          final days = find.text('days');
-
-          expect(days, findsOneWidget);
-        },
-      );
-
       testWidgets('Separator Type is symbol', (tester) async {
         final widget = SlideCountdownSeparated(
           duration: kDurationMinutes,
-          showZeroValue: false,
           separatorType: SeparatorType.symbol,
           separator: ':',
+          shouldShowDays: (_) => false,
+          shouldShowHours: (_) => false,
         );
 
         await tester.pumpWidget(

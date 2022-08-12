@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:slide_countdown/src/utils/utils.dart';
 import 'package:stream_duration/stream_duration.dart';
 import 'separated/separated.dart';
 
@@ -28,8 +29,9 @@ class SlideCountdownSeparated extends StatefulWidget {
     this.slideDirection = SlideDirection.down,
     this.padding = const EdgeInsets.all(5),
     this.separatorPadding = const EdgeInsets.symmetric(horizontal: 3),
-    this.withDays = true,
-    this.showZeroValue = false,
+    @Deprecated("no longer used, use `ShouldShowItems`") this.withDays = true,
+    @Deprecated("no longer used, use `ShouldShowItems`")
+        this.showZeroValue = false,
     @Deprecated("no longer used") this.fade = false,
     this.decoration = const BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -43,6 +45,10 @@ class SlideCountdownSeparated extends StatefulWidget {
     this.digitsNumber,
     this.streamDuration,
     this.onChanged,
+    this.shouldShowDays,
+    this.shouldShowHours,
+    this.shouldShowMinutes,
+    this.shouldShowSeconds,
   }) : super(key: key);
 
   /// [Duration] is the duration of the countdown slide,
@@ -148,9 +154,33 @@ class SlideCountdownSeparated extends StatefulWidget {
   /// e.g correct, add, and subtract function
   final StreamDuration? streamDuration;
 
-  // if you need to stream the remaining available duration,
-  // it will be called every time the duration changes.
+  /// if you need to stream the remaining available duration,
+  /// it will be called every time the duration changes.
   final ValueChanged<Duration>? onChanged;
+
+  /// This will trigger the days item will show or hide from the return value
+  /// You can also show or hide based on the remaining duration
+  /// e.g shouldShowDays: (`Duration` remainingDuration) => remainingDuration.inDays >= 1
+  /// if null default is true/show
+  final ShouldShowItems? shouldShowDays;
+
+  /// This will trigger the hours item will show or hide from the return value
+  /// You can also show or hide based on the remaining duration
+  /// e.g shouldShowHours: () => remainingDuration.inHours >= 1
+  /// if null default is true/show
+  final ShouldShowItems? shouldShowHours;
+
+  /// This will trigger the minutes item will show or hide from the return value
+  /// You can also show or hide based on the remaining duration
+  /// e.g shouldShowMinutes: () => remainingDuration.inMinutes >= 1
+  /// if null default is true/show
+  final ShouldShowItems? shouldShowMinutes;
+
+  /// This will trigger the minutes item will show or hide from the return value
+  /// You can also show or hide based on the remaining duration
+  /// e.g shouldShowSeconds: () => remainingDuration.inSeconds >= 1
+  /// if null default is true/show
+  final ShouldShowItems? shouldShowSeconds;
 
   @override
   _SlideCountdownSeparatedState createState() =>
@@ -328,23 +358,25 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
       valueListenable: _notifiyDuration,
       builder: (_, Duration duration, __) {
         if (duration.inSeconds <= 0) return SizedBox.shrink();
-        final daysWidget =
-            showWidget(duration.inDays, widget.showZeroValue) && widget.withDays
-                ? days
-                : const SizedBox.shrink();
-        final hoursWidget = showWidget(duration.inHours, widget.showZeroValue)
-            ? hours
-            : const SizedBox.shrink();
+        final showDays = widget.shouldShowDays != null
+            ? widget.shouldShowDays!(duration)
+            : true;
+        final daysWidget = showDays ? days : const SizedBox.shrink();
 
-        final minutesWidget =
-            showWidget(duration.inMinutes, widget.showZeroValue)
-                ? minutes
-                : const SizedBox.shrink();
+        final showHours = widget.shouldShowHours != null
+            ? widget.shouldShowHours!(duration)
+            : true;
+        final hoursWidget = showHours ? hours : const SizedBox.shrink();
 
-        final secondsWidget =
-            showWidget(duration.inSeconds, widget.showZeroValue)
-                ? seconds
-                : const SizedBox.shrink();
+        final showMinutes = widget.shouldShowMinutes != null
+            ? widget.shouldShowMinutes!(duration)
+            : true;
+        final minutesWidget = showMinutes ? minutes : const SizedBox.shrink();
+
+        final showSeconds = widget.shouldShowSeconds != null
+            ? widget.shouldShowSeconds!(duration)
+            : true;
+        final secondsWidget = showSeconds ? seconds : const SizedBox.shrink();
 
         return Row(
           mainAxisSize: MainAxisSize.min,
