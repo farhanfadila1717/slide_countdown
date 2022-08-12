@@ -25,6 +25,8 @@ class SlideCountdown extends StatefulWidget {
     this.padding = const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
     this.separatorPadding = const EdgeInsets.symmetric(horizontal: 3),
     this.withDays = true,
+    this.withHours = true,
+    this.withMinutes = true,
     this.showZeroValue = false,
     @Deprecated("no longer used") this.fade = false,
     this.decoration = const BoxDecoration(
@@ -94,6 +96,16 @@ class SlideCountdown extends StatefulWidget {
   /// but you want to display the digits of the day, set the value to true.
   /// Make sure the [showZeroValue] property is also true
   final bool withDays;
+
+  /// if the remaining duration is less than one hour,
+  /// but you want to display the digits of the hour, set the value to true.
+  /// Make sure the [showZeroValue] property is also true
+  final bool withHours;
+
+  /// if the remaining duration is less than one minute,
+  /// but you want to display the digits of the minute, set the value to true.
+  /// Make sure the [showZeroValue] property is also true
+  final bool withMinutes;
 
   /// if you initialize it with false, the duration which is empty will not be displayed
   final bool showZeroValue;
@@ -303,12 +315,12 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
             : const SizedBox.shrink();
 
         final minutesWidget =
-            showWidget(duration.inMinutes, widget.showZeroValue)
+            showWidget(duration.inMinutes, widget.showZeroValue) && widget.withHours
                 ? minutes
                 : const SizedBox.shrink();
 
         final secondsWidget =
-            showWidget(duration.inSeconds, widget.showZeroValue)
+            showWidget(duration.inSeconds, widget.showZeroValue) && widget.withMinutes
                 ? seconds
                 : const SizedBox.shrink();
 
