@@ -1,3 +1,7 @@
+## 0.3.0-dev.2
+* Add  `replacement` widget
+* Fix `separator`
+
 ## 0.3.0-dev.1
 * Add `ShouldShowItems` to configure what items to show up 
 
