@@ -19,6 +19,7 @@ class SlideCountdown extends StatefulWidget {
     this.icon,
     this.suffixIcon,
     this.separator,
+    this.replacement,
     this.onDone,
     this.durationTitle,
     this.separatorType = SeparatorType.symbol,
@@ -72,6 +73,11 @@ class SlideCountdown extends StatefulWidget {
   /// Separator is a parameter that will separate each [duration],
   /// e.g hours by minutes, and you can change the [SeparatorType] of the symbol or title
   final String? separator;
+
+  /// A widget that will be displayed to replace
+  /// the countdown when the remaining [duration] has finished
+  /// if null  default widget is [SizedBox].
+  final Widget? replacement;
 
   /// function [onDone] will be called when countdown is complete
   final VoidCallback? onDone;
@@ -183,6 +189,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
     _notifiyDuration = NotifiyDuration(widget.duration);
     disposed = false;
     _streamDurationListener();
+    _updateValue(widget.duration);
   }
 
   @override
@@ -194,6 +201,13 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
     }
     if (widget.duration != oldWidget.duration) {
       _streamDuration.changeDuration(widget.duration);
+    }
+
+    if (oldWidget.shouldShowDays != widget.shouldShowDays ||
+        oldWidget.shouldShowHours != widget.shouldShowHours ||
+        oldWidget.shouldShowMinutes != widget.shouldShowMinutes ||
+        oldWidget.shouldShowSeconds != widget.shouldShowSeconds) {
+      _updateValue();
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -225,6 +239,24 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
     }
   }
 
+  void _updateValue([Duration? duration]) {
+    final remainingDuration = duration ?? _streamDuration.remainingDuration;
+    updateNotifier(
+      updateDaysNotifier: widget.shouldShowDays != null
+          ? widget.shouldShowDays!(remainingDuration)
+          : true,
+      updateHoursNotifier: widget.shouldShowHours != null
+          ? widget.shouldShowHours!(remainingDuration)
+          : true,
+      updateMinutesNotifier: widget.shouldShowMinutes != null
+          ? widget.shouldShowMinutes!(remainingDuration)
+          : true,
+      updateSecondsNotifier: widget.shouldShowSeconds != null
+          ? widget.shouldShowSeconds!(remainingDuration)
+          : true,
+    );
+  }
+
   @override
   void dispose() {
     disposed = true;
@@ -247,101 +279,105 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
       child: widget.suffixIcon ?? const SizedBox.shrink(),
     );
 
-    final days = DigitItem(
-      firstDigit: daysFirstDigitNotifier,
-      secondDigit: daysSecondDigitNotifier,
-      textStyle: widget.textStyle,
-      separatorStyle: widget.separatorStyle ?? widget.textStyle,
-      slideDirection: widget.slideDirection,
-      curve: widget.curve,
-      countUp: widget.countUp,
-      slideAnimationDuration: widget.slideAnimationDuration,
-      separator: widget.separatorType == SeparatorType.title
-          ? durationTitle.days
-          : separator,
-      separatorPadding: widget.separatorPadding,
-      textDirection: widget.textDirection,
-      fade: widget.fade,
-      digitsNumber: widget.digitsNumber,
-    );
-
-    final hours = DigitItem(
-      firstDigit: hoursFirstDigitNotifier,
-      secondDigit: hoursSecondDigitNotifier,
-      textStyle: widget.textStyle,
-      separatorStyle: widget.separatorStyle ?? widget.textStyle,
-      slideDirection: widget.slideDirection,
-      curve: widget.curve,
-      countUp: widget.countUp,
-      slideAnimationDuration: widget.slideAnimationDuration,
-      separator: widget.separatorType == SeparatorType.title
-          ? durationTitle.hours
-          : separator,
-      separatorPadding: widget.separatorPadding,
-      textDirection: widget.textDirection,
-      fade: widget.fade,
-      digitsNumber: widget.digitsNumber,
-    );
-
-    final minutes = DigitItem(
-      firstDigit: minutesFirstDigitNotifier,
-      secondDigit: minutesSecondDigitNotifier,
-      textStyle: widget.textStyle,
-      separatorStyle: widget.separatorStyle ?? widget.textStyle,
-      slideDirection: widget.slideDirection,
-      curve: widget.curve,
-      countUp: widget.countUp,
-      slideAnimationDuration: widget.slideAnimationDuration,
-      separator: widget.separatorType == SeparatorType.title
-          ? durationTitle.minutes
-          : separator,
-      separatorPadding: widget.separatorPadding,
-      textDirection: widget.textDirection,
-      fade: widget.fade,
-      digitsNumber: widget.digitsNumber,
-    );
-
-    final seconds = DigitItem(
-      firstDigit: secondsFirstDigitNotifier,
-      secondDigit: secondsSecondDigitNotifier,
-      textStyle: widget.textStyle,
-      separatorStyle: widget.separatorStyle ?? widget.textStyle,
-      slideDirection: widget.slideDirection,
-      curve: widget.curve,
-      countUp: widget.countUp,
-      slideAnimationDuration: widget.slideAnimationDuration,
-      separator: widget.separatorType == SeparatorType.title
-          ? durationTitle.seconds
-          : separator,
-      separatorPadding: widget.separatorPadding,
-      textDirection: widget.textDirection,
-      fade: widget.fade,
-      digitsNumber: widget.digitsNumber,
-      showSeparator: widget.separatorType == SeparatorType.title,
-    );
-
     return ValueListenableBuilder(
       valueListenable: _notifiyDuration,
       builder: (BuildContext context, Duration duration, Widget? child) {
-        if (duration.inSeconds <= 0) return SizedBox.shrink();
+        if (duration.inSeconds <= 0)
+          return widget.replacement ?? const SizedBox.shrink();
         final showDays = widget.shouldShowDays != null
             ? widget.shouldShowDays!(duration)
             : true;
-        final daysWidget = showDays ? days : const SizedBox.shrink();
-
         final showHours = widget.shouldShowHours != null
             ? widget.shouldShowHours!(duration)
             : true;
-        final hoursWidget = showHours ? hours : const SizedBox.shrink();
-
-        final showMinutes = widget.shouldShowMinutes != null
-            ? widget.shouldShowMinutes!(duration)
-            : true;
-        final minutesWidget = showMinutes ? minutes : const SizedBox.shrink();
-
         final showSeconds = widget.shouldShowSeconds != null
             ? widget.shouldShowSeconds!(duration)
             : true;
+        final showMinutes = widget.shouldShowMinutes != null
+            ? widget.shouldShowMinutes!(duration)
+            : true;
+
+        final days = DigitItem(
+          firstDigit: daysFirstDigitNotifier,
+          secondDigit: daysSecondDigitNotifier,
+          textStyle: widget.textStyle,
+          separatorStyle: widget.separatorStyle ?? widget.textStyle,
+          slideDirection: widget.slideDirection,
+          curve: widget.curve,
+          countUp: widget.countUp,
+          slideAnimationDuration: widget.slideAnimationDuration,
+          separator: widget.separatorType == SeparatorType.title
+              ? durationTitle.days
+              : separator,
+          separatorPadding: widget.separatorPadding,
+          textDirection: widget.textDirection,
+          fade: widget.fade,
+          digitsNumber: widget.digitsNumber,
+          showSeparator: showHours || showMinutes || showSeconds,
+        );
+
+        final hours = DigitItem(
+          firstDigit: hoursFirstDigitNotifier,
+          secondDigit: hoursSecondDigitNotifier,
+          textStyle: widget.textStyle,
+          separatorStyle: widget.separatorStyle ?? widget.textStyle,
+          slideDirection: widget.slideDirection,
+          curve: widget.curve,
+          countUp: widget.countUp,
+          slideAnimationDuration: widget.slideAnimationDuration,
+          separator: widget.separatorType == SeparatorType.title
+              ? durationTitle.hours
+              : separator,
+          separatorPadding: widget.separatorPadding,
+          textDirection: widget.textDirection,
+          fade: widget.fade,
+          digitsNumber: widget.digitsNumber,
+          showSeparator: showMinutes || showSeconds,
+        );
+
+        final minutes = DigitItem(
+          firstDigit: minutesFirstDigitNotifier,
+          secondDigit: minutesSecondDigitNotifier,
+          textStyle: widget.textStyle,
+          separatorStyle: widget.separatorStyle ?? widget.textStyle,
+          slideDirection: widget.slideDirection,
+          curve: widget.curve,
+          countUp: widget.countUp,
+          slideAnimationDuration: widget.slideAnimationDuration,
+          separator: widget.separatorType == SeparatorType.title
+              ? durationTitle.minutes
+              : separator,
+          separatorPadding: widget.separatorPadding,
+          textDirection: widget.textDirection,
+          fade: widget.fade,
+          digitsNumber: widget.digitsNumber,
+          showSeparator: showSeconds,
+        );
+
+        final seconds = DigitItem(
+          firstDigit: secondsFirstDigitNotifier,
+          secondDigit: secondsSecondDigitNotifier,
+          textStyle: widget.textStyle,
+          separatorStyle: widget.separatorStyle ?? widget.textStyle,
+          slideDirection: widget.slideDirection,
+          curve: widget.curve,
+          countUp: widget.countUp,
+          slideAnimationDuration: widget.slideAnimationDuration,
+          separator: widget.separatorType == SeparatorType.title
+              ? durationTitle.seconds
+              : separator,
+          separatorPadding: widget.separatorPadding,
+          textDirection: widget.textDirection,
+          fade: widget.fade,
+          digitsNumber: widget.digitsNumber,
+          showSeparator: widget.separatorType == SeparatorType.title,
+        );
+
+        final daysWidget = showDays ? days : const SizedBox.shrink();
+
+        final hoursWidget = showHours ? hours : const SizedBox.shrink();
+
+        final minutesWidget = showMinutes ? minutes : const SizedBox.shrink();
 
         final secondsWidget = showSeconds ? seconds : const SizedBox.shrink();
 

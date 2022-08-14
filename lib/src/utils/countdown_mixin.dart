@@ -10,6 +10,35 @@ mixin CountdownMixin<T extends StatefulWidget> on State<T> {
   final ValueNotifier<int> secondsFirstDigitNotifier = ValueNotifier<int>(0);
   final ValueNotifier<int> secondsSecondDigitNotifier = ValueNotifier<int>(0);
 
+  bool _updateDaysNotifier = true;
+  bool _updateHoursNotifier = true;
+  bool _updateMinutesNotifier = true;
+  bool _updateSecondsNotifier = true;
+
+  void updateNotifier({
+    bool? updateDaysNotifier,
+    bool? updateHoursNotifier,
+    bool? updateMinutesNotifier,
+    bool? updateSecondsNotifier,
+  }) {
+    if (updateDaysNotifier != null &&
+        updateDaysNotifier != _updateDaysNotifier) {
+      _updateDaysNotifier = updateDaysNotifier;
+    }
+    if (updateHoursNotifier != null &&
+        updateHoursNotifier != _updateHoursNotifier) {
+      _updateHoursNotifier = updateHoursNotifier;
+    }
+    if (updateMinutesNotifier != null &&
+        updateMinutesNotifier != _updateMinutesNotifier) {
+      _updateMinutesNotifier = updateMinutesNotifier;
+    }
+    if (updateSecondsNotifier != null &&
+        updateSecondsNotifier != _updateSecondsNotifier) {
+      _updateSecondsNotifier = updateSecondsNotifier;
+    }
+  }
+
   void _daysFirstDigitNotifier(Duration duration) {
     try {
       final int digit = daysFirstDigit(duration);
@@ -122,17 +151,33 @@ mixin CountdownMixin<T extends StatefulWidget> on State<T> {
   }
 
   void updateValue(Duration duration) {
-    _daysFirstDigitNotifier(duration);
-    _daysSecondDigitNotifier(duration);
+    // when the value of `_updateDaysNotifier` is false
+    // there is no need to update the value in the days notifier
+    if (_updateDaysNotifier) {
+      _daysFirstDigitNotifier(duration);
+      _daysSecondDigitNotifier(duration);
+    }
 
-    _hoursFirstDigitNotifier(duration);
-    _hoursSecondDigitNotifier(duration);
+    // when the value of `_updateHoursNotifier` is false
+    // there is no need to update the value in the hours notifier
+    if (_updateHoursNotifier) {
+      _hoursFirstDigitNotifier(duration);
+      _hoursSecondDigitNotifier(duration);
+    }
 
-    _minutesFirstDigitNotifier(duration);
-    _minutesSecondDigitNotifier(duration);
+    // when the value of `_updateMinutesNotifier` is false
+    // there is no need to update the value in the minutes notifier
+    if (_updateMinutesNotifier) {
+      _minutesFirstDigitNotifier(duration);
+      _minutesSecondDigitNotifier(duration);
+    }
 
-    _secondsFirstDigitNotifier(duration);
-    _secondsSecondDigitNotifier(duration);
+    // when the value of `_updateSecondsNotifier` is false
+    // there is no need to update the value in the seconds notifier
+    if (_updateSecondsNotifier) {
+      _secondsFirstDigitNotifier(duration);
+      _secondsSecondDigitNotifier(duration);
+    }
   }
 
   int daysFirstDigit(Duration duration) {
