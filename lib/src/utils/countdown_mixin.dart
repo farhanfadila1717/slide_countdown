@@ -15,7 +15,7 @@ mixin CountdownMixin<T extends StatefulWidget> on State<T> {
   bool _updateMinutesNotifier = true;
   bool _updateSecondsNotifier = true;
 
-  void updateNotifier({
+  void updateConfigurationNotifier({
     bool? updateDaysNotifier,
     bool? updateHoursNotifier,
     bool? updateMinutesNotifier,
@@ -174,6 +174,7 @@ mixin CountdownMixin<T extends StatefulWidget> on State<T> {
 
     // when the value of `_updateSecondsNotifier` is false
     // there is no need to update the value in the seconds notifier
+
     if (_updateSecondsNotifier) {
       _secondsFirstDigitNotifier(duration);
       _secondsSecondDigitNotifier(duration);

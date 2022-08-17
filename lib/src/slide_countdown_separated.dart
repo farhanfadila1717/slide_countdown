@@ -31,8 +31,7 @@ class SlideCountdownSeparated extends StatefulWidget {
     this.padding = const EdgeInsets.all(5),
     this.separatorPadding = const EdgeInsets.symmetric(horizontal: 3),
     @Deprecated("no longer used, use `ShouldShowItems`") this.withDays = true,
-    @Deprecated("no longer used, use `ShouldShowItems`")
-        this.showZeroValue = false,
+    this.showZeroValue = false,
     @Deprecated("no longer used") this.fade = false,
     this.decoration = const BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -167,25 +166,29 @@ class SlideCountdownSeparated extends StatefulWidget {
   /// This will trigger the days item will show or hide from the return value
   /// You can also show or hide based on the remaining duration
   /// e.g shouldShowDays: (`Duration` remainingDuration) => remainingDuration.inDays >= 1
-  /// if null default is true/show
+  /// if null and [showZeroValue] is false
+  /// when duration in days is zero it will return false
   final ShouldShowItems? shouldShowDays;
 
   /// This will trigger the hours item will show or hide from the return value
   /// You can also show or hide based on the remaining duration
   /// e.g shouldShowHours: () => remainingDuration.inHours >= 1
-  /// if null default is true/show
+  /// if null and [showZeroValue] is false
+  /// when duration in hours is zero it will return false
   final ShouldShowItems? shouldShowHours;
 
   /// This will trigger the minutes item will show or hide from the return value
   /// You can also show or hide based on the remaining duration
   /// e.g shouldShowMinutes: () => remainingDuration.inMinutes >= 1
-  /// if null default is true/show
+  /// if null and [showZeroValue] is false
+  /// when duration in minutes is zero it will return false
   final ShouldShowItems? shouldShowMinutes;
 
   /// This will trigger the minutes item will show or hide from the return value
   /// You can also show or hide based on the remaining duration
   /// e.g shouldShowSeconds: () => remainingDuration.inSeconds >= 1
-  /// if null default is true/show
+  /// if null and [showZeroValue] is false
+  /// when duration in seconds is zero it will return false
   final ShouldShowItems? shouldShowSeconds;
 
   @override
@@ -197,13 +200,15 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
     with CountdownMixin {
   late StreamDuration _streamDuration;
   late NotifiyDuration _notifiyDuration;
-  bool disposed = false;
+  bool _disposed = false;
 
   @override
   void initState() {
     super.initState();
     _notifiyDuration = NotifiyDuration(widget.duration);
+    _disposed = false;
     _streamDurationListener();
+    _updateConfigurationNotifier(widget.duration);
   }
 
   @override
@@ -214,6 +219,14 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
     }
     if (widget.duration != oldWidget.duration) {
       _streamDuration.changeDuration(widget.duration);
+    }
+
+    if (oldWidget.shouldShowDays != widget.shouldShowDays ||
+        oldWidget.shouldShowHours != widget.shouldShowHours ||
+        oldWidget.shouldShowMinutes != widget.shouldShowMinutes ||
+        oldWidget.shouldShowSeconds != widget.shouldShowSeconds ||
+        oldWidget.showZeroValue != widget.showZeroValue) {
+      _updateConfigurationNotifier();
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -230,7 +243,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
       infinity: widget.infinityCountUp,
     );
 
-    if (!disposed) {
+    if (!_disposed) {
       try {
         _streamDuration.durationLeft.listen((duration) {
           _notifiyDuration.streamDuration(duration);
@@ -245,9 +258,36 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
     }
   }
 
+  void _updateConfigurationNotifier([Duration? duration]) {
+    final remainingDuration = duration ?? _streamDuration.remainingDuration;
+    final defaultShowDays =
+        remainingDuration.inDays < 1 && !widget.showZeroValue ? false : true;
+    final defaultShowHours =
+        remainingDuration.inHours < 1 && !widget.showZeroValue ? false : true;
+    final defaultShowMinutes =
+        remainingDuration.inMinutes < 1 && !widget.showZeroValue ? false : true;
+    final defaultShowSeconds =
+        remainingDuration.inSeconds < 1 && !widget.showZeroValue ? false : true;
+
+    updateConfigurationNotifier(
+      updateDaysNotifier: widget.shouldShowDays != null
+          ? widget.shouldShowDays!(remainingDuration)
+          : defaultShowDays,
+      updateHoursNotifier: widget.shouldShowHours != null
+          ? widget.shouldShowHours!(remainingDuration)
+          : defaultShowHours,
+      updateMinutesNotifier: widget.shouldShowMinutes != null
+          ? widget.shouldShowMinutes!(remainingDuration)
+          : defaultShowMinutes,
+      updateSecondsNotifier: widget.shouldShowSeconds != null
+          ? widget.shouldShowSeconds!(remainingDuration)
+          : defaultShowSeconds,
+    );
+  }
+
   @override
   void dispose() {
-    disposed = true;
+    _disposed = true;
     _streamDuration.dispose();
     super.dispose();
   }
@@ -269,21 +309,30 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
 
     return ValueListenableBuilder(
       valueListenable: _notifiyDuration,
-      builder: (_, Duration duration, __) {
-        if (duration.inSeconds <= 0)
-          return widget.replacement ?? const SizedBox.shrink();
+      builder: (BuildContext context, Duration duration, Widget? child) {
+        if (duration.inSeconds <= 0 && child != null) return child;
+
+        final defaultShowDays =
+            duration.inDays < 1 && !widget.showZeroValue ? false : true;
+        final defaultShowHours =
+            duration.inHours < 1 && !widget.showZeroValue ? false : true;
+        final defaultShowMinutes =
+            duration.inMinutes < 1 && !widget.showZeroValue ? false : true;
+        final defaultShowSeconds =
+            duration.inSeconds < 1 && !widget.showZeroValue ? false : true;
+
         final showDays = widget.shouldShowDays != null
             ? widget.shouldShowDays!(duration)
-            : true;
+            : defaultShowDays;
         final showHours = widget.shouldShowHours != null
             ? widget.shouldShowHours!(duration)
-            : true;
+            : defaultShowHours;
         final showMinutes = widget.shouldShowMinutes != null
             ? widget.shouldShowMinutes!(duration)
-            : true;
+            : defaultShowMinutes;
         final showSeconds = widget.shouldShowSeconds != null
             ? widget.shouldShowSeconds!(duration)
-            : true;
+            : defaultShowSeconds;
 
         final days = DigitSeparatedItem(
           height: widget.height,
@@ -410,6 +459,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
                 ],
         );
       },
+      child: widget.replacement,
     );
   }
 }

@@ -26,9 +26,9 @@ class SlideCountdown extends StatefulWidget {
     this.slideDirection = SlideDirection.down,
     this.padding = const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
     this.separatorPadding = const EdgeInsets.symmetric(horizontal: 3),
-    @Deprecated("no longer used, use `ShouldShowItems`") this.withDays = true,
-    @Deprecated("no longer used, use `ShouldShowItems`")
-        this.showZeroValue = false,
+    @Deprecated("no longer used, use `shouldShowDays` instead")
+        this.withDays = true,
+    this.showZeroValue = false,
     @Deprecated("no longer used") this.fade = false,
     this.decoration = const BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -153,25 +153,29 @@ class SlideCountdown extends StatefulWidget {
   /// This will trigger the days item will show or hide from the return value
   /// You can also show or hide based on the remaining duration
   /// e.g shouldShowDays: (`Duration` remainingDuration) => remainingDuration.inDays >= 1
-  /// if null default is true/show
+  /// if null and [showZeroValue] is false
+  /// when duration in days is zero it will return false
   final ShouldShowItems? shouldShowDays;
 
   /// This will trigger the hours item will show or hide from the return value
   /// You can also show or hide based on the remaining duration
   /// e.g shouldShowHours: () => remainingDuration.inHours >= 1
-  /// if null default is true/show
+  /// if null and [showZeroValue] is false
+  /// when duration in hours is zero it will return false
   final ShouldShowItems? shouldShowHours;
 
   /// This will trigger the minutes item will show or hide from the return value
   /// You can also show or hide based on the remaining duration
   /// e.g shouldShowMinutes: () => remainingDuration.inMinutes >= 1
-  /// if null default is true/show
+  /// if null and [showZeroValue] is false
+  /// when duration in minutes is zero it will return false
   final ShouldShowItems? shouldShowMinutes;
 
   /// This will trigger the minutes item will show or hide from the return value
   /// You can also show or hide based on the remaining duration
   /// e.g shouldShowSeconds: () => remainingDuration.inSeconds >= 1
-  /// if null default is true/show
+  /// if null and [showZeroValue] is false
+  /// when duration in seconds is zero it will return false
   final ShouldShowItems? shouldShowSeconds;
 
   @override
@@ -181,15 +185,15 @@ class SlideCountdown extends StatefulWidget {
 class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
   late StreamDuration _streamDuration;
   late NotifiyDuration _notifiyDuration;
-  bool disposed = false;
+  bool _disposed = false;
 
   @override
   void initState() {
     super.initState();
     _notifiyDuration = NotifiyDuration(widget.duration);
-    disposed = false;
+    _disposed = false;
     _streamDurationListener();
-    _updateValue(widget.duration);
+    _updateConfigurationNotifier(widget.duration);
   }
 
   @override
@@ -206,8 +210,9 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
     if (oldWidget.shouldShowDays != widget.shouldShowDays ||
         oldWidget.shouldShowHours != widget.shouldShowHours ||
         oldWidget.shouldShowMinutes != widget.shouldShowMinutes ||
-        oldWidget.shouldShowSeconds != widget.shouldShowSeconds) {
-      _updateValue();
+        oldWidget.shouldShowSeconds != widget.shouldShowSeconds ||
+        oldWidget.showZeroValue != widget.showZeroValue) {
+      _updateConfigurationNotifier();
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -225,7 +230,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
           infinity: widget.infinityCountUp,
         );
 
-    if (!disposed) {
+    if (!_disposed) {
       try {
         _streamDuration.durationLeft.listen(
           (duration) {
@@ -239,27 +244,36 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
     }
   }
 
-  void _updateValue([Duration? duration]) {
+  void _updateConfigurationNotifier([Duration? duration]) {
     final remainingDuration = duration ?? _streamDuration.remainingDuration;
-    updateNotifier(
+    final defaultShowDays =
+        remainingDuration.inDays < 1 && !widget.showZeroValue ? false : true;
+    final defaultShowHours =
+        remainingDuration.inHours < 1 && !widget.showZeroValue ? false : true;
+    final defaultShowMinutes =
+        remainingDuration.inMinutes < 1 && !widget.showZeroValue ? false : true;
+    final defaultShowSeconds =
+        remainingDuration.inSeconds < 1 && !widget.showZeroValue ? false : true;
+
+    updateConfigurationNotifier(
       updateDaysNotifier: widget.shouldShowDays != null
           ? widget.shouldShowDays!(remainingDuration)
-          : true,
+          : defaultShowDays,
       updateHoursNotifier: widget.shouldShowHours != null
           ? widget.shouldShowHours!(remainingDuration)
-          : true,
+          : defaultShowHours,
       updateMinutesNotifier: widget.shouldShowMinutes != null
           ? widget.shouldShowMinutes!(remainingDuration)
-          : true,
+          : defaultShowMinutes,
       updateSecondsNotifier: widget.shouldShowSeconds != null
           ? widget.shouldShowSeconds!(remainingDuration)
-          : true,
+          : defaultShowSeconds,
     );
   }
 
   @override
   void dispose() {
-    disposed = true;
+    _disposed = true;
     _streamDuration.dispose();
     super.dispose();
   }
@@ -282,20 +296,29 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
     return ValueListenableBuilder(
       valueListenable: _notifiyDuration,
       builder: (BuildContext context, Duration duration, Widget? child) {
-        if (duration.inSeconds <= 0)
-          return widget.replacement ?? const SizedBox.shrink();
+        if (duration.inSeconds <= 0 && child != null) return child;
+
+        final defaultShowDays =
+            duration.inDays < 1 && !widget.showZeroValue ? false : true;
+        final defaultShowHours =
+            duration.inHours < 1 && !widget.showZeroValue ? false : true;
+        final defaultShowMinutes =
+            duration.inMinutes < 1 && !widget.showZeroValue ? false : true;
+        final defaultShowSeconds =
+            duration.inSeconds < 1 && !widget.showZeroValue ? false : true;
+
         final showDays = widget.shouldShowDays != null
             ? widget.shouldShowDays!(duration)
-            : true;
+            : defaultShowDays;
         final showHours = widget.shouldShowHours != null
             ? widget.shouldShowHours!(duration)
-            : true;
-        final showSeconds = widget.shouldShowSeconds != null
-            ? widget.shouldShowSeconds!(duration)
-            : true;
+            : defaultShowHours;
         final showMinutes = widget.shouldShowMinutes != null
             ? widget.shouldShowMinutes!(duration)
-            : true;
+            : defaultShowMinutes;
+        final showSeconds = widget.shouldShowSeconds != null
+            ? widget.shouldShowSeconds!(duration)
+            : defaultShowSeconds;
 
         final days = DigitItem(
           firstDigit: daysFirstDigitNotifier,
@@ -381,7 +404,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
 
         final secondsWidget = showSeconds ? seconds : const SizedBox.shrink();
 
-        final child = Padding(
+        final countdown = Padding(
           padding: widget.padding,
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -406,9 +429,10 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
         );
         return DecoratedBox(
           decoration: widget.decoration,
-          child: child,
+          child: countdown,
         );
       },
+      child: widget.replacement,
     );
   }
 }
