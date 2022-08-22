@@ -236,6 +236,9 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
           (duration) {
             _notifiyDuration.streamDuration(duration);
             updateValue(duration);
+            if (widget.onChanged != null) {
+              widget.onChanged!(duration);
+            }
           },
         );
       } catch (ex) {
