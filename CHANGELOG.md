@@ -1,3 +1,6 @@
+## 0.3.1
+* Fix: [SlideCountdown does not work with onChanged.](https://github.com/farhanfadila1717/slide_countdown/issues/23)
+
 ## 0.3.0
 * Add `shouldShowDays`, `shouldShowHours`, `shouldShowMinutes`, `shouldShowSeconds` to configure what items to show up 
 * Add  `replacement` widget
