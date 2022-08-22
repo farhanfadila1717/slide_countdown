@@ -1,3 +1,6 @@
+## 0.3.2
+* [Adds greek locale](https://github.com/farhanfadila1717/slide_countdown/pull/24)
+
 ## 0.3.1
 * Fix: [SlideCountdown does not work with onChanged.](https://github.com/farhanfadila1717/slide_countdown/issues/23)
 
