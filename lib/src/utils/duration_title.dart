@@ -56,6 +56,20 @@ class DurationTitle {
         seconds: 'd',
       );
 
+  factory DurationTitle.el() => const DurationTitle(
+        days: 'μέρες',
+        hours: 'ώρες',
+        minutes: 'λεπτά',
+        seconds: 'δευτερόλεπτα',
+      );
+
+  factory DurationTitle.elShort() => const DurationTitle(
+        days: 'μ',
+        hours: 'ώ',
+        minutes: 'λ',
+        seconds: 'δ',
+      );
+
   factory DurationTitle.en() => const DurationTitle(
         days: 'days',
         hours: 'hours',
