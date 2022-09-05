@@ -1,3 +1,6 @@
+## 0.3.3
+* Fix separator 
+
 ## 0.3.2
 * [Adds greek locale](https://github.com/farhanfadila1717/slide_countdown/pull/24)
 
