@@ -377,7 +377,8 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
           textDirection: widget.textDirection,
           fade: widget.fade,
           digitsNumber: widget.digitsNumber,
-          showSeparator: showSeconds,
+          showSeparator:
+              showSeconds || widget.separatorType == SeparatorType.title,
         );
 
         final seconds = DigitItem(
