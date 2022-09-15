@@ -57,7 +57,7 @@ If you want to control duration more advanced, you can override property `Stream
 You can `play`, `pause`, `change`, `add`, `subtract` duration.
 
 > If you override/custom `StreamDuration` duration property has no effect anymore. <br>
-> Full example control duration in [example/lib/example.dart](https://github.com/farhanfadila1717/slide_countdown/blob/master/example/example.dart#L111).
+> See Full example control duration [here](https://github.com/farhanfadila1717/slide_countdown/blob/master/example/example.dart#L111).
 
 ```dart
 final streamDuration = StreamDuration(const Duration(hours: 2));
