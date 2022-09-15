@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slide_countdown/slide_countdown.dart';
+import 'package:stream_duration/stream_duration.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,7 +26,7 @@ class ExampleSlideCountdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Space"),
+        title: const Text("Basic Example"),
       ),
       body: SizedBox.expand(
         child: Column(
@@ -99,6 +100,79 @@ class ExampleSlideCountdown extends StatelessWidget {
                 color: Colors.black,
                 borderRadius: BorderRadius.all(Radius.circular(5)),
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ExampleControlDuration extends StatefulWidget {
+  const ExampleControlDuration({Key? key}) : super(key: key);
+
+  @override
+  State<ExampleControlDuration> createState() => _ExampleControlDurationState();
+}
+
+class _ExampleControlDurationState extends State<ExampleControlDuration> {
+  late final StreamDuration _streamDuration;
+
+  @override
+  void initState() {
+    _streamDuration = StreamDuration(
+      const Duration(hours: 2),
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _streamDuration.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Example Control Duration'),
+      ),
+      body: SizedBox.expand(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SlideCountdown(
+              // This duration no effect if you customize stream duration
+              duration: const Duration(seconds: 10),
+              streamDuration: _streamDuration,
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () => _streamDuration.pause(),
+              child: Text('Pause'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () => _streamDuration.play(),
+              child: Text('Play'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                // this will add 10 minutes to the remaining duration
+                _streamDuration.add(Duration(minutes: 10));
+              },
+              child: Text('Add Duration'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                // this will subtract 10 minutes to the remaining duration
+                _streamDuration.subtract(Duration(minutes: 10));
+              },
+              child: Text('Subtract Duration'),
             ),
           ],
         ),

@@ -1,3 +1,6 @@
+## 0.3.4-dev.1
+* Readme add example control duration
+
 ## 0.3.3
 * Fix separator 
 
