@@ -13,6 +13,7 @@ class SlideCountdown extends StatefulWidget {
   const SlideCountdown({
     Key? key,
     required this.duration,
+    this.offset = Duration.zero,
     this.textStyle =
         const TextStyle(color: Color(0xFFFFFFFF), fontWeight: FontWeight.bold),
     this.separatorStyle,
@@ -51,6 +52,11 @@ class SlideCountdown extends StatefulWidget {
   /// [Duration] is the duration of the countdown slide,
   /// if the duration has finished it will call [onDone]
   final Duration duration;
+
+  /// [offset] is a starting offset to the countdown slide.
+  /// If [countUp] is true, the counter will count from [offset] until [offset] + [duration].
+  /// If [countUp] is false, the counter will count from [offset] + [duration] until [offset].
+  final Duration offset;
 
   /// [TextStyle] is a parameter for all existing text,
   /// if this is null [SlideCountdown] has a default
@@ -234,6 +240,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
       try {
         _streamDuration.durationLeft.listen(
           (duration) {
+            duration += widget.offset;
             _notifiyDuration.streamDuration(duration);
             updateValue(duration);
             if (widget.onChanged != null) {

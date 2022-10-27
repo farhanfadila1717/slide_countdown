@@ -14,6 +14,7 @@ class SlideCountdownSeparated extends StatefulWidget {
   const SlideCountdownSeparated({
     Key? key,
     required this.duration,
+    this.offset = Duration.zero,
     this.height = 30,
     this.width = 30,
     this.textStyle =
@@ -54,6 +55,11 @@ class SlideCountdownSeparated extends StatefulWidget {
   /// [Duration] is the duration of the countdown slide,
   /// if the duration has finished it will call [onDone]
   final Duration duration;
+
+  /// [offset] is a starting offset to the countdown slide.
+  /// If [countUp] is true, the counter will count from [offset] until [offset] + [duration].
+  /// If [countUp] is false, the counter will count from [offset] + [duration] until [offset].
+  final Duration offset;
 
   /// height to set the size of height each [Container]
   /// [Container] will be the background of each a duration
@@ -246,6 +252,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
     if (!_disposed) {
       try {
         _streamDuration.durationLeft.listen((duration) {
+          duration += widget.offset;
           _notifiyDuration.streamDuration(duration);
           updateValue(duration);
           if (widget.onChanged != null) {
