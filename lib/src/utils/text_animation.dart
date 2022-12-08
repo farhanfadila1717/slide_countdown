@@ -10,7 +10,6 @@ class TextAnimation extends StatefulWidget {
     required this.textStyle,
     required this.slideDirection,
     required this.slideAnimationDuration,
-    required this.fade,
     this.curve = Curves.easeOut,
     this.countUp = true,
     this.digitsNumber,
@@ -25,7 +24,6 @@ class TextAnimation extends StatefulWidget {
   final bool countUp;
   final Duration slideAnimationDuration;
   final List<String>? digitsNumber;
-  final bool fade;
 
   @override
   _TextAnimationState createState() => _TextAnimationState();
@@ -109,7 +107,6 @@ class _TextAnimationState extends State<TextAnimation>
   @override
   Widget build(BuildContext context) {
     final isUp = widget.slideDirection == SlideDirection.up;
-    final clipBehavior = widget.fade ? Clip.none : Clip.hardEdge;
     return AnimatedBuilder(
       animation: _animationController,
       builder: (context, _) {
@@ -130,7 +127,6 @@ class _TextAnimationState extends State<TextAnimation>
                   slideDirection: widget.slideDirection,
                   percentage: _offsetAnimationOne.value.dy,
                 ),
-                clipBehavior: clipBehavior,
                 child: Text(
                   digit(nextValue),
                   style: widget.textStyle,
@@ -145,7 +141,6 @@ class _TextAnimationState extends State<TextAnimation>
                   slideDirection: widget.slideDirection,
                   percentage: _offsetAnimationTwo.value.dy,
                 ),
-                clipBehavior: clipBehavior,
                 child: Text(
                   digit(currentValue),
                   style: widget.textStyle,

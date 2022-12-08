@@ -15,7 +15,6 @@ abstract class BaseDigits extends StatelessWidget {
     required this.slideAnimationDuration,
     required this.separator,
     required this.showSeparator,
-    required this.fade,
     this.separatorPadding,
     this.textDirection,
     this.digitsNumber,
@@ -31,7 +30,6 @@ abstract class BaseDigits extends StatelessWidget {
   final Duration slideAnimationDuration;
   final String separator;
   final bool showSeparator;
-  final bool fade;
   final EdgeInsets? separatorPadding;
   final TextDirection? textDirection;
   final List<String>? digitsNumber;
