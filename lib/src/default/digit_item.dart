@@ -12,7 +12,6 @@ class DigitItem extends BaseDigits {
     required bool countUp,
     required Duration slideAnimationDuration,
     required String separator,
-    required bool fade,
     bool? showSeparator,
     EdgeInsets? separatorPadding,
     TextDirection? textDirection,
@@ -28,7 +27,6 @@ class DigitItem extends BaseDigits {
           countUp: countUp,
           slideAnimationDuration: slideAnimationDuration,
           separator: separator,
-          fade: fade,
           showSeparator: showSeparator ?? true,
           separatorPadding: separatorPadding,
           textDirection: textDirection,
@@ -51,7 +49,6 @@ class DigitItem extends BaseDigits {
             slideDirection: slideDirection,
             curve: curve,
             countUp: countUp,
-            fade: fade,
             digitsNumber: digitsNumber,
           );
 
@@ -68,7 +65,6 @@ class DigitItem extends BaseDigits {
             slideDirection: slideDirection,
             curve: curve,
             countUp: countUp,
-            fade: fade,
             digitsNumber: digitsNumber,
           );
 

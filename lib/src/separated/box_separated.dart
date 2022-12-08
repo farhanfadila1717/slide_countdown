@@ -7,14 +7,12 @@ class BoxSeparated extends StatelessWidget {
     required this.width,
     required this.child,
     required this.decoration,
-    required this.fade,
   }) : super(key: key);
 
   final double height;
   final double width;
   final Widget child;
   final Decoration decoration;
-  final bool fade;
 
   @override
   Widget build(BuildContext context) {
