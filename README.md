@@ -72,12 +72,12 @@ SlideCountdown(
 
 ---
 
-### 🚧 Maintener 
+### 🚧 Maintainer 
 [![account avatar][]][github account] <br>
 **Farhan Fadila** <br>
 📫 How to reach me: farhan.fadila1717@gmail.com
 
-### ❤️ Suport Maintener
+### ❤️ Support the maintainer
 [![badge paypal][]][paypal account] [![badge linktree][]][linktree account]
 
 
