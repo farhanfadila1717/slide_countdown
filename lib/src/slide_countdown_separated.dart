@@ -13,7 +13,7 @@ import 'utils/text_animation.dart';
 class SlideCountdownSeparated extends StatefulWidget {
   const SlideCountdownSeparated({
     Key? key,
-    required this.duration,
+    this.duration,
     this.height = 30,
     this.width = 30,
     this.textStyle =
@@ -30,9 +30,7 @@ class SlideCountdownSeparated extends StatefulWidget {
     this.slideDirection = SlideDirection.down,
     this.padding = const EdgeInsets.all(5),
     this.separatorPadding = const EdgeInsets.symmetric(horizontal: 3),
-    @Deprecated("no longer used, use `ShouldShowItems`") this.withDays = true,
     this.showZeroValue = false,
-    @Deprecated("no longer used") this.fade = false,
     this.decoration = const BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(4)),
       color: Color(0xFFF23333),
@@ -49,11 +47,15 @@ class SlideCountdownSeparated extends StatefulWidget {
     this.shouldShowHours,
     this.shouldShowMinutes,
     this.shouldShowSeconds,
-  }) : super(key: key);
+  })  : assert(
+          duration != null || streamDuration != null,
+          'Either duration or streamDuration has to be provided',
+        ),
+        super(key: key);
 
   /// [Duration] is the duration of the countdown slide,
   /// if the duration has finished it will call [onDone]
-  final Duration duration;
+  final Duration? duration;
 
   /// height to set the size of height each [Container]
   /// [Container] will be the background of each a duration
@@ -115,16 +117,8 @@ class SlideCountdownSeparated extends StatefulWidget {
   /// The amount of space by which to inset the [separator].
   final EdgeInsets separatorPadding;
 
-  /// if the remaining duration is less than one day,
-  /// but you want to display the digits of the day, set the value to true.
-  /// Make sure the [showZeroValue] property is also true
-  final bool withDays;
-
   /// if you initialize it with false, the duration which is empty will not be displayed
   final bool showZeroValue;
-
-  /// if you want [slideDirection] animation that is not rough set this value to true
-  final bool fade;
 
   /// you can change the slide animation up or down by changing the enum value in this property
   final SlideDirection slideDirection;
@@ -205,7 +199,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
   @override
   void initState() {
     super.initState();
-    _notifiyDuration = NotifiyDuration(widget.duration);
+    _notifiyDuration = NotifiyDuration(duration);
     _disposed = false;
     _streamDurationListener();
     _updateConfigurationNotifier(widget.duration);
@@ -217,8 +211,8 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
         widget.infinityCountUp != oldWidget.infinityCountUp) {
       _streamDurationListener();
     }
-    if (widget.duration != oldWidget.duration) {
-      _streamDuration.changeDuration(widget.duration);
+    if (widget.duration != oldWidget.duration && widget.duration != null) {
+      _streamDuration.changeDuration(widget.duration!);
     }
 
     if (oldWidget.shouldShowDays != widget.shouldShowDays ||
@@ -233,7 +227,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
 
   void _streamDurationListener() {
     _streamDuration = StreamDuration(
-      widget.duration,
+      duration,
       onDone: () {
         if (widget.onDone != null) {
           widget.onDone!();
@@ -285,11 +279,13 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
     );
   }
 
+  Duration get duration => widget.duration ?? widget.streamDuration!.duration;
+
   @override
   void dispose() {
+    super.dispose();
     _disposed = true;
     _streamDuration.dispose();
-    super.dispose();
   }
 
   @override
@@ -350,7 +346,6 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
           curve: widget.curve,
           countUp: widget.countUp,
           slideAnimationDuration: widget.slideAnimationDuration,
-          fade: widget.fade,
           separatorPadding: widget.separatorPadding,
           separator: widget.separatorType == SeparatorType.title
               ? durationTitle.days
@@ -375,7 +370,6 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
           curve: widget.curve,
           countUp: widget.countUp,
           slideAnimationDuration: widget.slideAnimationDuration,
-          fade: widget.fade,
           separatorPadding: widget.separatorPadding,
           separator: widget.separatorType == SeparatorType.title
               ? durationTitle.hours
@@ -400,7 +394,6 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
           curve: widget.curve,
           countUp: widget.countUp,
           slideAnimationDuration: widget.slideAnimationDuration,
-          fade: widget.fade,
           separatorPadding: widget.separatorPadding,
           separator: widget.separatorType == SeparatorType.title
               ? durationTitle.minutes
@@ -424,7 +417,6 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
           curve: widget.curve,
           countUp: widget.countUp,
           slideAnimationDuration: widget.slideAnimationDuration,
-          fade: widget.fade,
           separatorPadding: widget.separatorPadding,
           separator: widget.separatorType == SeparatorType.title
               ? durationTitle.seconds
