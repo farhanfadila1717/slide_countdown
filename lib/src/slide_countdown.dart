@@ -12,7 +12,7 @@ import 'utils/notifiy_duration.dart';
 class SlideCountdown extends StatefulWidget {
   const SlideCountdown({
     Key? key,
-    required this.duration,
+    this.duration,
     this.textStyle =
         const TextStyle(color: Color(0xFFFFFFFF), fontWeight: FontWeight.bold),
     this.separatorStyle,
@@ -26,10 +26,7 @@ class SlideCountdown extends StatefulWidget {
     this.slideDirection = SlideDirection.down,
     this.padding = const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
     this.separatorPadding = const EdgeInsets.symmetric(horizontal: 3),
-    @Deprecated("no longer used, use `shouldShowDays` instead")
-        this.withDays = true,
     this.showZeroValue = false,
-    @Deprecated("no longer used") this.fade = false,
     this.decoration = const BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(20)),
       color: Color(0xFFF23333),
@@ -46,11 +43,15 @@ class SlideCountdown extends StatefulWidget {
     this.shouldShowHours,
     this.shouldShowMinutes,
     this.shouldShowSeconds,
-  }) : super(key: key);
+  })  : assert(
+          duration != null || streamDuration != null,
+          'Either duration or streamDuration has to be provided',
+        ),
+        super(key: key);
 
   /// [Duration] is the duration of the countdown slide,
   /// if the duration has finished it will call [onDone]
-  final Duration duration;
+  final Duration? duration;
 
   /// [TextStyle] is a parameter for all existing text,
   /// if this is null [SlideCountdown] has a default
@@ -102,16 +103,8 @@ class SlideCountdown extends StatefulWidget {
   /// The amount of space by which to inset the [separator].
   final EdgeInsets separatorPadding;
 
-  /// if the remaining duration is less than one day,
-  /// but you want to display the digits of the day, set the value to true.
-  /// Make sure the [showZeroValue] property is also true
-  final bool withDays;
-
   /// if you initialize it with false, the duration which is empty will not be displayed
   final bool showZeroValue;
-
-  /// if you want [slideDirection] animation that is not rough set this value to true
-  final bool fade;
 
   /// you can change the slide animation up or down by changing the enum value in this property
   final SlideDirection slideDirection;
@@ -190,7 +183,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
   @override
   void initState() {
     super.initState();
-    _notifiyDuration = NotifiyDuration(widget.duration);
+    _notifiyDuration = NotifiyDuration(duration);
     _disposed = false;
     _streamDurationListener();
     _updateConfigurationNotifier(widget.duration);
@@ -204,7 +197,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
       _streamDurationListener();
     }
     if (widget.duration != oldWidget.duration) {
-      _streamDuration.changeDuration(widget.duration);
+      _streamDuration.changeDuration(duration);
     }
 
     if (oldWidget.shouldShowDays != widget.shouldShowDays ||
@@ -220,7 +213,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
   void _streamDurationListener() {
     _streamDuration = widget.streamDuration ??
         StreamDuration(
-          widget.duration,
+          duration,
           onDone: () {
             if (widget.onDone != null) {
               widget.onDone!();
@@ -274,11 +267,13 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
     );
   }
 
+  Duration get duration => widget.duration ?? widget.streamDuration!.duration;
+
   @override
   void dispose() {
+    super.dispose();
     _disposed = true;
     _streamDuration.dispose();
-    super.dispose();
   }
 
   @override
@@ -338,7 +333,6 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
               : separator,
           separatorPadding: widget.separatorPadding,
           textDirection: widget.textDirection,
-          fade: widget.fade,
           digitsNumber: widget.digitsNumber,
           showSeparator: (showHours || showMinutes || showSeconds) ||
               (isSeparatorTitle && showDays),
@@ -358,7 +352,6 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
               : separator,
           separatorPadding: widget.separatorPadding,
           textDirection: widget.textDirection,
-          fade: widget.fade,
           digitsNumber: widget.digitsNumber,
           showSeparator:
               showMinutes || showSeconds || (isSeparatorTitle && showHours),
@@ -378,7 +371,6 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
               : separator,
           separatorPadding: widget.separatorPadding,
           textDirection: widget.textDirection,
-          fade: widget.fade,
           digitsNumber: widget.digitsNumber,
           showSeparator: showSeconds || (isSeparatorTitle && showMinutes),
         );
@@ -397,7 +389,6 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
               : separator,
           separatorPadding: widget.separatorPadding,
           textDirection: widget.textDirection,
-          fade: widget.fade,
           digitsNumber: widget.digitsNumber,
           showSeparator: isSeparatorTitle && showSeconds,
         );

@@ -17,7 +17,6 @@ class DigitSeparatedItem extends BaseDigitsSeparated {
     required bool countUp,
     required Duration slideAnimationDuration,
     required String separator,
-    required bool fade,
     bool? showSeparator,
     EdgeInsets? separatorPadding,
     TextDirection? textDirection,
@@ -37,7 +36,6 @@ class DigitSeparatedItem extends BaseDigitsSeparated {
           curve: curve,
           countUp: countUp,
           slideAnimationDuration: slideAnimationDuration,
-          fade: fade,
           separatorPadding: separatorPadding,
           separator: separator,
           showSeparator: showSeparator ?? true,
@@ -60,7 +58,6 @@ class DigitSeparatedItem extends BaseDigitsSeparated {
             slideDirection: slideDirection,
             curve: curve,
             countUp: countUp,
-            fade: fade,
             digitsNumber: digitsNumber,
           );
 
@@ -76,7 +73,6 @@ class DigitSeparatedItem extends BaseDigitsSeparated {
             slideDirection: slideDirection,
             curve: curve,
             countUp: countUp,
-            fade: fade,
             digitsNumber: digitsNumber,
           );
 
@@ -91,7 +87,6 @@ class DigitSeparatedItem extends BaseDigitsSeparated {
       height: height,
       width: width,
       decoration: decoration,
-      fade: fade,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
