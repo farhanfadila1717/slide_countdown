@@ -1,6 +1,7 @@
-## 0.4.0-dev.1
+## 0.4.0
 * Remove depercated API
 * `duration` is'nt longer required when override duration with `stream_duration`
+* bump `stream_duration` package to `0.3.0`
 
 ## 0.3.4
 * Readme add example control duration

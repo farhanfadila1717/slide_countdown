@@ -197,7 +197,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
       _streamDurationListener();
     }
     if (widget.duration != oldWidget.duration) {
-      _streamDuration.changeDuration(duration);
+      _streamDuration.change(duration);
     }
 
     if (oldWidget.shouldShowDays != widget.shouldShowDays ||

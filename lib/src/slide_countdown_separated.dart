@@ -212,7 +212,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
       _streamDurationListener();
     }
     if (widget.duration != oldWidget.duration && widget.duration != null) {
-      _streamDuration.changeDuration(widget.duration!);
+      _streamDuration.change(widget.duration!);
     }
 
     if (oldWidget.shouldShowDays != widget.shouldShowDays ||
