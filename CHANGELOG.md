@@ -1,3 +1,6 @@
+## 0.4.1
+* `pubspec.yaml` added screenshot
+
 ## 0.4.0
 * Remove depercated API
 * `duration` is'nt longer required when override duration with `stream_duration`
