@@ -1,3 +1,6 @@
+## 0.5.0
+* bump min dart sdk to `2.17.0`
+
 ## 0.4.1
 * `pubspec.yaml` added screenshot
 
