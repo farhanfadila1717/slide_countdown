@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'clip_digit.dart';
 import 'enum.dart';
+import 'utils.dart';
 
+/// {@template text_animation}
+/// A [StatefulWidget] that animates the text of an integer `value`
+/// when the `value` changes.
+/// {@endtemplate}
 class TextAnimation extends StatefulWidget {
-  TextAnimation({
-    Key? key,
+  /// {@macro text_animation}
+  const TextAnimation({
+    super.key,
     required this.value,
     required this.textStyle,
     required this.slideDirection,
@@ -13,17 +19,29 @@ class TextAnimation extends StatefulWidget {
     this.curve = Curves.easeOut,
     this.countUp = true,
     this.digitsNumber,
-  })  : assert(!(digitsNumber != null && digitsNumber.length == 9),
-            'overwriting the digits of a number must complete a number from 0-9'),
-        super(key: key);
+  }) : assert(!(digitsNumber != null && digitsNumber.length == 9),
+            'overwriting the digits of a number must complete a number from 0-9');
 
+  /// value A [ValueNotifier] that holds the integer value to be displayed.
   final ValueNotifier<int> value;
+
+  /// The text style to be used for the text.
   final TextStyle textStyle;
+
+  /// The direction in which the text should slide during the animation.
   final SlideDirection slideDirection;
+
+  /// The duration of the slide animation.
   final Curve curve;
+
+  /// Indicates whether the text should count up or down.
   final bool countUp;
+
+  /// The duration of the slide animation.
   final Duration slideAnimationDuration;
-  final List<String>? digitsNumber;
+
+  /// {@macro override_digits}
+  final OverrideDigits? digitsNumber;
 
   @override
   _TextAnimationState createState() => _TextAnimationState();

@@ -9,9 +9,23 @@ import 'utils/enum.dart';
 import 'utils/extensions.dart';
 import 'utils/notifiy_duration.dart';
 
+/// {@template slide_countdown}
+/// The SlideCountdownSeparated is a StatefulWidget that
+/// creates a countdown timer that slides up or down to display
+/// the remaining time and each duration will be separated.
+///
+/// Example usage:
+///
+/// ```dart
+/// SlideCountdown(
+///   duration: const Duration(days: 2),
+/// );
+/// ```
+/// {@endtemplate}
 class SlideCountdown extends StatefulWidget {
+  /// {@macro slide_countdown}
   const SlideCountdown({
-    Key? key,
+    super.key,
     this.duration,
     this.textStyle =
         const TextStyle(color: Color(0xFFFFFFFF), fontWeight: FontWeight.bold),
@@ -35,7 +49,7 @@ class SlideCountdown extends StatefulWidget {
     this.countUp = false,
     this.infinityCountUp = false,
     this.slideAnimationDuration = const Duration(milliseconds: 300),
-    this.textDirection,
+    this.textDirection = TextDirection.ltr,
     this.digitsNumber,
     this.streamDuration,
     this.onChanged,
@@ -43,11 +57,10 @@ class SlideCountdown extends StatefulWidget {
     this.shouldShowHours,
     this.shouldShowMinutes,
     this.shouldShowSeconds,
-  })  : assert(
+  }) : assert(
           duration != null || streamDuration != null,
           'Either duration or streamDuration has to be provided',
-        ),
-        super(key: key);
+        );
 
   /// [Duration] is the duration of the countdown slide,
   /// if the duration has finished it will call [onDone]
@@ -83,10 +96,7 @@ class SlideCountdown extends StatefulWidget {
   /// function [onDone] will be called when countdown is complete
   final VoidCallback? onDone;
 
-  /// if you want to change the separator type, change this value to
-  /// [SeparatorType.title] or [SeparatorType.symbol].
-  /// [SeparatorType.title] will display title between duration,
-  /// e.g minutes or you can change to another language, by changing the value in [DurationTitle]
+  /// {$macro separator_type}
   final SeparatorType separatorType;
 
   /// change [Duration Title] if you want to change the default language,
@@ -106,7 +116,7 @@ class SlideCountdown extends StatefulWidget {
   /// if you initialize it with false, the duration which is empty will not be displayed
   final bool showZeroValue;
 
-  /// you can change the slide animation up or down by changing the enum value in this property
+  /// {@macro slide_direction}
   final SlideDirection slideDirection;
 
   /// to customize curve in [TextAnimation] you can change the default value
@@ -127,11 +137,10 @@ class SlideCountdown extends StatefulWidget {
   /// Text direction for change row positions of each item
   /// ltr => [01] : [02] : [03]
   /// rtl => [03] : [02] : [01]
-  final TextDirection? textDirection;
+  final TextDirection textDirection;
 
-  /// Override digits number
-  /// Default 0-9
-  final List<String>? digitsNumber;
+  /// {@macro override_digits}
+  final OverrideDigits? digitsNumber;
 
   /// If you ovveride [StreamDuration] package for stream a duration
   /// property [duration], [countUp], [infinityCountUp], and [onDone] in [SlideCountdown] not affected
@@ -251,6 +260,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
     final defaultShowSeconds =
         remainingDuration.inSeconds < 1 && !widget.showZeroValue ? false : true;
 
+    /// cal func from CountdownMixin
     updateConfigurationNotifier(
       updateDaysNotifier: widget.shouldShowDays != null
           ? widget.shouldShowDays!(remainingDuration)

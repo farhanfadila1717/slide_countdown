@@ -1,37 +1,27 @@
 part of 'default.dart';
 
+/// {@template digit_item}
+/// DigitItem is a [StatelessWidget] that represents a digit and optionally a separator.
+/// It is built using [TextAnimation] or [TextWithoutAnimation] widget and [Separator] widget.
+/// {@endtemplate}
 class DigitItem extends BaseDigits {
+  /// {@macro digit_item}
   const DigitItem({
-    Key? key,
-    required ValueNotifier<int> firstDigit,
-    required ValueNotifier<int> secondDigit,
-    required TextStyle textStyle,
-    required TextStyle separatorStyle,
-    required SlideDirection slideDirection,
-    required Curve curve,
-    required bool countUp,
-    required Duration slideAnimationDuration,
-    required String separator,
-    bool? showSeparator,
-    EdgeInsets? separatorPadding,
-    TextDirection? textDirection,
-    List<String>? digitsNumber,
-  }) : super(
-          key: key,
-          firstDigit: firstDigit,
-          secondDigit: secondDigit,
-          textStyle: textStyle,
-          separatorStyle: separatorStyle,
-          slideDirection: slideDirection,
-          curve: curve,
-          countUp: countUp,
-          slideAnimationDuration: slideAnimationDuration,
-          separator: separator,
-          showSeparator: showSeparator ?? true,
-          separatorPadding: separatorPadding,
-          textDirection: textDirection,
-          digitsNumber: digitsNumber,
-        );
+    super.key,
+    required super.firstDigit,
+    required super.secondDigit,
+    required super.textStyle,
+    required super.separatorStyle,
+    required super.slideDirection,
+    required super.curve,
+    required super.countUp,
+    required super.slideAnimationDuration,
+    required super.separator,
+    required super.showSeparator,
+    required super.textDirection,
+    super.separatorPadding,
+    super.digitsNumber,
+  });
 
   @override
   Widget build(BuildContext context) {

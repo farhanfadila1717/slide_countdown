@@ -1,13 +1,12 @@
-///Duration Title is a class that contains day, hour, minute, second properties.
-///which will later show in the view if you assign a value of [SeparatorType.title] to the [SeparatorType] enum
-///and you can change the title of the day, hour, minute, and second. For example, you change to Indonesian.
-///By default this title will display in English [DurationTitle.en()]
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+/// {@template duration_title}
+/// Duration Title is a class that contains day, hour, minute, second properties.
+/// which will later show in the view if you assign a value of [SeparatorType.title] to the [SeparatorType] enum
+/// and you can change the title of the day, hour, minute, and second. For example, you change to Indonesian.
+/// By default this title will display in English [DurationTitle.en()]
+/// {@endtemplate}
 class DurationTitle {
-  final String days;
-  final String hours;
-  final String minutes;
-  final String seconds;
-
+  /// {@macro duration_title}
   const DurationTitle({
     required this.days,
     required this.hours,
@@ -15,6 +14,21 @@ class DurationTitle {
     required this.seconds,
   });
 
+  /// The title for days
+  final String days;
+
+  /// The title for hours
+  final String hours;
+
+  /// The title for minutes
+  final String minutes;
+
+  /// The title for seconds
+  final String seconds;
+
+  /// The copyWith method creates a new instance of the `DurationTitle`
+  /// class with any of the values modified, if specified.
+  /// If a value is not specified, the existing value from the current instance is used.
   DurationTitle copyWith({
     String? days,
     String? hours,
@@ -27,20 +41,6 @@ class DurationTitle {
         minutes: minutes ?? this.minutes,
         seconds: seconds ?? this.seconds,
       );
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(other, this)) {
-      return true;
-    } else if (other is DurationTitle &&
-        days == other.days &&
-        hours == other.hours &&
-        minutes == other.minutes &&
-        seconds == other.seconds) {
-      return true;
-    }
-    return false;
-  }
 
   factory DurationTitle.id() => const DurationTitle(
         days: 'hari',
@@ -126,5 +126,17 @@ class DurationTitle {
       );
 
   @override
-  int get hashCode => <String>[days, hours, minutes, seconds].join().hashCode;
+  bool operator ==(covariant DurationTitle other) {
+    if (identical(this, other)) return true;
+
+    return other.days == days &&
+        other.hours == hours &&
+        other.minutes == minutes &&
+        other.seconds == seconds;
+  }
+
+  @override
+  int get hashCode {
+    return days.hashCode ^ hours.hashCode ^ minutes.hashCode ^ seconds.hashCode;
+  }
 }

@@ -1,13 +1,35 @@
 import 'package:flutter/widgets.dart';
 
+/// {@template countdown_mixin}
+/// This is a Flutter Mixin that provides a countdown functionality for a StatefulWidget.
+/// It uses ValueNotifier objects to notify changes in the values of the countdown.
+/// The mixin provides notifiers for each digit of the countdown
+/// for days, hours, minutes, and seconds. The update of each notifier
+/// can be controlled using updateConfigurationNotifier method.
+/// {@endtemplate}
 mixin CountdownMixin<T extends StatefulWidget> on State<T> {
+  /// Notifies the changes in the first digit of the days in the countdown.
   final ValueNotifier<int> daysFirstDigitNotifier = ValueNotifier<int>(0);
+
+  /// Notifies the changes in the second digit of the days in the countdown.
   final ValueNotifier<int> daysSecondDigitNotifier = ValueNotifier<int>(0);
+
+  /// Notifies the changes in the first digit of the hours in the countdown.
   final ValueNotifier<int> hoursFirstDigitNotifier = ValueNotifier<int>(0);
+
+  /// Notifies the changes in the second digit of the hours in the countdown.
   final ValueNotifier<int> hoursSecondDigitNotifier = ValueNotifier<int>(0);
+
+  /// Notifies the changes in the first digit of the minutes in the countdown.
   final ValueNotifier<int> minutesFirstDigitNotifier = ValueNotifier<int>(0);
+
+  /// Notifies the changes in the second digit of the minutes in the countdown.
   final ValueNotifier<int> minutesSecondDigitNotifier = ValueNotifier<int>(0);
+
+  /// Notifies the changes in the first digit of the seconds in the countdown.
   final ValueNotifier<int> secondsFirstDigitNotifier = ValueNotifier<int>(0);
+
+  /// Notifies the changes in the second digit of the seconds in the countdown.
   final ValueNotifier<int> secondsSecondDigitNotifier = ValueNotifier<int>(0);
 
   bool _updateDaysNotifier = true;
@@ -15,6 +37,7 @@ mixin CountdownMixin<T extends StatefulWidget> on State<T> {
   bool _updateMinutesNotifier = true;
   bool _updateSecondsNotifier = true;
 
+  /// Update the flags that control the updates of each notifier.
   void updateConfigurationNotifier({
     bool? updateDaysNotifier,
     bool? updateHoursNotifier,
