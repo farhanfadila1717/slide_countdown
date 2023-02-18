@@ -57,6 +57,8 @@ class SlideCountdown extends StatefulWidget {
     this.shouldShowHours,
     this.shouldShowMinutes,
     this.shouldShowSeconds,
+    this.countUpAtDuration = false,
+    this.autoPlay = true,
   }) : assert(
           duration != null || streamDuration != null,
           'Either duration or streamDuration has to be provided',
@@ -126,6 +128,9 @@ class SlideCountdown extends StatefulWidget {
   ///this property allows you to do a count up, give it a value of true to do it
   final bool countUp;
 
+  ///this property allows you to count up at the duration you set
+  final bool countUpAtDuration;
+
   /// if you set this property value to true, it will do the count up continuously or infinity
   /// and the [onDone] property will never be executed,
   /// before doing that you need to set true to the [countUp] property,
@@ -180,6 +185,8 @@ class SlideCountdown extends StatefulWidget {
   /// when duration in seconds is zero it will return false
   final ShouldShowItems? shouldShowSeconds;
 
+  final bool autoPlay;
+
   @override
   _SlideCountdownState createState() => _SlideCountdownState();
 }
@@ -223,12 +230,14 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
     _streamDuration = widget.streamDuration ??
         StreamDuration(
           duration,
+          autoPlay: widget.autoPlay,
           onDone: () {
             if (widget.onDone != null) {
               widget.onDone!();
             }
           },
           countUp: widget.countUp,
+          countUpAtDuration: widget.countUpAtDuration,
           infinity: widget.infinityCountUp,
         );
 

@@ -51,6 +51,7 @@ class SlideCountdownSeparated extends StatefulWidget {
     ),
     this.curve = Curves.easeOut,
     this.countUp = false,
+    this.countUpAtDuration = false,
     this.infinityCountUp = false,
     this.slideAnimationDuration = const Duration(milliseconds: 300),
     this.textDirection = TextDirection.rtl,
@@ -61,6 +62,7 @@ class SlideCountdownSeparated extends StatefulWidget {
     this.shouldShowHours,
     this.shouldShowMinutes,
     this.shouldShowSeconds,
+    this.autoPlay = true,
   }) : assert(
           duration != null || streamDuration != null,
           'Either duration or streamDuration has to be provided',
@@ -140,6 +142,9 @@ class SlideCountdownSeparated extends StatefulWidget {
   ///this property allows you to do a count up, give it a value of true to do it
   final bool countUp;
 
+  ///this property allows you to count up at the duration you set
+  final bool countUpAtDuration;
+
   /// if you set this property value to true, it will do the count up continuously or infinity
   /// and the [onDone] property will never be executed,
   /// before doing that you need to set true to the [countUp] property,
@@ -194,6 +199,8 @@ class SlideCountdownSeparated extends StatefulWidget {
   /// when duration in seconds is zero it will return false
   final ShouldShowItems? shouldShowSeconds;
 
+  final bool autoPlay;
+
   @override
   _SlideCountdownSeparatedState createState() =>
       _SlideCountdownSeparatedState();
@@ -237,6 +244,8 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
   void _streamDurationListener() {
     _streamDuration = StreamDuration(
       duration,
+      autoPlay: widget.autoPlay,
+      countUpAtDuration: widget.countUpAtDuration,
       onDone: () {
         if (widget.onDone != null) {
           widget.onDone!();
