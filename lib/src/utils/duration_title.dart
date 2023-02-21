@@ -56,6 +56,13 @@ class DurationTitle {
         seconds: 'd',
       );
 
+  factory DurationTitle.zhCN() => const DurationTitle(
+    days: '天',
+    hours: '小时',
+    minutes: '分钟',
+    seconds: '秒',
+  );
+
   factory DurationTitle.el() => const DurationTitle(
         days: 'μέρες',
         hours: 'ώρες',

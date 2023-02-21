@@ -58,7 +58,8 @@ class SlideCountdown extends StatefulWidget {
     this.shouldShowMinutes,
     this.shouldShowSeconds,
     this.countUpAtDuration = false,
-    this.autoPlay = true,
+    this.autoPlay = true, 
+    this.countInvisible = true,
   }) : assert(
           duration != null || streamDuration != null,
           'Either duration or streamDuration has to be provided',
@@ -185,6 +186,12 @@ class SlideCountdown extends StatefulWidget {
   /// when duration in seconds is zero it will return false
   final ShouldShowItems? shouldShowSeconds;
 
+  /// if you set this property value to true, it will count all the parents that invisible;
+  /// e.g 1 H 11 m . Then set 'shouldShowHours'  false will show 71 m
+  /// when 'countInvisible' is true and show 11 m when it is false
+  /// default is true
+  final bool? countInvisible;
+
   final bool autoPlay;
 
   @override
@@ -283,6 +290,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
       updateSecondsNotifier: widget.shouldShowSeconds != null
           ? widget.shouldShowSeconds!(remainingDuration)
           : defaultShowSeconds,
+        countInvisible:widget.countInvisible
     );
   }
 

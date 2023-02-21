@@ -36,6 +36,7 @@ mixin CountdownMixin<T extends StatefulWidget> on State<T> {
   bool _updateHoursNotifier = true;
   bool _updateMinutesNotifier = true;
   bool _updateSecondsNotifier = true;
+  bool _countInvisible = true;
 
   /// Update the flags that control the updates of each notifier.
   void updateConfigurationNotifier({
@@ -43,6 +44,7 @@ mixin CountdownMixin<T extends StatefulWidget> on State<T> {
     bool? updateHoursNotifier,
     bool? updateMinutesNotifier,
     bool? updateSecondsNotifier,
+    bool? countInvisible,
   }) {
     if (updateDaysNotifier != null &&
         updateDaysNotifier != _updateDaysNotifier) {
@@ -59,6 +61,9 @@ mixin CountdownMixin<T extends StatefulWidget> on State<T> {
     if (updateSecondsNotifier != null &&
         updateSecondsNotifier != _updateSecondsNotifier) {
       _updateSecondsNotifier = updateSecondsNotifier;
+    }
+    if(countInvisible!=null){
+      _countInvisible =countInvisible;
     }
   }
 
@@ -172,6 +177,7 @@ mixin CountdownMixin<T extends StatefulWidget> on State<T> {
     secondsFirstDigitNotifier.dispose();
     secondsSecondDigitNotifier.dispose();
   }
+  List<int> values = <int>[TimeUnit.values.length];
 
   void updateValue(Duration duration) {
     // when the value of `_updateDaysNotifier` is false
@@ -206,42 +212,94 @@ mixin CountdownMixin<T extends StatefulWidget> on State<T> {
 
   int daysFirstDigit(Duration duration) {
     if (duration.inDays <= 0) return 0;
-    return duration.inDays ~/ 10;
+    return calcTime(TimeUnit.day, duration) ~/ 10;
   }
 
   int daysSecondDigit(Duration duration) {
     if (duration.inDays <= 0) return 0;
-    return duration.inDays % 10;
+    return calcTime(TimeUnit.day, duration) % 10;
   }
 
   int hoursFirstDigit(Duration duration) {
     if (duration.inHours <= 0) return 0;
-    return (duration.inHours % 24) ~/ 10;
+    return calcTime(TimeUnit.hour, duration) ~/ 10;
   }
 
   int hoursSecondDigit(Duration duration) {
     if (duration.inHours <= 0) return 0;
-    return (duration.inHours % 24) % 10;
+    return calcTime(TimeUnit.hour, duration) % 10;
   }
 
   int minutesFirstDigit(Duration duration) {
     if (duration.inMinutes <= 0) return 0;
-    return (duration.inMinutes % 60) ~/ 10;
+    return calcTime(TimeUnit.minute, duration) ~/ 10;
   }
 
   int minutesSecondDigit(Duration duration) {
     if (duration.inMinutes <= 0) return 0;
-    return (duration.inMinutes % 60) % 10;
+    return calcTime(TimeUnit.minute, duration) % 10;
   }
 
   int secondsFirstDigit(Duration duration) {
     if (duration.inSeconds <= 0) return 0;
-    return (duration.inSeconds % 60) ~/ 10;
+    return calcTime(TimeUnit.second, duration) ~/ 10;
   }
 
   int secondsSecondDigit(Duration duration) {
     if (duration.inSeconds <= 0) return 0;
-    return (duration.inSeconds % 60) % 10;
+    return calcTime(TimeUnit.second, duration) % 10;
+  }
+
+  int calcTime(TimeUnit timeUnit,Duration duration){
+    int time = 0;
+    for(int i=0;i<TimeUnit.values.length;i++){
+      if(!_countInvisible){
+        if(timeUnit!=TimeUnit.values[i]){
+          continue;
+        }
+      }
+      switch(TimeUnit.values[i]){
+        case TimeUnit.day:
+          time = duration.inDays;
+          if(_updateDaysNotifier){
+            if(timeUnit==TimeUnit.values[i]){
+              return time;
+            }
+            time = 0;
+          }
+          break;
+        case TimeUnit.hour:
+          time =duration.inHours % 24+time*24;
+          if(_updateHoursNotifier){
+            if(timeUnit==TimeUnit.values[i]){
+              return time;
+            }
+            time = 0;
+          }
+          break;
+        case TimeUnit.minute:
+          time =duration.inMinutes % 60+time*60;
+          if(_updateMinutesNotifier){
+            if(timeUnit==TimeUnit.values[i]){
+              return time;
+            }
+            time = 0;
+          }
+          break;
+        case TimeUnit.second:
+          time =duration.inSeconds % 60+time*60;
+          if(_updateSecondsNotifier){
+            if(timeUnit==TimeUnit.values[i]){
+              return time;
+            }
+            time = 0;
+          }
+          break;
+        default:
+          break;
+      }
+    }
+    return time;
   }
 
   bool showWidget(int value, [bool force = false]) {
@@ -257,4 +315,11 @@ mixin CountdownMixin<T extends StatefulWidget> on State<T> {
     disposeSecondsNotifier();
     super.dispose();
   }
+}
+
+enum TimeUnit{
+  day,
+  hour,
+  minute,
+  second
 }
