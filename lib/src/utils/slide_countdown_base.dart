@@ -40,7 +40,7 @@ abstract class SlideCountdownBase extends StatefulWidget {
           'Either duration or streamDuration has to be provided',
         ),
         assert((countUpAtDuration != null && !countUpAtDuration) || countUp,
-            'cant provided countUpAtDurtion and infinityCountUp yet');
+            'countUpAtDuration does\'nt work if countUp is false');
 
   /// [Duration] is the duration of the countdown slide,
   /// if the duration has finished it will call [onDone]
