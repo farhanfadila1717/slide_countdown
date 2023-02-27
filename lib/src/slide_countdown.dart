@@ -186,8 +186,9 @@ class SlideCountdown extends StatefulWidget {
   /// when duration in seconds is zero it will return false
   final ShouldShowItems? shouldShowSeconds;
 
-  /// Recalculate time for subunits after hiding parent time units.
-  /// For example, originally display 1 hour 30 minutes, after closing hour display, display 90 minutes.
+  /// if you set this property value to true, it will count all the parents that invisible;
+  /// e.g 1 H 11 m . Then set 'shouldShowHours'  false will show 71 m
+  /// when 'countInvisible' is true and show 11 m when it is false
   /// default is true
   final bool? countInvisible;
 
