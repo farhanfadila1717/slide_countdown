@@ -39,7 +39,7 @@ abstract class SlideCountdownBase extends StatefulWidget {
           duration != null || streamDuration != null,
           'Either duration or streamDuration has to be provided',
         ),
-        assert(countUpAtDuration != null || infinityCountUp,
+        assert((countUpAtDuration != null && !countUpAtDuration) || countUp,
             'cant provided countUpAtDurtion and infinityCountUp yet');
 
   /// [Duration] is the duration of the countdown slide,
