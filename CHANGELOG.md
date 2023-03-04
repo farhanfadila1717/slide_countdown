@@ -1,5 +1,6 @@
-## 0.6.0-dev.1
-TODO (farhanfadila1717): Add changelog
+## 0.6.0-dev.2
+* pubspec add `issue_tracker`
+* bump min flutter sdk `3.0.0`
 
 ## 0.5.0
 * bump min dart sdk to `2.17.0`
