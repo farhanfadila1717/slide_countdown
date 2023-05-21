@@ -35,12 +35,10 @@ abstract class SlideCountdownBase extends StatefulWidget {
     required this.shouldShowMinutes,
     required this.shouldShowSeconds,
     required this.countUpAtDuration,
-  })  : assert(
+  }) : assert(
           duration != null || streamDuration != null,
           'Either duration or streamDuration has to be provided',
-        ),
-        assert((countUpAtDuration != null && !countUpAtDuration) || countUp,
-            'countUpAtDuration does\'nt work if countUp is false');
+        );
 
   /// [Duration] is the duration of the countdown slide,
   /// if the duration has finished it will call [onDone]

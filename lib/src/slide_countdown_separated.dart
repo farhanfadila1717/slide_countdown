@@ -46,8 +46,8 @@ class SlideCountdownSeparated extends SlideCountdownBase {
     super.decoration = kDefaultSeparatedBoxDecoration,
     super.curve = Curves.easeOut,
     super.countUp = false,
-    super.countUpAtDuration = false,
     super.infinityCountUp = false,
+    super.countUpAtDuration,
     super.slideAnimationDuration = kDefaultAnimationDuration,
     super.digitsNumber,
     super.streamDuration,
@@ -92,10 +92,11 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
   void didUpdateWidget(covariant SlideCountdownSeparated oldWidget) {
     if (widget.countUp != oldWidget.countUp ||
         widget.infinityCountUp != oldWidget.infinityCountUp) {
+      _streamDuration.dispose();
       _streamDurationListener();
     }
-    if (widget.duration != oldWidget.duration && widget.duration != null) {
-      _streamDuration.change(widget.duration!);
+    if (widget.duration != oldWidget.duration) {
+      _streamDuration.change(duration);
     }
 
     if (oldWidget.shouldShowDays != widget.shouldShowDays ||
@@ -109,27 +110,26 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
   }
 
   void _streamDurationListener() {
-    _streamDuration = StreamDuration(
-      duration,
-      countUpAtDuration: widget.countUpAtDuration ?? false,
-      onDone: () {
-        if (widget.onDone != null) {
-          widget.onDone!();
-        }
-      },
-      countUp: widget.countUp,
-      infinity: widget.infinityCountUp,
-    );
+    _streamDuration = widget.streamDuration ??
+        StreamDuration(
+          duration,
+          onDone: () => widget.onDone?.call(),
+          countUp: widget.countUp,
+          countUpAtDuration: widget.countUpAtDuration ?? false,
+          infinity: widget.infinityCountUp,
+        );
 
     if (!_disposed) {
       try {
-        _streamDuration.durationLeft.listen((duration) {
-          _notifiyDuration.streamDuration(duration);
-          updateValue(duration);
-          if (widget.onChanged != null) {
-            widget.onChanged!(duration);
-          }
-        });
+        _streamDuration.durationLeft.listen(
+          (duration) {
+            _notifiyDuration.streamDuration(duration);
+            updateValue(duration);
+            if (widget.onChanged != null) {
+              widget.onChanged!(duration);
+            }
+          },
+        );
       } catch (ex) {
         debugPrint(ex.toString());
       }

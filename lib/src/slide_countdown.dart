@@ -45,6 +45,7 @@ class SlideCountdown extends SlideCountdownBase {
     super.curve = Curves.easeOut,
     super.countUp = false,
     super.infinityCountUp = false,
+    super.countUpAtDuration,
     super.slideAnimationDuration = kDefaultAnimationDuration,
     super.digitsNumber,
     super.streamDuration,
@@ -53,7 +54,6 @@ class SlideCountdown extends SlideCountdownBase {
     super.shouldShowHours,
     super.shouldShowMinutes,
     super.shouldShowSeconds,
-    super.countUpAtDuration,
   });
 
   @override
