@@ -16,6 +16,10 @@ abstract class BaseDigits extends StatelessWidget {
     required this.separator,
     required this.showSeparator,
     required this.textDirection,
+    required this.durationTitle,
+    required this.durationTitleStyle,
+    required this.durationTitlePadding,
+    required this.isShowDurationTitleBelow,
     this.separatorPadding,
     this.digitsNumber,
   });
@@ -33,4 +37,8 @@ abstract class BaseDigits extends StatelessWidget {
   final TextDirection textDirection;
   final EdgeInsets? separatorPadding;
   final List<String>? digitsNumber;
+  final String durationTitle;
+  final TextStyle durationTitleStyle;
+  final double durationTitlePadding;
+  final bool isShowDurationTitleBelow;
 }

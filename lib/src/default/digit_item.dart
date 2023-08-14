@@ -19,6 +19,10 @@ class DigitItem extends BaseDigits {
     required super.separator,
     required super.showSeparator,
     required super.textDirection,
+    required super.durationTitle,
+    required super.durationTitleStyle,
+    required super.durationTitlePadding,
+    required super.isShowDurationTitleBelow,
     super.separatorPadding,
     super.digitsNumber,
   });
@@ -77,9 +81,15 @@ class DigitItem extends BaseDigits {
             separatorWidget,
           ];
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: children,
+    return Column(
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: children,
+        ),
+        if (isShowDurationTitleBelow) SizedBox(height: durationTitlePadding),
+        if (isShowDurationTitleBelow) Text(durationTitle, style: durationTitleStyle),
+      ],
     );
   }
 }

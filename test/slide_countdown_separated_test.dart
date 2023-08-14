@@ -68,7 +68,7 @@ void main() {
       testWidgets(
         'When duration is Zero, show replacement widget',
         (tester) async {
-          const widget = SlideCountdownSeparated(
+          final widget = SlideCountdownSeparated(
             duration: const Duration(seconds: 2),
             replacement: Text(
               'replacement',
