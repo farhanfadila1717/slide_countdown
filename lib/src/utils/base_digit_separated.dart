@@ -28,6 +28,10 @@ abstract class BaseDigitsSeparated extends StatelessWidget {
     required this.separator,
     required this.showSeparator,
     required this.textDirection,
+    required this.durationTitle,
+    required this.durationTitleStyle,
+    required this.durationTitlePadding,
+    required this.isShowDurationTitleBelow,
     this.separatorPadding,
     this.digitsNumber,
   });
@@ -85,4 +89,9 @@ abstract class BaseDigitsSeparated extends StatelessWidget {
 
   /// {@macro override_digits}
   final OverrideDigits? digitsNumber;
+
+  final String durationTitle;
+  final TextStyle durationTitleStyle;
+  final double durationTitlePadding;
+  final bool isShowDurationTitleBelow;
 }

@@ -43,3 +43,6 @@ const kDefaultTextStyle = const TextStyle(
 
 const kDefaultSeparatorTextStyle =
     const TextStyle(color: Color(0xFF000000), fontWeight: FontWeight.bold);
+
+const kDefaultDurationTitleTextStyle =
+    const TextStyle(color: Color(0xFF000000), fontWeight: FontWeight.bold);

@@ -54,6 +54,9 @@ class SlideCountdown extends SlideCountdownBase {
     super.shouldShowHours,
     super.shouldShowMinutes,
     super.shouldShowSeconds,
+    super.isShowDurationTitleBelow = false,
+    super.durationTitleStyle = kDefaultDurationTitleTextStyle,
+    super.durationTitlePadding = 20,
   });
 
   @override
@@ -124,10 +127,8 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
 
   void _updateConfigurationNotifier([Duration? duration]) {
     final remainingDuration = duration ?? _streamDuration.remainingDuration;
-    final defaultShowDays =
-        remainingDuration.inDays < 1 && !widget.showZeroValue ? false : true;
-    final defaultShowHours =
-        remainingDuration.inHours < 1 && !widget.showZeroValue ? false : true;
+    final defaultShowDays = remainingDuration.inDays < 1 && !widget.showZeroValue ? false : true;
+    final defaultShowHours = remainingDuration.inHours < 1 && !widget.showZeroValue ? false : true;
     final defaultShowMinutes =
         remainingDuration.inMinutes < 1 && !widget.showZeroValue ? false : true;
     final defaultShowSeconds =
@@ -180,21 +181,15 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
       builder: (BuildContext context, Duration duration, Widget? child) {
         if (duration.inSeconds <= 0 && child != null) return child;
 
-        final defaultShowDays =
-            duration.inDays < 1 && !widget.showZeroValue ? false : true;
-        final defaultShowHours =
-            duration.inHours < 1 && !widget.showZeroValue ? false : true;
-        final defaultShowMinutes =
-            duration.inMinutes < 1 && !widget.showZeroValue ? false : true;
-        final defaultShowSeconds =
-            duration.inSeconds < 1 && !widget.showZeroValue ? false : true;
+        final defaultShowDays = duration.inDays < 1 && !widget.showZeroValue ? false : true;
+        final defaultShowHours = duration.inHours < 1 && !widget.showZeroValue ? false : true;
+        final defaultShowMinutes = duration.inMinutes < 1 && !widget.showZeroValue ? false : true;
+        final defaultShowSeconds = duration.inSeconds < 1 && !widget.showZeroValue ? false : true;
 
-        final showDays = widget.shouldShowDays != null
-            ? widget.shouldShowDays!(duration)
-            : defaultShowDays;
-        final showHours = widget.shouldShowHours != null
-            ? widget.shouldShowHours!(duration)
-            : defaultShowHours;
+        final showDays =
+            widget.shouldShowDays != null ? widget.shouldShowDays!(duration) : defaultShowDays;
+        final showHours =
+            widget.shouldShowHours != null ? widget.shouldShowHours!(duration) : defaultShowHours;
         final showMinutes = widget.shouldShowMinutes != null
             ? widget.shouldShowMinutes!(duration)
             : defaultShowMinutes;
@@ -212,14 +207,16 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
           curve: widget.curve,
           countUp: widget.countUp,
           slideAnimationDuration: widget.slideAnimationDuration,
-          separator: widget.separatorType == SeparatorType.title
-              ? durationTitle.days
-              : separator,
+          separator: widget.separatorType == SeparatorType.title ? durationTitle.days : separator,
           separatorPadding: widget.separatorPadding,
           textDirection: textDirection,
+          durationTitle: durationTitle.days,
+          durationTitleStyle: widget.durationTitleStyle,
+          durationTitlePadding: widget.durationTitlePadding,
+          isShowDurationTitleBelow: widget.isShowDurationTitleBelow,
           digitsNumber: widget.digitsNumber,
-          showSeparator: (showHours || showMinutes || showSeconds) ||
-              (isSeparatorTitle && showDays),
+          showSeparator:
+              (showHours || showMinutes || showSeconds) || (isSeparatorTitle && showDays),
         );
 
         final hours = DigitItem(
@@ -231,14 +228,15 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
           curve: widget.curve,
           countUp: widget.countUp,
           slideAnimationDuration: widget.slideAnimationDuration,
-          separator: widget.separatorType == SeparatorType.title
-              ? durationTitle.hours
-              : separator,
+          separator: widget.separatorType == SeparatorType.title ? durationTitle.hours : separator,
           separatorPadding: widget.separatorPadding,
           textDirection: textDirection,
+          durationTitle: durationTitle.hours,
+          durationTitleStyle: widget.durationTitleStyle,
+          durationTitlePadding: widget.durationTitlePadding,
+          isShowDurationTitleBelow: widget.isShowDurationTitleBelow,
           digitsNumber: widget.digitsNumber,
-          showSeparator:
-              showMinutes || showSeconds || (isSeparatorTitle && showHours),
+          showSeparator: showMinutes || showSeconds || (isSeparatorTitle && showHours),
         );
 
         final minutes = DigitItem(
@@ -250,11 +248,14 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
           curve: widget.curve,
           countUp: widget.countUp,
           slideAnimationDuration: widget.slideAnimationDuration,
-          separator: widget.separatorType == SeparatorType.title
-              ? durationTitle.minutes
-              : separator,
+          separator:
+              widget.separatorType == SeparatorType.title ? durationTitle.minutes : separator,
           separatorPadding: widget.separatorPadding,
           textDirection: textDirection,
+          durationTitle: durationTitle.minutes,
+          durationTitleStyle: widget.durationTitleStyle,
+          durationTitlePadding: widget.durationTitlePadding,
+          isShowDurationTitleBelow: widget.isShowDurationTitleBelow,
           digitsNumber: widget.digitsNumber,
           showSeparator: showSeconds || (isSeparatorTitle && showMinutes),
         );
@@ -268,11 +269,14 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
           curve: widget.curve,
           countUp: widget.countUp,
           slideAnimationDuration: widget.slideAnimationDuration,
-          separator: widget.separatorType == SeparatorType.title
-              ? durationTitle.seconds
-              : separator,
+          separator:
+              widget.separatorType == SeparatorType.title ? durationTitle.seconds : separator,
           separatorPadding: widget.separatorPadding,
           textDirection: textDirection,
+          durationTitle: durationTitle.seconds,
+          durationTitleStyle: widget.durationTitleStyle,
+          durationTitlePadding: widget.durationTitlePadding,
+          isShowDurationTitleBelow: widget.isShowDurationTitleBelow,
           digitsNumber: widget.digitsNumber,
           showSeparator: isSeparatorTitle && showSeconds,
         );
