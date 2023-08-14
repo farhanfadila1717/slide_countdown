@@ -19,10 +19,6 @@ class DigitSeparatedItem extends BaseDigitsSeparated {
     required super.separator,
     required super.textDirection,
     required super.showSeparator,
-    required super.durationTitle,
-    required super.durationTitleStyle,
-    required super.durationTitlePadding,
-    required super.isShowDurationTitleBelow,
     super.separatorPadding,
     super.digitsNumber,
   });
@@ -67,26 +63,20 @@ class DigitSeparatedItem extends BaseDigitsSeparated {
       style: separatorStyle,
     );
 
-    final box = Column(
-      children: [
-        BoxSeparated(
-          height: height,
-          width: width,
-          decoration: decoration,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: textDirection.isRtl
-                ? [secondDigitWidget, firstDigitWidget]
-                : [
-                    firstDigitWidget,
-                    secondDigitWidget,
-                  ],
-          ),
-        ),
-        if (isShowDurationTitleBelow) SizedBox(height: durationTitlePadding),
-        if (isShowDurationTitleBelow) Text(durationTitle, style: durationTitleStyle),
-      ],
+    final box = BoxSeparated(
+      height: height,
+      width: width,
+      decoration: decoration,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: textDirection.isRtl
+            ? [secondDigitWidget, firstDigitWidget]
+            : [
+                firstDigitWidget,
+                secondDigitWidget,
+              ],
+      ),
     );
 
     return Visibility(

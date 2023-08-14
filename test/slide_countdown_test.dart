@@ -72,6 +72,7 @@ void main() {
           final widget = SlideCountdown(
             duration: kFullDuration,
             separatorType: SeparatorType.title,
+            textDirection: TextDirection.rtl,
           );
 
           await tester.pumpWidget(
