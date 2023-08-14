@@ -44,7 +44,7 @@ class ExampleSlideCountdown extends StatelessWidget {
               padding: EdgeInsets.only(top: 20, bottom: 10),
               child: Text('Default SlideCountdownSeparated'),
             ),
-            SlideCountdownSeparated(
+            const SlideCountdownSeparated(
               duration: defaultDuration,
               padding: defaultPadding,
             ),

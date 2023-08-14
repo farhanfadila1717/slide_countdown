@@ -132,10 +132,10 @@ packages:
     dependency: "direct main"
     description:
       name: stream_duration
-      sha256: a29e071bf3e5d284e1e7dce98dbbaf547e16543c4802ec4f1a5c74e516c71af5
+      sha256: "7a3a6b268dfa7a8a884cda40fbe34a67c78b91ed217c257653be93fb9e1805a3"
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.1"
+    version: "3.0.0"
   string_scanner:
     dependency: transitive
     description:
@@ -170,4 +170,4 @@ packages:
     version: "2.1.4"
 sdks:
   dart: ">=2.18.0 <3.0.0"
-  flutter: ">=3.0.0"
+  flutter: ">=1.17.0"
