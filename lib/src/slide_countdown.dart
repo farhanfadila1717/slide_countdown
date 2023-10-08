@@ -98,11 +98,20 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
   void _streamDurationListener() {
     _streamDuration = widget.streamDuration ??
         StreamDuration(
-          duration,
-          onDone: () => widget.onDone?.call(),
-          countUp: widget.countUp,
-          countUpAtDuration: widget.countUpAtDuration ?? false,
-          infinity: widget.infinityCountUp,
+          config: StreamDurationConfig(
+            autoPlay: true,
+            isCountUp: widget.countUp,
+            countDownConfig: CountDownConfig(
+              duration: widget.duration!,
+            ),
+            countUpConfig: CountUpConfig(
+              initialDuration:
+                  widget.countUpAtDuration != null && widget.countUpAtDuration!
+                      ? widget.duration!
+                      : Duration.zero,
+              maxDuration: widget.infinityCountUp ? null : widget.duration,
+            ),
+          ),
         );
 
     if (!_disposed) {
@@ -150,7 +159,8 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
     );
   }
 
-  Duration get duration => widget.duration ?? widget.streamDuration!.duration;
+  Duration get duration =>
+      widget.duration ?? widget.streamDuration!.remainingDuration;
 
   @override
   void dispose() {

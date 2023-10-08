@@ -32,11 +32,11 @@ enum TimeUnit {
 }
 
 enum DigitType {
+  daysThousand,
+
+  daysHundred,
+
   first,
 
   second,
-
-  daysGreather99,
-
-  daysGreather999,
 }

@@ -1,3 +1,8 @@
+## 0.7.0-dev.1
+* add `RawDigitItem`, `RawSlideCountdown`
+* bump `StreamDuration` packages to `4.1.0`
+* bump min dart sdk to `3.0.0`
+
 ## 0.6.0-dev.2
 * pubspec add `issue_tracker`
 * bump min flutter sdk `3.0.0`

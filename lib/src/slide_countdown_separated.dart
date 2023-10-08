@@ -112,11 +112,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
   void _streamDurationListener() {
     _streamDuration = widget.streamDuration ??
         StreamDuration(
-          duration,
-          onDone: () => widget.onDone?.call(),
-          countUp: widget.countUp,
-          countUpAtDuration: widget.countUpAtDuration ?? false,
-          infinity: widget.infinityCountUp,
+          config: StreamDurationConfig(),
         );
 
     if (!_disposed) {
@@ -164,7 +160,8 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated>
     );
   }
 
-  Duration get duration => widget.duration ?? widget.streamDuration!.duration;
+  Duration get duration =>
+      widget.duration ?? widget.streamDuration!.remainingDuration;
 
   @override
   void dispose() {
