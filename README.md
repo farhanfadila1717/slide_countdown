@@ -53,6 +53,13 @@ SlideCountdown(
 #### Output Slidecountdown sparatorType.title
 [![slidecountdown separatortype][]][slidecountdown separatortype]
 
+#### Full Customize Slidecountdown
+You can full customize slidecountdown with `RawSlideCountdown` and `RawDigitItem`
+see the code [here](https://github.com/farhanfadila1717/slide_countdown/blob/master/example/example_raw_slide_countdown.dart)
+
+#### Output Customize Slidecountdown
+[![raw-slidecountdown][]][raw-slidecountdown]
+
 
 ## Example control duration
 If you want to control duration more advanced, you can override property `StreamDuration`. <br>
@@ -101,3 +108,4 @@ SlideCountdown(
 [paypal account]: https://www.paypal.me/farhanfadila1717
 [stream duration]: https://pub.dev/packages/stream_duration
 [qr-paypal]: https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/qr-paypal.png
+[raw-slidecountdown]: https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/raw_slide_countdown.png

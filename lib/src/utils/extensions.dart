@@ -26,13 +26,22 @@ extension DurationExtensions on Duration {
   // Access the tens digit from inDays
   int get daysFirstDigit {
     if (inDays <= 0) return 0;
-    return int.parse(inDaysAsString[inDaysAsString.length - 2]);
+    if (inDays > 99) {
+      return int.parse(inDaysAsString[inDaysAsString.length - 2]);
+    }
+
+    return inDays ~/ 10;
   }
 
   // Access the units digit from inDays
   int get daysLastDigit {
     if (inDays <= 0) return 0;
-    return int.parse(inDaysAsString[inDaysAsString.length - 1]);
+
+    if (inDays > 99) {
+      return int.parse(inDaysAsString[inDaysAsString.length - 1]);
+    }
+
+    return inDays % 10;
   }
 
   int get hoursFirstDigit {
