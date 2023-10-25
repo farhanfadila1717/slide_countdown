@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
-import 'utils.dart';
-import 'enum.dart';
+import 'package:slide_countdown/slide_countdown.dart';
+import 'package:slide_countdown/src/utils/utils.dart';
 
-/// {@template base_digits_separated}
+/// {@template base_digits}
 /// `BaseDigitsSeparated` is an abstract class that provides
 /// the basic structure for building a widget that displays
 /// two digits separated by a separator, with the ability to
 /// animate the transition between values.
 /// {@endtemplate}
-abstract class BaseDigitsSeparated extends StatelessWidget {
-  /// {@macro base_digits_separated}
-  const BaseDigitsSeparated({
+abstract class BaseDigits extends StatelessWidget {
+  /// {@macro base_digits}
+  const BaseDigits({
     Key? key,
-    required this.height,
-    required this.width,
+    required this.duration,
+    required this.timeUnit,
+    required this.padding,
     required this.decoration,
-    required this.firstDigit,
-    required this.secondDigit,
-    required this.textStyle,
+    required this.style,
     required this.separatorStyle,
-    required this.initValue,
     required this.slideDirection,
-    required this.showZeroValue,
     required this.curve,
     required this.countUp,
     required this.slideAnimationDuration,
@@ -32,35 +29,26 @@ abstract class BaseDigitsSeparated extends StatelessWidget {
     this.digitsNumber,
   });
 
-  /// The height of the widget.
-  final double height;
+  /// The duration of widget.
+  final Duration duration;
 
-  /// The width of the separated widget.
-  final double width;
+  /// The time unit of widget.
+  final TimeUnit timeUnit;
+
+  /// The padding of the container.
+  final EdgeInsetsGeometry padding;
 
   /// The decoration to apply to the widget.
   final Decoration decoration;
 
-  /// A ValueNotifier that holds the value of the first digit.
-  final ValueNotifier<int> firstDigit;
-
-  /// A ValueNotifier that holds the value of the second digit.
-  final ValueNotifier<int> secondDigit;
-
   /// The style for the text of the digits.
-  final TextStyle textStyle;
+  final TextStyle style;
 
   /// The style for the separator.
   final TextStyle separatorStyle;
 
-  /// The initial value for the widget.
-  final int initValue;
-
   /// The direction in which the digits should slide during the animation.
   final SlideDirection slideDirection;
-
-  /// Whether or not to display a zero value.
-  final bool showZeroValue;
 
   ///  The curve to use for the animation.
   final Curve curve;

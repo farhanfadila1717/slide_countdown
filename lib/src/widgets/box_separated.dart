@@ -1,4 +1,4 @@
-part of 'separated.dart';
+import 'package:flutter/widgets.dart';
 
 /// {@template box_separated}
 /// A custom widget that displays a container with a
@@ -10,17 +10,13 @@ class BoxSeparated extends StatelessWidget {
   /// {$macro box_separated}
   const BoxSeparated({
     super.key,
-    required this.height,
-    required this.width,
+    required this.padding,
     required this.decoration,
     required this.child,
   });
 
-  /// The height of the container.
-  final double height;
-
-  /// The width of the container.
-  final double width;
+  /// The padding of the container.
+  final EdgeInsetsGeometry padding;
 
   /// The decoration of the container.
   final Decoration decoration;
@@ -31,8 +27,7 @@ class BoxSeparated extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height,
-      width: width,
+      padding: padding,
       decoration: decoration,
       clipBehavior: Clip.hardEdge,
       alignment: Alignment.center,

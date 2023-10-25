@@ -20,3 +20,23 @@ enum SeparatorType {
   /// Represents a separator with a title.
   title,
 }
+
+enum TimeUnit {
+  days,
+
+  hours,
+
+  minutes,
+
+  seconds,
+}
+
+enum DigitType {
+  daysThousand,
+
+  daysHundred,
+
+  first,
+
+  second,
+}

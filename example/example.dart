@@ -121,7 +121,11 @@ class _ExampleControlDurationState extends State<ExampleControlDuration> {
   void initState() {
     super.initState();
     _streamDuration = StreamDuration(
-      const Duration(hours: 2),
+      config: StreamDurationConfig(
+        countDownConfig: CountDownConfig(
+          duration: const Duration(days: 2),
+        ),
+      ),
     );
   }
 
