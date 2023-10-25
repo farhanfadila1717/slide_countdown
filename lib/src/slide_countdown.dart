@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:slide_countdown/src/utils/utils.dart';
 import 'package:stream_duration/stream_duration.dart';
 
-import 'default/default.dart';
-import 'utils/countdown_mixin.dart';
-import 'utils/duration_title.dart';
+import 'utils/utils.dart';
+import 'models/duration_title.dart';
 import 'utils/enum.dart';
 import 'utils/extensions.dart';
-import 'utils/notifiy_duration.dart';
-import 'utils/slide_countdown_base.dart';
+import 'models/slide_countdown_base.dart';
+import 'widgets/digit_item.dart';
+import 'widgets/raw_slide_countdown.dart';
 
 /// {@template slide_countdown}
 /// The SlideCountdownSeparated is a StatefulWidget that
@@ -28,6 +27,7 @@ class SlideCountdown extends SlideCountdownBase {
   const SlideCountdown({
     super.key,
     super.duration,
+    super.style = kDefaultTextStyle,
     super.textStyle = kDefaultTextStyle,
     super.separatorStyle = kDefaultTextStyle,
     super.icon,
@@ -60,18 +60,13 @@ class SlideCountdown extends SlideCountdownBase {
   _SlideCountdownState createState() => _SlideCountdownState();
 }
 
-class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
+class _SlideCountdownState extends State<SlideCountdown> {
   late StreamDuration _streamDuration;
-  late NotifiyDuration _notifiyDuration;
-  bool _disposed = false;
 
   @override
   void initState() {
     super.initState();
-    _notifiyDuration = NotifiyDuration(duration);
-    _disposed = false;
     _streamDurationListener();
-    _updateConfigurationNotifier(widget.duration);
   }
 
   @override
@@ -80,17 +75,6 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
         widget.infinityCountUp != oldWidget.infinityCountUp) {
       _streamDuration.dispose();
       _streamDurationListener();
-    }
-    if (widget.duration != oldWidget.duration) {
-      _streamDuration.change(duration);
-    }
-
-    if (oldWidget.shouldShowDays != widget.shouldShowDays ||
-        oldWidget.shouldShowHours != widget.shouldShowHours ||
-        oldWidget.shouldShowMinutes != widget.shouldShowMinutes ||
-        oldWidget.shouldShowSeconds != widget.shouldShowSeconds ||
-        oldWidget.showZeroValue != widget.showZeroValue) {
-      _updateConfigurationNotifier();
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -101,6 +85,7 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
           config: StreamDurationConfig(
             autoPlay: true,
             isCountUp: widget.countUp,
+            onDone: widget.onDone,
             countDownConfig: CountDownConfig(
               duration: widget.duration!,
             ),
@@ -114,59 +99,17 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
           ),
         );
 
-    if (!_disposed) {
-      try {
-        _streamDuration.durationLeft.listen(
-          (duration) {
-            _notifiyDuration.streamDuration(duration);
-            updateValue(duration);
-            if (widget.onChanged != null) {
-              widget.onChanged!(duration);
-            }
-          },
-        );
-      } catch (ex) {
-        debugPrint(ex.toString());
-      }
+    if (widget.onChanged != null) {
+      _streamDuration.durationLeft.listen(
+        (event) => widget.onChanged?.call(event),
+      );
     }
   }
 
-  void _updateConfigurationNotifier([Duration? duration]) {
-    final remainingDuration = duration ?? _streamDuration.remainingDuration;
-    final defaultShowDays =
-        remainingDuration.inDays < 1 && !widget.showZeroValue ? false : true;
-    final defaultShowHours =
-        remainingDuration.inHours < 1 && !widget.showZeroValue ? false : true;
-    final defaultShowMinutes =
-        remainingDuration.inMinutes < 1 && !widget.showZeroValue ? false : true;
-    final defaultShowSeconds =
-        remainingDuration.inSeconds < 1 && !widget.showZeroValue ? false : true;
-
-    /// cal func from CountdownMixin
-    updateConfigurationNotifier(
-      updateDaysNotifier: widget.shouldShowDays != null
-          ? widget.shouldShowDays!(remainingDuration)
-          : defaultShowDays,
-      updateHoursNotifier: widget.shouldShowHours != null
-          ? widget.shouldShowHours!(remainingDuration)
-          : defaultShowHours,
-      updateMinutesNotifier: widget.shouldShowMinutes != null
-          ? widget.shouldShowMinutes!(remainingDuration)
-          : defaultShowMinutes,
-      updateSecondsNotifier: widget.shouldShowSeconds != null
-          ? widget.shouldShowSeconds!(remainingDuration)
-          : defaultShowSeconds,
-    );
-  }
-
-  Duration get duration =>
-      widget.duration ?? widget.streamDuration!.remainingDuration;
-
   @override
   void dispose() {
-    super.dispose();
-    _disposed = true;
     _streamDuration.dispose();
+    super.dispose();
   }
 
   @override
@@ -185,10 +128,11 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
       child: widget.suffixIcon ?? const SizedBox.shrink(),
     );
 
-    return ValueListenableBuilder(
-      valueListenable: _notifiyDuration,
-      builder: (BuildContext context, Duration duration, Widget? child) {
-        if (duration.inSeconds <= 0 && child != null) return child;
+    return RawSlideCountdown(
+      streamDuration: _streamDuration,
+      builder: (BuildContext context, Duration duration) {
+        if (duration.inSeconds <= 0 && widget.replacement != null)
+          return widget.replacement!;
 
         final defaultShowDays =
             duration.inDays < 1 && !widget.showZeroValue ? false : true;
@@ -214,10 +158,12 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
         final isSeparatorTitle = widget.separatorType == SeparatorType.title;
 
         final days = DigitItem(
-          firstDigit: daysFirstDigitNotifier,
-          secondDigit: daysSecondDigitNotifier,
-          textStyle: widget.textStyle,
+          duration: duration,
+          timeUnit: TimeUnit.days,
+          padding: widget.padding,
+          decoration: widget.decoration,
           separatorStyle: widget.separatorStyle,
+          style: widget.style,
           slideDirection: widget.slideDirection,
           curve: widget.curve,
           countUp: widget.countUp,
@@ -233,9 +179,11 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
         );
 
         final hours = DigitItem(
-          firstDigit: hoursFirstDigitNotifier,
-          secondDigit: hoursSecondDigitNotifier,
-          textStyle: widget.textStyle,
+          duration: duration,
+          timeUnit: TimeUnit.hours,
+          padding: widget.padding,
+          decoration: widget.decoration,
+          style: widget.style,
           separatorStyle: widget.separatorStyle,
           slideDirection: widget.slideDirection,
           curve: widget.curve,
@@ -252,9 +200,11 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
         );
 
         final minutes = DigitItem(
-          firstDigit: minutesFirstDigitNotifier,
-          secondDigit: minutesSecondDigitNotifier,
-          textStyle: widget.textStyle,
+          duration: duration,
+          timeUnit: TimeUnit.minutes,
+          padding: widget.padding,
+          decoration: widget.decoration,
+          style: widget.style,
           separatorStyle: widget.separatorStyle,
           slideDirection: widget.slideDirection,
           curve: widget.curve,
@@ -270,9 +220,11 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
         );
 
         final seconds = DigitItem(
-          firstDigit: secondsFirstDigitNotifier,
-          secondDigit: secondsSecondDigitNotifier,
-          textStyle: widget.textStyle,
+          duration: duration,
+          timeUnit: TimeUnit.seconds,
+          padding: widget.padding,
+          decoration: widget.decoration,
+          style: widget.style,
           separatorStyle: widget.separatorStyle,
           slideDirection: widget.slideDirection,
           curve: widget.curve,
@@ -323,7 +275,6 @@ class _SlideCountdownState extends State<SlideCountdown> with CountdownMixin {
           child: countdown,
         );
       },
-      child: widget.replacement,
     );
   }
 }

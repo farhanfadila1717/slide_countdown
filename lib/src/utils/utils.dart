@@ -23,7 +23,7 @@ const kDefaultBoxDecoration = BoxDecoration(
 );
 
 const kDefaultSeparatedBoxDecoration = BoxDecoration(
-  borderRadius: BorderRadius.all(Radius.circular(20)),
+  borderRadius: BorderRadius.all(Radius.circular(4)),
   color: Color(0xFFF23333),
 );
 

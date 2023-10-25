@@ -9,27 +9,30 @@ extension TextDirectionExtension on TextDirection {
 }
 
 extension DurationExtensions on Duration {
-  // when `5324` days this first digit is 5
+  String get inDaysAsString => inDays.toString();
+
+  // Access the thousandth digit from inDays
   int get daysThousandDigit {
     if (inDays <= 0) return 0;
-    return inDays ~/ 1000;
+    return int.parse(inDaysAsString[inDaysAsString.length - 4]);
   }
 
-  // when `324` days this first digit is 3
+  // Access the hundredth digit from inDays
   int get daysHundredDigit {
     if (inDays <= 0) return 0;
-    return inDays ~/ 100;
+    return int.parse(inDaysAsString[inDaysAsString.length - 3]);
   }
 
-  // when `24` days this first digit is 2
+  // Access the tens digit from inDays
   int get daysFirstDigit {
     if (inDays <= 0) return 0;
-    return inDays ~/ 10;
+    return int.parse(inDaysAsString[inDaysAsString.length - 2]);
   }
 
+  // Access the units digit from inDays
   int get daysLastDigit {
     if (inDays <= 0) return 0;
-    return inDays % 10;
+    return int.parse(inDaysAsString[inDaysAsString.length - 1]);
   }
 
   int get hoursFirstDigit {

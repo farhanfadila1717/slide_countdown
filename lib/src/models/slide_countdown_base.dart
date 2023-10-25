@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:stream_duration/stream_duration.dart';
 
 import 'duration_title.dart';
-import 'enum.dart';
-import 'utils.dart';
+import '../utils/enum.dart';
+import '../utils/utils.dart';
 
 abstract class SlideCountdownBase extends StatefulWidget {
   const SlideCountdownBase({
@@ -11,6 +11,7 @@ abstract class SlideCountdownBase extends StatefulWidget {
     required this.duration,
     required this.textStyle,
     required this.separatorStyle,
+    required this.style,
     required this.icon,
     required this.suffixIcon,
     required this.separator,
@@ -47,6 +48,12 @@ abstract class SlideCountdownBase extends StatefulWidget {
   /// [TextStyle] is a parameter for all existing text,
   /// if this is null [SlideCountdown] has a default
   /// text style which will be of all text
+  final TextStyle style;
+
+  /// [TextStyle] is a parameter for all existing text,
+  /// if this is null [SlideCountdown] has a default
+  /// text style which will be of all text
+  @Deprecated('no longer use, use style insted')
   final TextStyle textStyle;
 
   /// [TextStyle] is a parameter for all existing text,

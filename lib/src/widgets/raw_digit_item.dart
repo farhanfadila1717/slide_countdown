@@ -8,6 +8,20 @@ import 'package:slide_countdown/src/utils/utils.dart';
 
 const _kDefaultAnimationDuration = Duration(milliseconds: 250);
 
+/// {@template raw_digit_item}
+/// Represents an animated digit item that can count up or down
+/// based on the provided [duration].
+///
+/// Example:
+/// ```dart
+///    RawDigitItem(
+///       duration: remainingDuration,
+///       timeUnit: TimeUnit.seconds,
+///       digitType: DigitType.second,
+///       countUp: false,
+///     )
+/// ```
+/// {@endtemplate}
 class RawDigitItem extends StatefulWidget {
   const RawDigitItem({
     super.key,
@@ -19,6 +33,7 @@ class RawDigitItem extends StatefulWidget {
     this.slideAnimationDuration,
     this.digitsNumber,
     this.style,
+    this.curve,
   });
 
   final Duration duration;
@@ -29,6 +44,7 @@ class RawDigitItem extends StatefulWidget {
   final TextStyle? style;
   final Duration? slideAnimationDuration;
   final OverrideDigits? digitsNumber;
+  final Curve? curve;
 
   @override
   State<RawDigitItem> createState() => _RawDigitItemState();
@@ -55,12 +71,22 @@ class _RawDigitItemState extends State<RawDigitItem>
     _offsetAnimationOne = Tween<Offset>(
       begin: const Offset(0.0, -1.0),
       end: const Offset(0.0, 0.0),
-    ).animate(_controller);
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: widget.curve ?? Curves.linear,
+      ),
+    );
 
     _offsetAnimationTwo = Tween<Offset>(
       begin: const Offset(0.0, 0.0),
       end: const Offset(0.0, 1.0),
-    ).animate(_controller);
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: widget.curve ?? Curves.linear,
+      ),
+    );
 
     initValue();
     listenAnimation();
@@ -122,16 +148,29 @@ class _RawDigitItemState extends State<RawDigitItem>
   void initValue() => _currentValue = digitValue;
 
   int get _nextValue {
+    int _correction = 1;
+    final animationValue = _controller.value;
+    final tollerance =
+        ((widget.slideAnimationDuration ?? _kDefaultAnimationDuration)
+                    .inMilliseconds /
+                1000)
+            .clamp(0.0, 1.0);
+
+    if (animationValue <= tollerance) {
+      _correction = 2;
+    }
+
     if (widget.countUp) {
       if (_currentValue > 0) {
-        return max(0, _currentValue + 1);
+        return max(0, _currentValue + _correction);
       }
       return 0;
     }
     if (_currentValue == 9) {
       return 0;
     }
-    return max(0, _currentValue - 1);
+
+    return max(0, _currentValue - _correction);
   }
 
   bool get isDirectionUp => widget.slideDirection == SlideDirection.up;
