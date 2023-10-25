@@ -1,3 +1,6 @@
+## 1.0.1
+* fix: datetime extensions 
+
 ## 1.0.0
 * add `RawDigitItem`, `RawSlideCountdown`
 * refactor `SlideCountdownSeparated` to use `RawSlideCountdown`
