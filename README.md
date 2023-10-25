@@ -1,5 +1,7 @@
 ## [![cover][]][pubdev]
 [![flutter][]][web flutter] [![badge paypal][]][paypal account] [![badge linktree][]][linktree account] <br>
+[![qr-paypal][]][paypal account]
+<br>
 A Flutter package to create easy slide animation countdown / countup timer.
 
 ---
@@ -78,14 +80,16 @@ SlideCountdown(
 📫 How to reach me: farhan.fadila1717@gmail.com
 
 ### ❤️ Support the maintainer
-[![badge paypal][]][paypal account] [![badge linktree][]][linktree account]
+[![qr-paypal][]][paypal account]<br>
+[![badge paypal][]][paypal account] [![badge linktree][]][linktree account] 
 
 
-[cover]:https://github.com/farhanfadila1717/flutter_package/blob/master/display/slide_coutdown/slide_countdown.png
-[slidecountdown]: https://github.com/farhanfadila1717/flutter_package/blob/master/display/slide_coutdown/slidecountdown.gif
-[slidecountdown separated]: https://github.com/farhanfadila1717/flutter_package/blob/master/display/slide_coutdown/slidecountdown_separated.gif
-[slidecountdown countup]: https://github.com/farhanfadila1717/flutter_package/blob/master/display/slide_coutdown/slidecountdown_countup.gif
-[slidecountdown separatortype]: https://github.com/farhanfadila1717/flutter_package/blob/master/display/slide_coutdown/slidecountdown_separatortype.gif 
+
+[cover]:https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/slide_countdown.png
+[slidecountdown]: https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/slidecountdown.gif
+[slidecountdown separated]: https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/slidecountdown_separated.gif
+[slidecountdown countup]: https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/slidecountdown_countup.gif
+[slidecountdown separatortype]: https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/slidecountdown_separatortype.gif 
 [pubdev]: https://pub.dev/packages/slide_countdown
 [flutter]: https://img.shields.io/badge/Platform-Flutter-02569B?logo=flutter
 [web flutter]: https://flutter.dev
@@ -96,3 +100,4 @@ SlideCountdown(
 [badge paypal]: https://img.shields.io/badge/Donate-PayPal-00457C?logo=paypal
 [paypal account]: https://www.paypal.me/farhanfadila1717
 [stream duration]: https://pub.dev/packages/stream_duration
+[qr-paypal]: https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/qr-paypal.png
