@@ -19,5 +19,5 @@ dev_dependencies:
     sdk: flutter
 
 screenshots:
-  - description: Examples of the SlideCountdown.
+  - description: 'Examples of the SlideCountdown.'
     path: ss.png
