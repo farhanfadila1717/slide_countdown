@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:slide_countdown/slide_countdown.dart';
-import 'package:slide_countdown/src/separated/separated.dart';
+import 'package:slide_countdown/src/widgets/digit_separated_item.dart';
 
 const kDuration = Duration(hours: 3);
 const kFullDuration = Duration(days: 2);
