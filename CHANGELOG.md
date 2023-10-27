@@ -1,5 +1,5 @@
 ## 1.0.2
-* fix: [#50](https://github.com/farhanfadila1717/slide_countdown/issues/50)
+* fix: [#50](https://github.com/farhanfadila1717/slide_countdown/issues/50) Bad state: Stream has already been listened to
 
 ## 1.0.1
 * fix: datetime extensions 
