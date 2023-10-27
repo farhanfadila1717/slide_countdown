@@ -73,7 +73,7 @@ class RawSlideCountdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepaintBoundary(
       child: StreamBuilder<Duration>(
-        stream: streamDuration.durationLeft,
+        stream: streamDuration.durationLeft.asBroadcastStream(),
         builder: (_, snapshoot) {
           if (snapshoot.hasData) {
             return builder(context, snapshoot.data!);
