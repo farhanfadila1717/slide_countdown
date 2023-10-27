@@ -1,3 +1,6 @@
+## 1.0.2
+* fix: [#50](https://github.com/farhanfadila1717/slide_countdown/issues/50)
+
 ## 1.0.1
 * fix: datetime extensions 
 
