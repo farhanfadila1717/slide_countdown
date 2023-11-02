@@ -1,3 +1,6 @@
+## 1.1.0-dev.2
+* add topics pubspec.yaml
+
 ## 1.1.0-dev.1
 * refactor: `RawSlideCountdown` with `ValueListenableBuilder` instead of `StreamBuilder`
 
