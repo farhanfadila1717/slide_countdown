@@ -1,3 +1,6 @@
+## 1.1.0-dev.1
+* refactor: `RawSlideCountdown` with `ValueListenableBuilder` instead of `StreamBuilder`
+
 ## 1.0.2
 * fix: [#50](https://github.com/farhanfadila1717/slide_countdown/issues/50) Bad state: Stream has already been listened to
 
