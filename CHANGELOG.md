@@ -1,8 +1,6 @@
-## 1.1.0-dev.2
-* add topics pubspec.yaml
-
-## 1.1.0-dev.1
+## 1.1.0
 * refactor: `RawSlideCountdown` with `ValueListenableBuilder` instead of `StreamBuilder`
+* add topics pubspec.yaml
 
 ## 1.0.2
 * fix: [#50](https://github.com/farhanfadila1717/slide_countdown/issues/50) Bad state: Stream has already been listened to
@@ -13,11 +11,8 @@
 ## 1.0.0
 * add `RawDigitItem`, `RawSlideCountdown`
 * refactor `SlideCountdownSeparated` to use `RawSlideCountdown`
-* bump min `StreamDuration` packages to `4.2.0`
-
-## 0.6.0-dev.2
+* bump min `StreamDuration` packages to `4.2.0`, min flutter sdk `3.0.0`
 * pubspec add `issue_tracker`
-* bump min flutter sdk `3.0.0`
 
 ## 0.5.0
 * bump min dart sdk to `2.17.0`
