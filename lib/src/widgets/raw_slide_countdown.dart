@@ -88,7 +88,10 @@ class _RawSlideCountdownState extends State<RawSlideCountdown> {
     );
 
     widget.streamDuration.durationLeft.listen(
-      (duration) => _durationNotifier.value = duration,
+      (duration) {
+        if (mounted) _durationNotifier.value = duration;
+      },
+      cancelOnError: true,
     );
   }
 
@@ -103,9 +106,7 @@ class _RawSlideCountdownState extends State<RawSlideCountdown> {
     return RepaintBoundary(
       child: ValueListenableBuilder(
         valueListenable: _durationNotifier,
-        builder: (_, duration, __) {
-          return widget.builder(context, duration);
-        },
+        builder: (_, duration, __) => widget.builder(context, duration),
       ),
     );
   }
