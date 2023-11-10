@@ -1,4 +1,5 @@
 ## [![cover][]][pubdev]
+
 [![flutter][]][web flutter] [![badge paypal][]][paypal account] [![badge linktree][]][linktree account] <br>
 [![qr-paypal][]][paypal account]
 <br>
@@ -8,41 +9,53 @@ A Flutter package to create easy slide animation countdown / countup timer.
 
 ## Example SlideCountdown
 
-#### Slidecountdown(Default)
+### Slidecountdown(Default)
+
 ```dart
 SlideCountdown(
   duration: const Duration(days: 2),
 )
 ```
-#### Output SlideCountdown(Default)
+
+### Output SlideCountdown(Default)
+
 [![slidecountdown][]][slidecountdown]
 
-<br>
+---
 
-#### SlideCountdownSeparated(Default)
+### SlideCountdownSeparated(Default)
+
 ```dart
 SlideCountdownSeparated(
   duration: const Duration(days: 2),
 )
 ```
-#### Output SlideCountdownSeparated(Default)
+
+### Output SlideCountdownSeparated(Default)
+
 [![slidecountdown separated][]][slidecountdown separated]
 
-<br>
+---
 
-#### Slidecountdown countUp
+### CountUp is True
+
+When the countup value is the same as the duration, it will call onDone. If you do not set a duration, the countup will continue infinitely and onDone will never be called.
+
 ```dart
 SlideCountdown(
   duration: const Duration(days: 2),
   countUp: true,
 )
 ```
-#### Output Slidecountdown countUp
+
+### Output Slidecountdown countUp
+
 [![slidecountdown countup][]][slidecountdown countup]
 
-<br>
+---
 
-#### Slidecountdown sparatorType.title
+### Slidecountdown sparatorType.title
+
 ```dart
 SlideCountdown(
   duration: const Duration(days: 2),
@@ -50,18 +63,26 @@ SlideCountdown(
   slideDirection: SlideDirection.up,
 )
 ```
-#### Output Slidecountdown sparatorType.title
+
+### Output Slidecountdown sparatorType.title
+
 [![slidecountdown separatortype][]][slidecountdown separatortype]
 
-#### Full Customize Slidecountdown
-You can full customize slidecountdown with `RawSlideCountdown` and `RawDigitItem`
-see the code [here](https://github.com/farhanfadila1717/slide_countdown/blob/master/example/example_raw_slide_countdown.dart)
+---
 
-#### Output Customize Slidecountdown
+### Full Customize Slidecountdown
+
+You can full customize slidecountdown with `RawSlideCountdown` and `RawDigitItem`
+see example [here](https://github.com/farhanfadila1717/slide_countdown/blob/master/example/example_raw_slide_countdown.dart)
+
+### Output Customize Slidecountdown
+
 [![raw-slidecountdown][]][raw-slidecountdown]
 
+---
 
 ## Example control duration
+
 If you want to control duration more advanced, you can override property `StreamDuration`. <br>
 You can `play`, `pause`, `change`, `add`, `subtract` duration.
 
@@ -78,25 +99,24 @@ SlideCountdown(
 ),
 ```
 
-
 ---
 
-### 🚧 Maintainer 
+### 🚧 Maintainer
+
 [![account avatar][]][github account] <br>
 **Farhan Fadila** <br>
 📫 How to reach me: farhan.fadila1717@gmail.com
 
 ### ❤️ Support the maintainer
+
 [![qr-paypal][]][paypal account]<br>
-[![badge paypal][]][paypal account] [![badge linktree][]][linktree account] 
+[![badge paypal][]][paypal account] [![badge linktree][]][linktree account]
 
-
-
-[cover]:https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/slide_countdown.png
+[cover]: https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/slide_countdown.png
 [slidecountdown]: https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/slidecountdown.gif
 [slidecountdown separated]: https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/slidecountdown_separated.gif
 [slidecountdown countup]: https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/slidecountdown_countup.gif
-[slidecountdown separatortype]: https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/slidecountdown_separatortype.gif 
+[slidecountdown separatortype]: https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/slidecountdown_separatortype.gif
 [pubdev]: https://pub.dev/packages/slide_countdown
 [flutter]: https://img.shields.io/badge/Platform-Flutter-02569B?logo=flutter
 [web flutter]: https://flutter.dev
