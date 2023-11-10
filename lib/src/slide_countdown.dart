@@ -69,16 +69,6 @@ class _SlideCountdownState extends State<SlideCountdown> {
     _streamDurationListener();
   }
 
-  @override
-  void didUpdateWidget(covariant SlideCountdown oldWidget) {
-    if (widget.countUp != oldWidget.countUp ||
-        widget.infinityCountUp != oldWidget.infinityCountUp) {
-      _streamDuration.dispose();
-      _streamDurationListener();
-    }
-    super.didUpdateWidget(oldWidget);
-  }
-
   void _streamDurationListener() {
     _streamDuration = widget.streamDuration ??
         StreamDuration(
