@@ -1,3 +1,8 @@
+## 1.2.1
+
+- refactor `RawSlideCountdown` builder pass `countUp` params
+- fix `RawDigitItem` currentValue and nextValue
+
 ## 1.1.1
 
 - `RawSlideCountdown` cancelOnError true

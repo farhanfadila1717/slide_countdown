@@ -7,9 +7,9 @@ A Flutter package to create easy slide animation countdown / countup timer.
 
 ---
 
-## Example SlideCountdown
+# Example SlideCountdown
 
-### Slidecountdown(Default)
+## Slidecountdown(Default)
 
 ```dart
 SlideCountdown(
@@ -17,13 +17,13 @@ SlideCountdown(
 )
 ```
 
-### Output SlideCountdown(Default)
+## Output SlideCountdown(Default)
 
 [![slidecountdown][]][slidecountdown]
 
 ---
 
-### SlideCountdownSeparated(Default)
+## SlideCountdownSeparated(Default)
 
 ```dart
 SlideCountdownSeparated(
@@ -37,7 +37,7 @@ SlideCountdownSeparated(
 
 ---
 
-### CountUp is True
+## CountUp is True
 
 When the countup value is the same as the duration, it will call onDone. If you do not set a duration, the countup will continue infinitely and onDone will never be called.
 
@@ -48,13 +48,13 @@ SlideCountdown(
 )
 ```
 
-### Output Slidecountdown countUp
+## Output Slidecountdown countUp
 
 [![slidecountdown countup][]][slidecountdown countup]
 
 ---
 
-### Slidecountdown sparatorType.title
+## Slidecountdown sparatorType.title
 
 ```dart
 SlideCountdown(
@@ -64,24 +64,24 @@ SlideCountdown(
 )
 ```
 
-### Output Slidecountdown sparatorType.title
+## Output Slidecountdown sparatorType.title
 
 [![slidecountdown separatortype][]][slidecountdown separatortype]
 
 ---
 
-### Full Customize Slidecountdown
+# Full Customize Slidecountdown
 
 You can full customize slidecountdown with `RawSlideCountdown` and `RawDigitItem`
 see example [here](https://github.com/farhanfadila1717/slide_countdown/blob/master/example/example_raw_slide_countdown.dart)
 
-### Output Customize Slidecountdown
+## Output Customize Slidecountdown
 
 [![raw-slidecountdown][]][raw-slidecountdown]
 
 ---
 
-## Example control duration
+# Example control duration
 
 If you want to control duration more advanced, you can override property `StreamDuration`. <br>
 You can `play`, `pause`, `change`, `add`, `subtract` duration.
