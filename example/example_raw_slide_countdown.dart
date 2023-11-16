@@ -58,9 +58,22 @@ class _ExampleRawSlideCountdownState extends State<ExampleRawSlideCountdown> {
           children: [
             RawSlideCountdown(
               streamDuration: streamDuration,
-              builder: (context, duration) {
+              builder: (context, duration, countUp) {
                 return Row(
-                  children: [],
+                  children: [
+                    RawDigitItem(
+                      duration: duration,
+                      timeUnit: TimeUnit.seconds,
+                      digitType: DigitType.first,
+                      countUp: countUp,
+                    ),
+                    RawDigitItem(
+                      duration: duration,
+                      timeUnit: TimeUnit.seconds,
+                      digitType: DigitType.second,
+                      countUp: countUp,
+                    ),
+                  ],
                 );
               },
             ),
