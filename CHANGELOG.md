@@ -1,3 +1,7 @@
+## 1.2.1
+
+- remove print
+
 ## 1.2.0
 
 - refactor `RawSlideCountdown` builder pass `countUp` params

@@ -220,8 +220,6 @@ class _RawDigitItemState extends State<RawDigitItem>
 
   @override
   Widget build(BuildContext context) {
-    print(widget.countUp);
-    print('Current:$_currentValue: Next :$_finalNextValue');
     if (isWithoutAnimation) {
       return Text(
         digit(_currentValue),
