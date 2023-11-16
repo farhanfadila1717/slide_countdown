@@ -104,40 +104,49 @@ class _RawDigitItemState extends State<RawDigitItem>
     });
   }
 
+  Duration get duration {
+    final _tolerance =
+        widget.slideAnimationDuration ?? _kDefaultAnimationDuration;
+    if (widget.countUp) {
+      return widget.duration - _tolerance;
+    }
+    return widget.duration + _tolerance;
+  }
+
   int get digitValue {
     int value = 0;
     final record = (widget.timeUnit, widget.digitType);
 
     switch (record) {
       case (TimeUnit.days, DigitType.daysThousand):
-        value = widget.duration.daysThousandDigit;
+        value = duration.daysThousandDigit;
         break;
       case (TimeUnit.days, DigitType.daysHundred):
-        value = widget.duration.daysHundredDigit;
+        value = duration.daysHundredDigit;
         break;
       case (TimeUnit.days, DigitType.first):
-        value = widget.duration.daysFirstDigit;
+        value = duration.daysFirstDigit;
         break;
       case (TimeUnit.days, DigitType.second):
-        value = widget.duration.daysLastDigit;
+        value = duration.daysLastDigit;
         break;
       case (TimeUnit.hours, DigitType.first):
-        value = widget.duration.hoursFirstDigit;
+        value = duration.hoursFirstDigit;
         break;
       case (TimeUnit.hours, DigitType.second):
-        value = widget.duration.hoursSecondDigit;
+        value = duration.hoursSecondDigit;
         break;
       case (TimeUnit.minutes, DigitType.first):
-        value = widget.duration.minutesFirstDigit;
+        value = duration.minutesFirstDigit;
         break;
       case (TimeUnit.minutes, DigitType.second):
-        value = widget.duration.minutesSecondDigit;
+        value = duration.minutesSecondDigit;
         break;
       case (TimeUnit.seconds, DigitType.first):
-        value = widget.duration.secondsFirstDigit;
+        value = duration.secondsFirstDigit;
         break;
       case (TimeUnit.seconds, DigitType.second):
-        value = widget.duration.secondsSecondDigit;
+        value = duration.secondsSecondDigit;
         break;
       default:
     }
@@ -148,29 +157,37 @@ class _RawDigitItemState extends State<RawDigitItem>
   void initValue() => _currentValue = digitValue;
 
   int get _nextValue {
-    int _correction = 1;
-    final animationValue = _controller.value;
-    final tollerance =
-        ((widget.slideAnimationDuration ?? _kDefaultAnimationDuration)
-                    .inMilliseconds /
-                1000)
-            .clamp(0.0, 1.0);
-
-    if (animationValue <= tollerance) {
-      _correction = 2;
-    }
+    const _correction = 1;
 
     if (widget.countUp) {
-      if (_currentValue > 0) {
-        return max(0, _currentValue + _correction);
+      final next = _currentValue + _correction;
+
+      if (next > 9) {
+        return 0;
       }
-      return 0;
-    }
-    if (_currentValue == 9) {
-      return 0;
+
+      return next;
     }
 
     return max(0, _currentValue - _correction);
+  }
+
+  int get _finalNextValue {
+    final isSame = _currentValue == _nextValue;
+
+    if (!isSame) return _nextValue;
+
+    if (widget.countUp) {
+      return _nextValue + 1;
+    }
+
+    final next = max(_nextValue - 1, 0);
+
+    if (next == 0 && _currentValue == 0) {
+      return 9;
+    }
+
+    return _nextValue;
   }
 
   bool get isDirectionUp => widget.slideDirection == SlideDirection.up;
@@ -203,6 +220,8 @@ class _RawDigitItemState extends State<RawDigitItem>
 
   @override
   Widget build(BuildContext context) {
+    print(widget.countUp);
+    print('Current:$_currentValue: Next :$_finalNextValue');
     if (isWithoutAnimation) {
       return Text(
         digit(_currentValue),
@@ -232,7 +251,7 @@ class _RawDigitItemState extends State<RawDigitItem>
                   slideDirection: widget.slideDirection,
                 ),
                 child: Text(
-                  digit(_nextValue),
+                  digit(_finalNextValue),
                   style: widget.style,
                 ),
               ),
