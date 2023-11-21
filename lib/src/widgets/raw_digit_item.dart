@@ -57,10 +57,12 @@ class _RawDigitItemState extends State<RawDigitItem>
   late final Animation<Offset> _offsetAnimationTwo;
 
   int _currentValue = 0;
+  int _animationCount = 0;
 
   @override
   void initState() {
     super.initState();
+    initValue();
     _controller = AnimationController(
       vsync: this,
       duration: widget.slideAnimationDuration ?? _kDefaultAnimationDuration,
@@ -88,20 +90,30 @@ class _RawDigitItemState extends State<RawDigitItem>
       ),
     );
 
-    initValue();
     listenAnimation();
   }
 
   void listenAnimation() {
-    _controller.forward();
-    _controller.addStatusListener((status) {
-      if (_controller.isAnimating) return;
+    if (currentAndNextIsZero) return;
 
-      if (_controller.isCompleted) {
-        _controller.reset();
-        initValue();
-      }
-    });
+    _controller.addStatusListener(
+      (_) {
+        if (_controller.isCompleted) {
+          _controller.reset();
+          initValue();
+          _animationCount++;
+        }
+      },
+    );
+  }
+
+  bool get currentAndNextIsZero {
+    if (widget.countUp) return false;
+
+    return digitValue() ==
+        digitValue(
+          widget.duration - Duration(seconds: 1),
+        );
   }
 
   Duration get duration {
@@ -113,40 +125,40 @@ class _RawDigitItemState extends State<RawDigitItem>
     return widget.duration + _tolerance;
   }
 
-  int get digitValue {
+  int digitValue([Duration? forceDuration]) {
     int value = 0;
     final record = (widget.timeUnit, widget.digitType);
 
     switch (record) {
       case (TimeUnit.days, DigitType.daysThousand):
-        value = duration.daysThousandDigit;
+        value = (forceDuration ?? duration).daysThousandDigit;
         break;
       case (TimeUnit.days, DigitType.daysHundred):
-        value = duration.daysHundredDigit;
+        value = (forceDuration ?? duration).daysHundredDigit;
         break;
       case (TimeUnit.days, DigitType.first):
-        value = duration.daysFirstDigit;
+        value = (forceDuration ?? duration).daysFirstDigit;
         break;
       case (TimeUnit.days, DigitType.second):
-        value = duration.daysLastDigit;
+        value = (forceDuration ?? duration).daysLastDigit;
         break;
       case (TimeUnit.hours, DigitType.first):
-        value = duration.hoursFirstDigit;
+        value = (forceDuration ?? duration).hoursFirstDigit;
         break;
       case (TimeUnit.hours, DigitType.second):
-        value = duration.hoursSecondDigit;
+        value = (forceDuration ?? duration).hoursSecondDigit;
         break;
       case (TimeUnit.minutes, DigitType.first):
-        value = duration.minutesFirstDigit;
+        value = (forceDuration ?? duration).minutesFirstDigit;
         break;
       case (TimeUnit.minutes, DigitType.second):
-        value = duration.minutesSecondDigit;
+        value = (forceDuration ?? duration).minutesSecondDigit;
         break;
       case (TimeUnit.seconds, DigitType.first):
-        value = duration.secondsFirstDigit;
+        value = (forceDuration ?? duration).secondsFirstDigit;
         break;
       case (TimeUnit.seconds, DigitType.second):
-        value = duration.secondsSecondDigit;
+        value = (forceDuration ?? duration).secondsSecondDigit;
         break;
       default:
     }
@@ -154,7 +166,9 @@ class _RawDigitItemState extends State<RawDigitItem>
     return value;
   }
 
-  void initValue() => _currentValue = digitValue;
+  void initValue() {
+    _currentValue = digitValue();
+  }
 
   int get _nextValue {
     const _correction = 1;
@@ -181,9 +195,9 @@ class _RawDigitItemState extends State<RawDigitItem>
       return _nextValue + 1;
     }
 
-    final next = max(_nextValue - 1, 0);
+    final next = _nextValue - 1;
 
-    if (next == 0 && _currentValue == 0) {
+    if (next.isNegative && _animationCount > 2) {
       return 9;
     }
 
@@ -207,7 +221,7 @@ class _RawDigitItemState extends State<RawDigitItem>
   }
 
   void playAnimation() {
-    if (_currentValue != digitValue) {
+    if (_currentValue != digitValue()) {
       _controller.forward();
     }
   }

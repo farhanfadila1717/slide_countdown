@@ -128,7 +128,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
 
     return RawSlideCountdown(
       streamDuration: _streamDuration,
-      builder: (BuildContext context, Duration duration, _) {
+      builder: (_, duration, __) {
         if (duration.inSeconds <= 0 && widget.replacement != null)
           return widget.replacement!;
 
