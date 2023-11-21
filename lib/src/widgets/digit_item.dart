@@ -15,7 +15,6 @@ class DigitItem extends BaseDigits {
     required super.style,
     required super.separatorStyle,
     required super.slideDirection,
-    required super.curve,
     required super.countUp,
     required super.slideAnimationDuration,
     required super.separator,
@@ -38,9 +37,7 @@ class DigitItem extends BaseDigits {
           countUp: countUp,
           style: style,
           slideDirection: slideDirection,
-          slideAnimationDuration: slideAnimationDuration,
           digitsNumber: digitsNumber,
-          curve: curve,
         ),
       );
     }
@@ -54,9 +51,7 @@ class DigitItem extends BaseDigits {
           countUp: countUp,
           style: style,
           slideDirection: slideDirection,
-          slideAnimationDuration: slideAnimationDuration,
           digitsNumber: digitsNumber,
-          curve: curve,
         ),
       );
     }
@@ -69,9 +64,7 @@ class DigitItem extends BaseDigits {
         countUp: countUp,
         style: style,
         slideDirection: slideDirection,
-        slideAnimationDuration: slideAnimationDuration,
         digitsNumber: digitsNumber,
-        curve: curve,
       ),
     );
 
@@ -83,9 +76,7 @@ class DigitItem extends BaseDigits {
         countUp: countUp,
         style: style,
         slideDirection: slideDirection,
-        slideAnimationDuration: slideAnimationDuration,
         digitsNumber: digitsNumber,
-        curve: curve,
       ),
     );
 

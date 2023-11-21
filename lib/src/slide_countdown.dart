@@ -164,7 +164,6 @@ class _SlideCountdownState extends State<SlideCountdown> {
           separatorStyle: widget.separatorStyle,
           style: widget.style,
           slideDirection: widget.slideDirection,
-          curve: widget.curve,
           countUp: widget.countUp,
           slideAnimationDuration: widget.slideAnimationDuration,
           separator: widget.separatorType == SeparatorType.title
@@ -185,7 +184,6 @@ class _SlideCountdownState extends State<SlideCountdown> {
           style: widget.style,
           separatorStyle: widget.separatorStyle,
           slideDirection: widget.slideDirection,
-          curve: widget.curve,
           countUp: widget.countUp,
           slideAnimationDuration: widget.slideAnimationDuration,
           separator: widget.separatorType == SeparatorType.title
@@ -206,7 +204,6 @@ class _SlideCountdownState extends State<SlideCountdown> {
           style: widget.style,
           separatorStyle: widget.separatorStyle,
           slideDirection: widget.slideDirection,
-          curve: widget.curve,
           countUp: widget.countUp,
           slideAnimationDuration: widget.slideAnimationDuration,
           separator: widget.separatorType == SeparatorType.title
@@ -226,7 +223,6 @@ class _SlideCountdownState extends State<SlideCountdown> {
           style: widget.style,
           separatorStyle: widget.separatorStyle,
           slideDirection: widget.slideDirection,
-          curve: widget.curve,
           countUp: widget.countUp,
           slideAnimationDuration: widget.slideAnimationDuration,
           separator: widget.separatorType == SeparatorType.title

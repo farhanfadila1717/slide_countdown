@@ -19,7 +19,6 @@ abstract class BaseDigits extends StatelessWidget {
     required this.style,
     required this.separatorStyle,
     required this.slideDirection,
-    required this.curve,
     required this.countUp,
     required this.slideAnimationDuration,
     required this.separator,
@@ -49,9 +48,6 @@ abstract class BaseDigits extends StatelessWidget {
 
   /// The direction in which the digits should slide during the animation.
   final SlideDirection slideDirection;
-
-  ///  The curve to use for the animation.
-  final Curve curve;
 
   /// Whether to animate the digits counting up or down.
   final bool countUp;

@@ -15,27 +15,17 @@ class ClipHalfRect extends CustomClipper<Rect> {
   @override
   Rect getClip(Size size) {
     Rect rect;
-    if (slideDirection == SlideDirection.down) {
-      if (isUp) {
-        rect = Rect.fromLTRB(
-            0.0, size.height * -percentage, size.width, size.height);
-      } else {
-        rect = Rect.fromLTRB(
-          0.0,
-          0.0,
-          size.width,
-          size.height * (1 - percentage),
-        );
-      }
-    } else {
-      if (isUp) {
-        rect =
-            Rect.fromLTRB(0.0, size.height * (1 + percentage), size.width, 0.0);
-      } else {
-        rect = Rect.fromLTRB(
-            0.0, size.height * percentage, size.width, size.height);
-      }
-    }
+    // if (slideDirection == SlideDirection.down) {
+    rect = Rect.fromLTRB(
+      0.0,
+      0.0,
+      size.width,
+      size.height,
+    );
+    // } else {
+    //   rect =
+    //       Rect.fromLTRB(0.0, size.height * (1 + percentage), size.width, 0.0);
+    // }
     return rect;
   }
 
