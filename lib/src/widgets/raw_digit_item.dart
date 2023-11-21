@@ -47,8 +47,8 @@ class _RawDigitItemState extends State<RawDigitItem>
     with TickerProviderStateMixin {
   late final AnimationController _controllerOne;
   late final AnimationController _controllerTwo;
-  late final Animation<Offset> _offsetAnimationOne;
-  late final Animation<Offset> _offsetAnimationTwo;
+  late Animation<Offset> _offsetAnimationOne;
+  late Animation<Offset> _offsetAnimationTwo;
 
   bool _isOneFirstPlaying = false;
 
@@ -59,18 +59,23 @@ class _RawDigitItemState extends State<RawDigitItem>
       vsync: this,
       duration: _kDefaultAnimationDuration,
       debugLabel:
-          'RawDigitItem-${widget.timeUnit.name}-${widget.digitType.name}',
+          'RawDigitItem-One-${widget.timeUnit.name}-${widget.digitType.name}',
     );
     _controllerTwo = AnimationController(
       vsync: this,
       duration: _kDefaultAnimationDuration,
       debugLabel:
-          'RawDigitItem-${widget.timeUnit.name}-${widget.digitType.name}',
+          'RawDigitItem-Two-${widget.timeUnit.name}-${widget.digitType.name}',
     );
 
+    initOffsetAnimation();
+    playAnimation();
+  }
+
+  void initOffsetAnimation() {
     _offsetAnimationOne = Tween<Offset>(
-      begin: const Offset(0.0, -1.0),
-      end: const Offset(0.0, 1.0),
+      begin: isDirectionUp ? const Offset(0.0, 1.0) : const Offset(0.0, -1.0),
+      end: isDirectionUp ? const Offset(0.0, -1.0) : const Offset(0.0, 1.0),
     ).animate(
       CurvedAnimation(
         parent: _controllerOne,
@@ -79,16 +84,14 @@ class _RawDigitItemState extends State<RawDigitItem>
     );
 
     _offsetAnimationTwo = Tween<Offset>(
-      begin: const Offset(0.0, -1.0),
-      end: const Offset(0.0, 1.0),
+      begin: isDirectionUp ? const Offset(0.0, 1.0) : const Offset(0.0, -1.0),
+      end: isDirectionUp ? const Offset(0.0, -1.0) : const Offset(0.0, 1.0),
     ).animate(
       CurvedAnimation(
         parent: _controllerTwo,
         curve: Curves.linear,
       ),
     );
-
-    playAnimation();
   }
 
   void playAnimation() {
@@ -193,7 +196,11 @@ class _RawDigitItemState extends State<RawDigitItem>
   bool get isWithoutAnimation => widget.slideDirection == SlideDirection.none;
 
   bool get currentAndNextIsZero {
-    if (widget.countUp) return false;
+    if (widget.countUp)
+      return digitValue() ==
+          digitValue(
+            widget.duration + Duration(seconds: 1),
+          );
 
     return digitValue() ==
         digitValue(
