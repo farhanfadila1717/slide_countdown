@@ -1,3 +1,7 @@
+## 1.3.0
+
+- refactor: `RawDigitAnimation`
+
 ## 1.2.2
 
 - remove `textStyle` replace to `style`
