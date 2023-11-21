@@ -25,7 +25,6 @@ class SlideCountdownSeparated extends SlideCountdownBase {
     super.key,
     super.duration,
     super.style = kDefaultTextStyle,
-    super.textStyle = kDefaultTextStyle,
     super.separatorStyle = kDefaultSeparatorTextStyle,
     super.icon,
     super.suffixIcon,

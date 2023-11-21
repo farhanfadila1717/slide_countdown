@@ -9,7 +9,6 @@ abstract class SlideCountdownBase extends StatefulWidget {
   const SlideCountdownBase({
     super.key,
     required this.duration,
-    required this.textStyle,
     required this.separatorStyle,
     required this.style,
     required this.icon,
@@ -49,12 +48,6 @@ abstract class SlideCountdownBase extends StatefulWidget {
   /// if this is null [SlideCountdown] has a default
   /// text style which will be of all text
   final TextStyle style;
-
-  /// [TextStyle] is a parameter for all existing text,
-  /// if this is null [SlideCountdown] has a default
-  /// text style which will be of all text
-  @Deprecated('no longer use, use style insted')
-  final TextStyle textStyle;
 
   /// [TextStyle] is a parameter for all existing text,
   /// if this is null [SlideCountdown] has a default

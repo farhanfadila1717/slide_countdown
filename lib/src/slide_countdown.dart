@@ -28,7 +28,6 @@ class SlideCountdown extends SlideCountdownBase {
     super.key,
     super.duration,
     super.style = kDefaultTextStyle,
-    super.textStyle = kDefaultTextStyle,
     super.separatorStyle = kDefaultTextStyle,
     super.icon,
     super.suffixIcon,
