@@ -2,8 +2,13 @@
 
 [![flutter][]][web flutter] [![badge paypal][]][paypal account] [![badge linktree][]][linktree account] <br>
 [![qr-paypal][]][paypal account]
-<br>
+<br><br>
 A Flutter package to create easy slide animation countdown / countup timer.
+
+- ⏱️ Support Count down and Count up
+- ⏯️ Controll duration with [StreamDuration](https://pub.dev/packages/stream_duration) package
+- 🔔 Callback finished
+- 🎨 Easily custom duration layout with `RawSlideCountdown` and `RawDigitItem` widget.
 
 ---
 

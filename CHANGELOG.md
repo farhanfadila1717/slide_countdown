@@ -1,3 +1,8 @@
+## 1.2.2
+
+- remove `textStyle` replace to `style`
+- fix unexpected digit [#53](https://github.com/farhanfadila1717/slide_countdown/issues/53)
+
 ## 1.2.1
 
 - remove print

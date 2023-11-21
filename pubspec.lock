@@ -124,10 +124,10 @@ packages:
     dependency: "direct main"
     description:
       name: stream_duration
-      sha256: d4e833a8db38faec87325ca784079d1e90ba66f78c365ca96f353a59b26bd62e
+      sha256: "8f5c828b8205ff47d3820df90de36c4333a8e0b2d46eacab23d9c2aeb568ad7f"
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.2"
+    version: "4.3.0-dev.1"
   string_scanner:
     dependency: transitive
     description:
