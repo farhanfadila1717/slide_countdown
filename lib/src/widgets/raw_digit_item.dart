@@ -69,6 +69,11 @@ class _RawDigitItemState extends State<RawDigitItem>
   @override
   void initState() {
     super.initState();
+    initOffsetAnimation();
+    playAnimation();
+  }
+
+  void initOffsetAnimation() {
     _controllerOne = AnimationController(
       vsync: this,
       duration: _kDefaultAnimationDuration,
@@ -82,11 +87,6 @@ class _RawDigitItemState extends State<RawDigitItem>
           'RawDigitItem-Two-${widget.timeUnit.name}-${widget.digitType.name}',
     );
 
-    initOffsetAnimation();
-    playAnimation();
-  }
-
-  void initOffsetAnimation() {
     _offsetAnimationOne = Tween<Offset>(
       begin: isDirectionUp ? const Offset(0, 1) : const Offset(0, -1),
       end: isDirectionUp ? const Offset(0, -1) : const Offset(0, 1),
@@ -112,52 +112,39 @@ class _RawDigitItemState extends State<RawDigitItem>
     _isOneFirstPlaying = digitValue().isOdd;
 
     if (_isOneFirstPlaying) {
-      playHalfControllerOne();
+      playController(_controllerOne);
     } else {
-      playHalfControllerTwo();
+      playController(_controllerTwo);
     }
   }
 
-  Future<void> playHalfControllerOne() async {
-    await _controllerOne.animateTo(
+  Future<void> playController(
+    AnimationController controller,
+  ) async {
+    if (!mounted) return;
+
+    await controller.animateTo(
       0.5,
       duration: const Duration(milliseconds: 250),
     );
 
     if (currentAndNextIsZero) return;
 
-    await Future.delayed(
-      const Duration(milliseconds: 500),
-      () {},
-    );
-
-    await _controllerOne.animateTo(
-      1,
-      duration: const Duration(milliseconds: 250),
-    );
-
-    _controllerOne.reset();
-  }
-
-  Future<void> playHalfControllerTwo() async {
-    await _controllerTwo.animateTo(
-      0.5,
-      duration: const Duration(milliseconds: 250),
-    );
-
-    if (currentAndNextIsZero) return;
+    if (!mounted) return;
 
     await Future.delayed(
       const Duration(milliseconds: 500),
       () {},
     );
 
-    await _controllerTwo.animateTo(
+    if (!mounted) return;
+
+    await controller.animateTo(
       1,
       duration: const Duration(milliseconds: 250),
     );
 
-    _controllerTwo.reset();
+    controller.reset();
   }
 
   Duration get duration => widget.duration;

@@ -1,3 +1,7 @@
+## 1.3.2
+
+- fix: AnimationController using after disposed.
+
 ## 1.3.1
 
 - Add more docs
