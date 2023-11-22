@@ -16,7 +16,6 @@ void main() {
       testWidgets('Separator Type is symbol', (tester) async {
         final widget = SlideCountdownSeparated(
           duration: kDurationMinutes,
-          separatorType: SeparatorType.symbol,
           separator: ':',
           shouldShowDays: (_) => false,
           shouldShowHours: (_) => false,
@@ -42,15 +41,14 @@ void main() {
       });
 
       testWidgets('Count up', (tester) async {
-        final SlideCountdownSeparated widget = SlideCountdownSeparated(
+        const widget = SlideCountdownSeparated(
           duration: kDuration,
           countUp: true,
-          separatorType: SeparatorType.symbol,
           separator: ':',
         );
 
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: Center(child: widget),
             ),
@@ -69,14 +67,14 @@ void main() {
         'When duration is Zero, show replacement widget',
         (tester) async {
           const widget = SlideCountdownSeparated(
-            duration: const Duration(seconds: 2),
+            duration: Duration(seconds: 2),
             replacement: Text(
               'replacement',
             ),
           );
 
           await tester.pumpWidget(
-            MaterialApp(
+            const MaterialApp(
               home: Scaffold(
                 body: Center(child: widget),
               ),
@@ -87,7 +85,7 @@ void main() {
 
           expect(replacementWidget, findsNothing);
 
-          await tester.pump(Duration(seconds: 3));
+          await tester.pump(const Duration(seconds: 3));
 
           expect(replacementWidget, findsOneWidget);
         },

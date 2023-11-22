@@ -8,11 +8,12 @@ import 'package:flutter/widgets.dart';
 /// the separator can be controlled by the `show` flag.
 /// {@endtemplate}
 class Separator extends StatelessWidget {
+  /// {@macro separator}
   const Separator({
-    super.key,
     required this.show,
     required this.separator,
     required this.style,
+    super.key,
     this.padding,
   });
 

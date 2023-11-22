@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const ExampleRawSlideCountdown(),
+    return const MaterialApp(
+      home: ExampleRawSlideCountdown(),
     );
   }
 }
@@ -32,7 +32,7 @@ class _ExampleRawSlideCountdownState extends State<ExampleRawSlideCountdown> {
   @override
   void initState() {
     streamDuration = StreamDuration(
-      config: StreamDurationConfig(
+      config: const StreamDurationConfig(
         countDownConfig: CountDownConfig(duration: defaultDuration),
       ),
     );
@@ -49,11 +49,10 @@ class _ExampleRawSlideCountdownState extends State<ExampleRawSlideCountdown> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Basic Example"),
+        title: const Text('Basic Example'),
       ),
       body: SizedBox.expand(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RawSlideCountdown(

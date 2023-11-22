@@ -20,23 +20,37 @@ const _kDefaultAnimationDuration = Duration(milliseconds: 250);
 /// ```
 /// {@endtemplate}
 class RawDigitItem extends StatefulWidget {
+  /// {@macro raw_digit_item}
   const RawDigitItem({
-    super.key,
     required this.duration,
     required this.timeUnit,
     required this.digitType,
     required this.countUp,
+    super.key,
     this.slideDirection = SlideDirection.down,
     this.digitsNumber,
     this.style,
   });
 
+  /// The duration of the digit.
   final Duration duration;
+
+  /// The time unit of the digit.
   final TimeUnit timeUnit;
+
+  /// The digit type of the digit.
   final DigitType digitType;
+
+  /// The SlideDirection animation of the digit.
   final SlideDirection slideDirection;
+
+  /// Whether to count up or down.
   final bool countUp;
+
+  /// The style of the digit.
   final TextStyle? style;
+
+  /// The custom numbers of digits to display.
   final OverrideDigits? digitsNumber;
 
   @override
@@ -74,8 +88,8 @@ class _RawDigitItemState extends State<RawDigitItem>
 
   void initOffsetAnimation() {
     _offsetAnimationOne = Tween<Offset>(
-      begin: isDirectionUp ? const Offset(0.0, 1.0) : const Offset(0.0, -1.0),
-      end: isDirectionUp ? const Offset(0.0, -1.0) : const Offset(0.0, 1.0),
+      begin: isDirectionUp ? const Offset(0, 1) : const Offset(0, -1),
+      end: isDirectionUp ? const Offset(0, -1) : const Offset(0, 1),
     ).animate(
       CurvedAnimation(
         parent: _controllerOne,
@@ -84,8 +98,8 @@ class _RawDigitItemState extends State<RawDigitItem>
     );
 
     _offsetAnimationTwo = Tween<Offset>(
-      begin: isDirectionUp ? const Offset(0.0, 1.0) : const Offset(0.0, -1.0),
-      end: isDirectionUp ? const Offset(0.0, -1.0) : const Offset(0.0, 1.0),
+      begin: isDirectionUp ? const Offset(0, 1) : const Offset(0, -1),
+      end: isDirectionUp ? const Offset(0, -1) : const Offset(0, 1),
     ).animate(
       CurvedAnimation(
         parent: _controllerTwo,
@@ -104,7 +118,7 @@ class _RawDigitItemState extends State<RawDigitItem>
     }
   }
 
-  void playHalfControllerOne() async {
+  Future<void> playHalfControllerOne() async {
     await _controllerOne.animateTo(
       0.5,
       duration: const Duration(milliseconds: 250),
@@ -113,18 +127,19 @@ class _RawDigitItemState extends State<RawDigitItem>
     if (currentAndNextIsZero) return;
 
     await Future.delayed(
-      Duration(milliseconds: 500),
+      const Duration(milliseconds: 500),
+      () {},
     );
 
     await _controllerOne.animateTo(
-      1.0,
+      1,
       duration: const Duration(milliseconds: 250),
     );
 
     _controllerOne.reset();
   }
 
-  void playHalfControllerTwo() async {
+  Future<void> playHalfControllerTwo() async {
     await _controllerTwo.animateTo(
       0.5,
       duration: const Duration(milliseconds: 250),
@@ -133,11 +148,12 @@ class _RawDigitItemState extends State<RawDigitItem>
     if (currentAndNextIsZero) return;
 
     await Future.delayed(
-      Duration(milliseconds: 500),
+      const Duration(milliseconds: 500),
+      () {},
     );
 
     await _controllerTwo.animateTo(
-      1.0,
+      1,
       duration: const Duration(milliseconds: 250),
     );
 
@@ -147,40 +163,30 @@ class _RawDigitItemState extends State<RawDigitItem>
   Duration get duration => widget.duration;
 
   int digitValue([Duration? forceDuration]) {
-    int value = 0;
+    var value = 0;
     final record = (widget.timeUnit, widget.digitType);
 
     switch (record) {
       case (TimeUnit.days, DigitType.daysThousand):
         value = (forceDuration ?? duration).daysThousandDigit;
-        break;
       case (TimeUnit.days, DigitType.daysHundred):
         value = (forceDuration ?? duration).daysHundredDigit;
-        break;
       case (TimeUnit.days, DigitType.first):
         value = (forceDuration ?? duration).daysFirstDigit;
-        break;
       case (TimeUnit.days, DigitType.second):
         value = (forceDuration ?? duration).daysLastDigit;
-        break;
       case (TimeUnit.hours, DigitType.first):
         value = (forceDuration ?? duration).hoursFirstDigit;
-        break;
       case (TimeUnit.hours, DigitType.second):
         value = (forceDuration ?? duration).hoursSecondDigit;
-        break;
       case (TimeUnit.minutes, DigitType.first):
         value = (forceDuration ?? duration).minutesFirstDigit;
-        break;
       case (TimeUnit.minutes, DigitType.second):
         value = (forceDuration ?? duration).minutesSecondDigit;
-        break;
       case (TimeUnit.seconds, DigitType.first):
         value = (forceDuration ?? duration).secondsFirstDigit;
-        break;
       case (TimeUnit.seconds, DigitType.second):
         value = (forceDuration ?? duration).secondsSecondDigit;
-        break;
       default:
     }
 
@@ -196,15 +202,16 @@ class _RawDigitItemState extends State<RawDigitItem>
   bool get isWithoutAnimation => widget.slideDirection == SlideDirection.none;
 
   bool get currentAndNextIsZero {
-    if (widget.countUp)
+    if (widget.countUp) {
       return digitValue() ==
           digitValue(
-            widget.duration + Duration(seconds: 1),
+            widget.duration + const Duration(seconds: 1),
           );
+    }
 
     return digitValue() ==
         digitValue(
-          widget.duration - Duration(seconds: 1),
+          widget.duration - const Duration(seconds: 1),
         );
   }
 

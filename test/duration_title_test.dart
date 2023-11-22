@@ -48,7 +48,7 @@ void main() {
       test(
         'locale fr-FR Test',
         () {
-          final durationTitle = DurationTitle(
+          const durationTitle = DurationTitle(
             days: 'Tag',
             hours: 'Uhr',
             minutes: 'Uhr',
@@ -68,8 +68,8 @@ void main() {
     test(
       'id',
       () {
-        final id = DurationTitle(
-            days: 'hari', hours: 'jam', minutes: 'menit', seconds: 'detik');
+        const id = DurationTitle(
+            days: 'hari', hours: 'jam', minutes: 'menit', seconds: 'detik',);
 
         expect(id == DurationTitle.id(), isTrue);
         expect(id.hashCode == DurationTitle.id().hashCode, isTrue);
@@ -78,7 +78,7 @@ void main() {
     test(
       'id short',
       () {
-        final id =
+        const id =
             DurationTitle(days: 'h', hours: 'j', minutes: 'm', seconds: 'd');
 
         expect(id == DurationTitle.idShort(), isTrue);
@@ -89,11 +89,11 @@ void main() {
     test(
       'en',
       () {
-        final en = DurationTitle(
+        const en = DurationTitle(
             days: 'days',
             hours: 'hours',
             minutes: 'minutes',
-            seconds: 'seconds');
+            seconds: 'seconds',);
 
         expect(en == DurationTitle.en(), isTrue);
         expect(en.hashCode == DurationTitle.en().hashCode, isTrue);
@@ -102,7 +102,7 @@ void main() {
     test(
       'en short',
       () {
-        final en =
+        const en =
             DurationTitle(days: 'd', hours: 'h', minutes: 'm', seconds: 's');
 
         expect(en == DurationTitle.enShort(), isTrue);

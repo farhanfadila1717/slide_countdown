@@ -8,7 +8,8 @@ import 'package:slide_countdown/slide_countdown.dart';
 ///
 /// The [duration] parameter is the remaining duration for the countdown.
 ///
-/// The [isCountUp] parameter is to know remaining duration is countdown or countup.
+/// The [isCountUp] parameter is to know remaining duration is countdown or
+/// countup.
 ///
 /// The function should return a [Widget] that represents the current state of
 /// the countdown.
@@ -19,13 +20,14 @@ import 'package:slide_countdown/slide_countdown.dart';
 typedef RawSlideCountdownBuilder = Widget Function(
   BuildContext context,
   Duration duration,
+  // ignore: avoid_positional_boolean_parameters
   bool isCountUp,
 );
 
 /// {@template raw_slide_countdown}
 /// A widget that displays a countdown based on a [StreamDuration].
 ///
-/// The [RawSlideCountdown] widget listens to the [streamDuration.durationLeft]
+/// The [RawSlideCountdown] widget listens to the streamDuration.durationLeft
 /// stream and updates its display based on the received duration values.
 ///
 /// The [builder] function is used to build the widget based on the current
@@ -60,9 +62,9 @@ typedef RawSlideCountdownBuilder = Widget Function(
 class RawSlideCountdown extends StatefulWidget {
   /// {@macro raw_slide_countdown}
   const RawSlideCountdown({
-    super.key,
     required this.streamDuration,
     required this.builder,
+    super.key,
   });
 
   /// The [StreamDuration] that provides the countdown duration.

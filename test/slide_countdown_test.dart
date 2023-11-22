@@ -14,7 +14,6 @@ void main() {
         (tester) async {
           final widget = SlideCountdown(
             duration: kDuration,
-            separatorType: SeparatorType.symbol,
             separator: '|',
             shouldShowDays: (_) => false,
           );
@@ -69,13 +68,13 @@ void main() {
       testWidgets(
         'TextDirection is rtl',
         (tester) async {
-          final widget = SlideCountdown(
+          const widget = SlideCountdown(
             duration: kFullDuration,
             separatorType: SeparatorType.title,
           );
 
           await tester.pumpWidget(
-            MaterialApp(
+            const MaterialApp(
               home: Scaffold(
                 body: Center(child: widget),
               ),
@@ -99,15 +98,15 @@ void main() {
       testWidgets(
         'When duration is Zero, show replacement widget',
         (tester) async {
-          final widget = SlideCountdown(
-            duration: const Duration(seconds: 2),
+          const widget = SlideCountdown(
+            duration: Duration(seconds: 2),
             replacement: Text(
               'replacement',
             ),
           );
 
           await tester.pumpWidget(
-            MaterialApp(
+            const MaterialApp(
               home: Scaffold(
                 body: Center(child: widget),
               ),
@@ -118,7 +117,7 @@ void main() {
 
           expect(replacementWidget, findsNothing);
 
-          await tester.pump(Duration(seconds: 3));
+          await tester.pump(const Duration(seconds: 3));
 
           expect(replacementWidget, findsOneWidget);
         },

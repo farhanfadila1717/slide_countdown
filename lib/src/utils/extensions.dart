@@ -8,22 +8,24 @@ extension TextDirectionExtension on TextDirection {
   bool get isRtl => this == TextDirection.rtl;
 }
 
+/// Extenstion for [Duration]
 extension DurationExtensions on Duration {
+  /// Duration in days as string
   String get inDaysAsString => inDays.toString();
 
-  // Access the thousandth digit from inDays
+  /// Access the thousandth digit from inDays
   int get daysThousandDigit {
     if (inDays <= 0) return 0;
     return int.parse(inDaysAsString[inDaysAsString.length - 4]);
   }
 
-  // Access the hundredth digit from inDays
+  /// Access the hundredth digit from inDays
   int get daysHundredDigit {
     if (inDays <= 0) return 0;
     return int.parse(inDaysAsString[inDaysAsString.length - 3]);
   }
 
-  // Access the tens digit from inDays
+  /// Access the tens digit from inDays
   int get daysFirstDigit {
     if (inDays <= 0) return 0;
     if (inDays > 99) {
@@ -33,7 +35,7 @@ extension DurationExtensions on Duration {
     return inDays ~/ 10;
   }
 
-  // Access the units digit from inDays
+  /// Access the units digit from inDays
   int get daysLastDigit {
     if (inDays <= 0) return 0;
 
@@ -44,37 +46,39 @@ extension DurationExtensions on Duration {
     return inDays % 10;
   }
 
+  /// get the first digit from hours
   int get hoursFirstDigit {
     if (inHours <= 0) return 0;
     return (inHours % 24) ~/ 10;
   }
 
+  /// get the second digit from hours
   int get hoursSecondDigit {
     if (inHours <= 0) return 0;
     return (inHours % 24) % 10;
   }
 
+  /// get the first digit from minutes
   int get minutesFirstDigit {
     if (inMinutes <= 0) return 0;
     return (inMinutes % 60) ~/ 10;
   }
 
+  /// get the second digit from minutes
   int get minutesSecondDigit {
     if (inMinutes <= 0) return 0;
     return (inMinutes % 60) % 10;
   }
 
+  /// get the first digit from seconds
   int get secondsFirstDigit {
     if (inSeconds <= 0) return 0;
     return (inSeconds % 60) ~/ 10;
   }
 
+  /// get the second digit from seconds
   int get secondsSecondDigit {
     if (inSeconds <= 0) return 0;
     return (inSeconds % 60) % 10;
   }
-
-  bool get isDaysHundred => inDays > 99;
-
-  bool get isDaysThousand => inDays > 999;
 }

@@ -5,9 +5,14 @@ import 'package:slide_countdown/src/utils/extensions.dart';
 import 'package:slide_countdown/src/widgets/raw_digit_item.dart';
 import 'package:slide_countdown/src/widgets/separator.dart';
 
+/// {@template digit_item}
+/// A widget that displays a digit item with a separator.
+///
+/// Inherits all the properties of the [BaseDigits] class.
+/// {@endtemplate}
 class DigitItem extends BaseDigits {
+  /// {@macro digit_item}
   const DigitItem({
-    super.key,
     required super.duration,
     required super.timeUnit,
     required super.padding,
@@ -16,17 +21,17 @@ class DigitItem extends BaseDigits {
     required super.separatorStyle,
     required super.slideDirection,
     required super.countUp,
-    required super.slideAnimationDuration,
     required super.separator,
     required super.textDirection,
     required super.showSeparator,
+    super.key,
     super.separatorPadding,
     super.digitsNumber,
   });
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> digits = [];
+    final digits = <Widget>[];
 
     if (timeUnit == TimeUnit.days && duration.inDays > 999) {
       digits.add(
@@ -56,28 +61,27 @@ class DigitItem extends BaseDigits {
       );
     }
 
-    digits.add(
-      RawDigitItem(
-        duration: duration,
-        timeUnit: timeUnit,
-        digitType: DigitType.first,
-        countUp: countUp,
-        style: style,
-        slideDirection: slideDirection,
-        digitsNumber: digitsNumber,
-      ),
-    );
-
-    digits.add(
-      RawDigitItem(
-        duration: duration,
-        timeUnit: timeUnit,
-        digitType: DigitType.second,
-        countUp: countUp,
-        style: style,
-        slideDirection: slideDirection,
-        digitsNumber: digitsNumber,
-      ),
+    digits.addAll(
+      [
+        RawDigitItem(
+          duration: duration,
+          timeUnit: timeUnit,
+          digitType: DigitType.first,
+          countUp: countUp,
+          style: style,
+          slideDirection: slideDirection,
+          digitsNumber: digitsNumber,
+        ),
+        RawDigitItem(
+          duration: duration,
+          timeUnit: timeUnit,
+          digitType: DigitType.second,
+          countUp: countUp,
+          style: style,
+          slideDirection: slideDirection,
+          digitsNumber: digitsNumber,
+        ),
+      ],
     );
 
     final separatorWidget = showSeparator
@@ -87,7 +91,7 @@ class DigitItem extends BaseDigits {
             separator: separator,
             style: separatorStyle,
           )
-        : SizedBox.shrink();
+        : const SizedBox.shrink();
 
     return Row(
       mainAxisSize: MainAxisSize.min,
