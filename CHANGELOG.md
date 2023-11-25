@@ -1,3 +1,7 @@
+## 1.3.4
+
+- fix: animation when `StreamDuration` is stop
+
 ## 1.3.3
 
 - fix: animation when `StreamDuration` autoPlay is false

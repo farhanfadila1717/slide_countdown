@@ -122,15 +122,9 @@ class _RawDigitItemState extends State<RawDigitItem>
     }
 
     if (_isOneFirstPlaying) {
-      playController(
-        _controllerOne,
-        playHalf: playHalf,
-      );
+      playHalfController(_controllerOne);
     } else {
-      playController(
-        _controllerTwo,
-        playHalf: playHalf,
-      );
+      playHalfController(_controllerTwo);
     }
   }
 
@@ -179,19 +173,6 @@ class _RawDigitItemState extends State<RawDigitItem>
     if (!mounted) return;
 
     await playHalfController(controller);
-
-    if (currentAndNextIsZero || playHalf) return;
-
-    if (!mounted) return;
-
-    await Future.delayed(
-      const Duration(milliseconds: 500),
-      () {},
-    );
-
-    if (!mounted) return;
-
-    await playNextHalfController(controller);
   }
 
   Duration get duration => widget.duration;
