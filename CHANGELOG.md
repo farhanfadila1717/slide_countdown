@@ -1,3 +1,7 @@
+## 1.3.3
+
+- fix: animation when `StreamDuration` autoPlay is false
+
 ## 1.3.2
 
 - fix: AnimationController using after disposed.

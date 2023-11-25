@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:slide_countdown/src/utils/enum.dart';
 import 'package:slide_countdown/src/utils/extensions.dart';
@@ -70,7 +72,7 @@ class _RawDigitItemState extends State<RawDigitItem>
   void initState() {
     super.initState();
     initOffsetAnimation();
-    playAnimation();
+    playAnimation(playHalf: true);
   }
 
   void initOffsetAnimation() {
@@ -108,17 +110,41 @@ class _RawDigitItemState extends State<RawDigitItem>
     );
   }
 
-  void playAnimation() {
+  void playAnimation({
+    bool playHalf = false,
+  }) {
+    final halfController = halfPlayController();
+
     _isOneFirstPlaying = digitValue().isOdd;
 
+    if (halfController != null) {
+      playNextHalfController(halfController);
+    }
+
     if (_isOneFirstPlaying) {
-      playController(_controllerOne);
+      playController(
+        _controllerOne,
+        playHalf: playHalf,
+      );
     } else {
-      playController(_controllerTwo);
+      playController(
+        _controllerTwo,
+        playHalf: playHalf,
+      );
     }
   }
 
-  Future<void> playController(
+  AnimationController? halfPlayController() {
+    final one = _controllerOne.value;
+    final two = _controllerTwo.value;
+
+    if (one == 0.5) return _controllerOne;
+    if (two == 0.5) return _controllerTwo;
+
+    return null;
+  }
+
+  Future<void> playHalfController(
     AnimationController controller,
   ) async {
     if (!mounted) return;
@@ -128,7 +154,33 @@ class _RawDigitItemState extends State<RawDigitItem>
       duration: const Duration(milliseconds: 250),
     );
 
-    if (currentAndNextIsZero) return;
+    return;
+  }
+
+  Future<void> playNextHalfController(
+    AnimationController controller,
+  ) async {
+    if (!mounted) return;
+
+    await controller.animateTo(
+      1,
+      duration: const Duration(milliseconds: 250),
+    );
+
+    controller.reset();
+
+    return;
+  }
+
+  Future<void> playController(
+    AnimationController controller, {
+    required bool playHalf,
+  }) async {
+    if (!mounted) return;
+
+    await playHalfController(controller);
+
+    if (currentAndNextIsZero || playHalf) return;
 
     if (!mounted) return;
 
@@ -139,12 +191,7 @@ class _RawDigitItemState extends State<RawDigitItem>
 
     if (!mounted) return;
 
-    await controller.animateTo(
-      1,
-      duration: const Duration(milliseconds: 250),
-    );
-
-    controller.reset();
+    await playNextHalfController(controller);
   }
 
   Duration get duration => widget.duration;
