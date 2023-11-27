@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:slide_countdown/src/utils/enum.dart';
 import 'package:slide_countdown/src/utils/extensions.dart';
@@ -72,6 +70,7 @@ class _RawDigitItemState extends State<RawDigitItem>
   void initState() {
     super.initState();
     initOffsetAnimation();
+    listenAnimation();
     playAnimation(playHalf: true);
   }
 
@@ -128,6 +127,22 @@ class _RawDigitItemState extends State<RawDigitItem>
     }
   }
 
+  void listenAnimation() {
+    _controllerOne.addStatusListener((status) {
+      final value = _controllerOne.value;
+      if (status == AnimationStatus.completed && value == 1.0) {
+        _controllerOne.reset();
+      }
+    });
+
+    _controllerTwo.addStatusListener((status) {
+      final value = _controllerTwo.value;
+      if (status == AnimationStatus.completed && value == 1.0) {
+        _controllerTwo.reset();
+      }
+    });
+  }
+
   AnimationController? halfPlayController() {
     final one = _controllerOne.value;
     final two = _controllerTwo.value;
@@ -138,12 +153,12 @@ class _RawDigitItemState extends State<RawDigitItem>
     return null;
   }
 
-  Future<void> playHalfController(
+  void playHalfController(
     AnimationController controller,
-  ) async {
+  ) {
     if (!mounted) return;
 
-    await controller.animateTo(
+    controller.animateTo(
       0.5,
       duration: const Duration(milliseconds: 250),
     );
@@ -151,28 +166,17 @@ class _RawDigitItemState extends State<RawDigitItem>
     return;
   }
 
-  Future<void> playNextHalfController(
+  void playNextHalfController(
     AnimationController controller,
-  ) async {
+  ) {
     if (!mounted) return;
 
-    await controller.animateTo(
+    controller.animateTo(
       1,
       duration: const Duration(milliseconds: 250),
     );
 
-    controller.reset();
-
     return;
-  }
-
-  Future<void> playController(
-    AnimationController controller, {
-    required bool playHalf,
-  }) async {
-    if (!mounted) return;
-
-    await playHalfController(controller);
   }
 
   Duration get duration => widget.duration;
