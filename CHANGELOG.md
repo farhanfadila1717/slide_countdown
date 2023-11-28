@@ -1,3 +1,7 @@
+## 1.3.5
+
+- refactor: reset `AnimationController` with listen animation status instead async callback
+
 ## 1.3.4
 
 - fix: animation when `StreamDuration` is stop
