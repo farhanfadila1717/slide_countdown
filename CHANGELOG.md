@@ -1,3 +1,7 @@
+## 1.4.0-dev.1
+
+- fix: `RawDigitItem` trigger animation
+
 ## 1.3.5
 
 - refactor: reset `AnimationController` with listen animation status instead async callback
