@@ -1,4 +1,4 @@
-## 1.4.0-dev.1
+## 1.4.0
 
 - fix: `RawDigitItem` trigger animation
 
