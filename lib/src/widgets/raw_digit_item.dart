@@ -240,7 +240,7 @@ class _RawDigitItemState extends State<RawDigitItem>
   @override
   void didUpdateWidget(covariant RawDigitItem oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.duration != oldWidget.duration) {
+    if (widget.duration.inSeconds != oldWidget.duration.inSeconds) {
       playAnimation();
     }
   }
