@@ -240,15 +240,29 @@ class _RawDigitItemState extends State<RawDigitItem>
   @override
   void didUpdateWidget(covariant RawDigitItem oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.duration.inSeconds != oldWidget.duration.inSeconds) {
-      playAnimation();
-    }
+    trigerAnimation(oldWidget);
+  }
+
+  void trigerAnimation(RawDigitItem oldWidget) {
+    final duration = widget.duration;
+    final oldDuration = oldWidget.duration;
+
+    if (duration == oldDuration) return;
+
+    if (digitValue() == digitValue(oldDuration)) return;
+
+    playAnimation();
   }
 
   int minMaxValue(int value) {
     if (value.isNegative) return 0;
 
-    if (value > 9) return 9;
+    if (widget.digitType == DigitType.first &&
+        widget.timeUnit != TimeUnit.days) {
+      if (value >= 6) return 5;
+    }
+
+    if (value >= 9) return 9;
 
     return value;
   }

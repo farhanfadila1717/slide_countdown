@@ -1,3 +1,5 @@
+## 1.5.0-dev.2
+
 ## 1.4.0
 
 - fix: `RawDigitItem` trigger animation
