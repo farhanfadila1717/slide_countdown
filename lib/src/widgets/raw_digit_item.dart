@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:slide_countdown/src/utils/enum.dart';
 import 'package:slide_countdown/src/utils/extensions.dart';
@@ -65,13 +67,46 @@ class _RawDigitItemState extends State<RawDigitItem>
   late Animation<Offset> _offsetAnimationTwo;
 
   bool _isOneFirstPlaying = false;
+  int _value = 0;
+  int _nextValue = 1;
 
   @override
   void initState() {
     super.initState();
     initOffsetAnimation();
     listenAnimation();
-    playAnimation(playHalf: true);
+    initValue();
+    playAnimation(
+      force: true,
+    );
+  }
+
+  void initValue() {
+    _value = digitValue();
+    _nextValue = minMax(_value);
+
+    setState(() {});
+  }
+
+  int get maxDigit =>
+      widget.digitType == DigitType.first && widget.timeUnit != TimeUnit.days
+          ? 5
+          : 9;
+
+  int minMax(int value) {
+    if (widget.countUp) {
+      return value + 1;
+    }
+
+    if (value == 0 && !currentAndNextIsSame) {
+      return maxDigit;
+    }
+
+    if (currentAndNextIsSame) {
+      return value;
+    }
+
+    return max(value - 1, 0);
   }
 
   void initOffsetAnimation() {
@@ -110,11 +145,13 @@ class _RawDigitItemState extends State<RawDigitItem>
   }
 
   void playAnimation({
-    bool playHalf = false,
+    bool force = false,
   }) {
+    if (currentAndNextIsSame && !force) return;
+
     final halfController = halfPlayController();
 
-    _isOneFirstPlaying = digitValue().isOdd;
+    _isOneFirstPlaying = _value.isOdd;
 
     if (halfController != null) {
       playNextHalfController(halfController);
@@ -212,15 +249,11 @@ class _RawDigitItemState extends State<RawDigitItem>
     return value;
   }
 
-  int get currentValue => digitValue();
-
-  int get nextValue => !widget.countUp ? digitValue() + 1 : digitValue() - 1;
-
   bool get isDirectionUp => widget.slideDirection == SlideDirection.up;
 
   bool get isWithoutAnimation => widget.slideDirection == SlideDirection.none;
 
-  bool get currentAndNextIsZero {
+  bool get currentAndNextIsSame {
     if (widget.countUp) {
       return digitValue() ==
           digitValue(
@@ -249,22 +282,9 @@ class _RawDigitItemState extends State<RawDigitItem>
 
     if (duration == oldDuration) return;
 
-    if (digitValue() == digitValue(oldDuration)) return;
+    initValue();
 
     playAnimation();
-  }
-
-  int minMaxValue(int value) {
-    if (value.isNegative) return 0;
-
-    if (widget.digitType == DigitType.first &&
-        widget.timeUnit != TimeUnit.days) {
-      if (value >= 6) return 5;
-    }
-
-    if (value >= 9) return 9;
-
-    return value;
   }
 
   @override
@@ -274,11 +294,16 @@ class _RawDigitItemState extends State<RawDigitItem>
     super.dispose();
   }
 
+  int swapAWB({required bool swap, required int a, required int b}) {
+    if (swap) return b;
+    return a;
+  }
+
   @override
   Widget build(BuildContext context) {
     if (isWithoutAnimation) {
       return Text(
-        digit(currentValue),
+        digit(_value),
         style: widget.style,
       );
     }
@@ -290,11 +315,18 @@ class _RawDigitItemState extends State<RawDigitItem>
             animation: _controllerTwo,
             builder: (_, __) {
               final translation = _offsetAnimationTwo.value;
+              final countUpValue = !_isOneFirstPlaying ? _nextValue : _value;
+              final countDownValue = !_isOneFirstPlaying ? _nextValue : _value;
+
               return FractionalTranslation(
                 translation: translation,
                 child: Text(
                   digit(
-                    minMaxValue(_isOneFirstPlaying ? nextValue : currentValue),
+                    swapAWB(
+                      swap: widget.countUp,
+                      a: countDownValue,
+                      b: countUpValue,
+                    ),
                   ),
                   style: widget.style,
                 ),
@@ -305,12 +337,18 @@ class _RawDigitItemState extends State<RawDigitItem>
             animation: _controllerOne,
             builder: (_, __) {
               final translation = _offsetAnimationOne.value;
+              final countUpValue = _isOneFirstPlaying ? _nextValue : _value;
+              final countDownValue = _isOneFirstPlaying ? _nextValue : _value;
 
               return FractionalTranslation(
                 translation: translation,
                 child: Text(
                   digit(
-                    minMaxValue(_isOneFirstPlaying ? currentValue : nextValue),
+                    swapAWB(
+                      swap: widget.countUp,
+                      a: countDownValue,
+                      b: countUpValue,
+                    ),
                   ),
                   style: widget.style,
                 ),
