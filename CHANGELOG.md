@@ -1,4 +1,6 @@
-## 1.5.0-dev.2
+## 1.5.0
+
+- fix: first digit trigger animation
 
 ## 1.4.0
 
