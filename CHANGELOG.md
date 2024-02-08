@@ -1,3 +1,7 @@
+## 1.5.1
+
+- fix(Accessbility): add semantic for talkback/voice over
+
 ## 1.5.0
 
 - fix: first digit trigger animation
