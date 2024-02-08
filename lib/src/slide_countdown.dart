@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:slide_countdown/src/models/duration_title.dart';
 import 'package:slide_countdown/src/models/slide_countdown_base.dart';
 import 'package:slide_countdown/src/utils/enum.dart';
