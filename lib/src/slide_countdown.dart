@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:slide_countdown/src/models/duration_title.dart';
 import 'package:slide_countdown/src/models/slide_countdown_base.dart';
 import 'package:slide_countdown/src/utils/enum.dart';
@@ -257,9 +258,13 @@ class _SlideCountdownState extends State<SlideCountdown> {
                   ],
           ),
         );
-        return DecoratedBox(
-          decoration: widget.decoration,
-          child: countdown,
+        return Semantics(
+          label: '$duration'.replaceAll('.000000', ''),
+          container: true,
+          child: DecoratedBox(
+            decoration: widget.decoration,
+            child: countdown,
+          ),
         );
       },
     );

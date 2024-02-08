@@ -103,10 +103,13 @@ class DigitSeparatedItem extends BaseDigits {
       ),
     );
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children:
-          textDirection.isRtl ? [separatorWidget, box] : [box, separatorWidget],
+    return ExcludeSemantics(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: textDirection.isRtl
+            ? [separatorWidget, box]
+            : [box, separatorWidget],
+      ),
     );
   }
 }
