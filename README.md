@@ -9,7 +9,7 @@ A Flutter package to create easy slide animation countdown / countup timer
 - 🔔 Callback finished
 - 🎨 Easily custom duration layout with `RawSlideCountdown` and `RawDigitItem` widget.
 
-<img src=" https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/likes_card.png" width="400" alt="likes card">
+<img src="https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/likes_card.png" width="400" alt="likes card">
 </img>
 
 ---
