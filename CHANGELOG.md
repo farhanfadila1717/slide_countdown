@@ -1,3 +1,7 @@
+## 1.5.2
+
+- update README
+
 ## 1.5.1
 
 - fix(Accessbility): add semantic for talkback/voice over
