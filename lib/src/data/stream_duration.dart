@@ -17,6 +17,9 @@ class StreamDuration extends ValueNotifier<Duration> {
   /// @nodoc
   bool get isCountUp => config.isCountUp;
 
+  /// @nodoc
+  bool get isPaused => _timer?.isPaused ?? false;
+
   PausableTimer? _timer;
 
   CountUpConfig get _countUpConfig =>
@@ -39,8 +42,6 @@ class StreamDuration extends ValueNotifier<Duration> {
 
   /// Play
   void play() {
-    if (_timer?.isPaused ?? false) _timer?.start();
-
     _timer = PausableTimer.periodic(
       config.periodic,
       () {
@@ -59,11 +60,14 @@ class StreamDuration extends ValueNotifier<Duration> {
   /// pause duration
   void pause() => _timer?.pause();
 
-  /// reset duration
-  void reset() => _timer?.reset();
+  /// reset duration to initial duration
+  void reset() {
+    value = config.duration;
+    notifyListeners();
+  }
 
   /// resume duration
-  void resume() => play();
+  void resume() => _timer?.start();
 
   /// change
   void change(Duration duration) {

@@ -122,7 +122,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
 
     return RawSlideCountdown(
       streamDuration: _streamDuration,
-      builder: (_, duration, __) {
+      builder: (_, duration) {
         if (duration.inSeconds <= 0 && widget.replacement != null) {
           return widget.replacement!;
         }

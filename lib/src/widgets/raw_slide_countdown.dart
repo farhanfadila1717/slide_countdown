@@ -8,9 +8,6 @@ import 'package:slide_countdown/slide_countdown.dart';
 ///
 /// The [duration] parameter is the remaining duration for the countdown.
 ///
-/// The [isCountUp] parameter is to know remaining duration is countdown or
-/// countup.
-///
 /// The function should return a [Widget] that represents the current state of
 /// the countdown.
 ///
@@ -20,8 +17,6 @@ import 'package:slide_countdown/slide_countdown.dart';
 typedef RawSlideCountdownBuilder = Widget Function(
   BuildContext context,
   Duration duration,
-  // ignore: avoid_positional_boolean_parameters
-  bool isCountUp,
 );
 
 /// {@template raw_slide_countdown}
@@ -43,7 +38,7 @@ typedef RawSlideCountdownBuilder = Widget Function(
 ///         duration: remainingDuration,
 ///         timeUnit: TimeUnit.seconds,
 ///         digitType: DigitType.second,
-///         countUp: false,
+///         countUp: myStreamDuration.isCountUp,
 ///     );
 ///   },
 /// )
@@ -79,11 +74,7 @@ class RawSlideCountdown extends StatelessWidget {
     return RepaintBoundary(
       child: ValueListenableBuilder(
         valueListenable: streamDuration,
-        builder: (_, duration, __) => builder(
-          context,
-          duration,
-          streamDuration.isCountUp,
-        ),
+        builder: (_, duration, __) => builder(context, duration),
       ),
     );
   }
