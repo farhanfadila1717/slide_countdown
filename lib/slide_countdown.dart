@@ -1,5 +1,5 @@
-export 'package:stream_duration/stream_duration.dart';
-
+export 'src/data/config/config.dart';
+export 'src/data/stream_duration.dart';
 export 'src/models/duration_title.dart';
 export 'src/slide_countdown.dart';
 export 'src/slide_countdown_separated.dart';

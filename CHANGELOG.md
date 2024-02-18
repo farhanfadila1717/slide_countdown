@@ -1,3 +1,14 @@
+## 2.0.0-dev+1
+- refactor duration
+
+## 1.5.2
+
+- update README
+
+## 1.5.1
+
+- fix(Accessbility): add semantic for talkback/voice over
+
 ## 1.5.0
 
 - fix: first digit trigger animation

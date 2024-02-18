@@ -1,20 +1,28 @@
 ## [![cover][]][pubdev]
+# ⏱️ Slide Countdown
+A Flutter package to create easy slide animation countdown / countup timer
 
 [![flutter][]][web flutter] [![badge paypal][]][paypal account] [![badge linktree][]][linktree account] <br>
-[![qr-paypal][]][paypal account]
-<br><br>
-A Flutter package to create easy slide animation countdown / countup timer.
 
 - ⏱️ Support Count down and Count up
 - ⏯️ Controll duration with [StreamDuration](https://pub.dev/packages/stream_duration) package
 - 🔔 Callback finished
 - 🎨 Easily custom duration layout with `RawSlideCountdown` and `RawDigitItem` widget.
 
+<img src="https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/likes_card.png" width="400" alt="likes card">
+</img>
+
 ---
 
-# Example SlideCountdown
+## 🌟 Open To Work
 
-## Slidecountdown(Default)
+Farhan The author of this package is available for hiring as Flutter Engineer. See portofolio website [here](https://farhanfadila.site/).
+
+---
+
+## Example
+
+### Slidecountdown(Default)
 
 ```dart
 SlideCountdown(
@@ -22,13 +30,11 @@ SlideCountdown(
 )
 ```
 
-## Output SlideCountdown(Default)
+### Output SlideCountdown(Default)
 
 [![slidecountdown][]][slidecountdown]
 
----
-
-## SlideCountdownSeparated(Default)
+### SlideCountdownSeparated(Default)
 
 ```dart
 SlideCountdownSeparated(
@@ -40,9 +46,7 @@ SlideCountdownSeparated(
 
 [![slidecountdown separated][]][slidecountdown separated]
 
----
-
-## CountUp is True
+### CountUp is True
 
 When the countup value is the same as the duration, it will call onDone. If you do not set a duration, the countup will continue infinitely and onDone will never be called.
 
@@ -53,13 +57,12 @@ SlideCountdown(
 )
 ```
 
-## Output Slidecountdown countUp
+### Output Slidecountdown countUp
 
 [![slidecountdown countup][]][slidecountdown countup]
 
----
 
-## Slidecountdown sparatorType.title
+### Slidecountdown sparatorType.title
 
 ```dart
 SlideCountdown(
@@ -69,24 +72,23 @@ SlideCountdown(
 )
 ```
 
-## Output Slidecountdown sparatorType.title
+### Output Slidecountdown sparatorType.title
 
 [![slidecountdown separatortype][]][slidecountdown separatortype]
 
 ---
 
-# Full Customize Slidecountdown
+## 🎨 Full Customize Slidecountdown
 
 You can full customize slidecountdown with `RawSlideCountdown` and `RawDigitItem`
 see example [here](https://github.com/farhanfadila1717/slide_countdown/blob/master/example/example_raw_slide_countdown.dart)
 
-## Output Customize Slidecountdown
+## Example Output Customize Slidecountdown
 
-[![raw-slidecountdown][]][raw-slidecountdown]
+<img src="https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/raw_slide_countdown.png" width="300" alt="paypal farhan fadila">
+</img>
 
----
-
-# Example control duration
+## Example control duration
 
 If you want to control duration more advanced, you can override property `StreamDuration`. <br>
 You can `play`, `pause`, `change`, `add`, `subtract` duration.
@@ -108,14 +110,28 @@ SlideCountdown(
 
 ### 🚧 Maintainer
 
-[![account avatar][]][github account] <br>
-**Farhan Fadila** <br>
-📫 How to reach me: farhan.fadila1717@gmail.com
+<a href="https://github.com/farhanfadila1717">
+<img src="https://avatars.githubusercontent.com/u/43161050?s=100" alt="farhan fadila"  style="border-radius: 10px">
+</img>
+</a>
 
-### ❤️ Support the maintainer
+**Farhan Fadila**
 
-[![qr-paypal][]][paypal account]<br>
-[![badge paypal][]][paypal account] [![badge linktree][]][linktree account]
+📫 Email: farhan.fadila1717@gmail.com
+
+⛳ Website: [farhanfadila.site](https://farhanfadila.site/)
+
+### ❤️ Donate for support this open source
+
+<a href="https://www.paypal.me/farhanfadila1717" style="margin-right: 10px">
+<img src="https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/btn_paypal.png" width="150" alt="paypal farhan fadila">
+</img>
+</a>
+<a href="https://linktr.ee/farhanfadila">
+<img src="https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/btn_linktree.png" width="150" alt="linktree farhan fadila">
+</img>
+</a>
+
 
 [cover]: https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/slide_countdown.png
 [slidecountdown]: https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/slidecountdown.gif

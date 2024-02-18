@@ -93,11 +93,13 @@ class DigitItem extends BaseDigits {
           )
         : const SizedBox.shrink();
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: textDirection.isRtl
-          ? [separatorWidget, ...digits]
-          : [...digits, separatorWidget],
+    return ExcludeSemantics(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: textDirection.isRtl
+            ? [separatorWidget, ...digits]
+            : [...digits, separatorWidget],
+      ),
     );
   }
 }

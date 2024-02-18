@@ -59,7 +59,7 @@ typedef RawSlideCountdownBuilder = Widget Function(
 /// - [RawSlideCountdownBuilder], a function signature for the builder used
 ///   to create the countdown widget.
 /// {@endtemplate}
-class RawSlideCountdown extends StatefulWidget {
+class RawSlideCountdown extends StatelessWidget {
   /// {@macro raw_slide_countdown}
   const RawSlideCountdown({
     required this.streamDuration,
@@ -75,46 +75,14 @@ class RawSlideCountdown extends StatefulWidget {
   final RawSlideCountdownBuilder builder;
 
   @override
-  State<RawSlideCountdown> createState() => _RawSlideCountdownState();
-}
-
-class _RawSlideCountdownState extends State<RawSlideCountdown> {
-  late final ValueNotifier<Duration> _durationNotifier;
-
-  @override
-  void initState() {
-    super.initState();
-    listenDuration();
-  }
-
-  void listenDuration() {
-    _durationNotifier = ValueNotifier(
-      widget.streamDuration.remainingDuration,
-    );
-
-    widget.streamDuration.durationLeft.listen(
-      (duration) {
-        if (mounted) _durationNotifier.value = duration;
-      },
-      cancelOnError: true,
-    );
-  }
-
-  @override
-  void dispose() {
-    _durationNotifier.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return RepaintBoundary(
       child: ValueListenableBuilder(
-        valueListenable: _durationNotifier,
-        builder: (_, duration, __) => widget.builder(
+        valueListenable: streamDuration,
+        builder: (_, duration, __) => builder(
           context,
           duration,
-          widget.streamDuration.isCountUp,
+          streamDuration.isCountUp,
         ),
       ),
     );

@@ -93,9 +93,9 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
         );
 
     if (widget.onChanged != null) {
-      _streamDuration.durationLeft.listen(
-        (event) => widget.onChanged?.call(event),
-      );
+      _streamDuration.addListener(() {
+        widget.onChanged?.call(_streamDuration.value);
+      });
     }
   }
 

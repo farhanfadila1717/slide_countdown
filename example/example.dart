@@ -158,7 +158,9 @@ class _ExampleControlDurationState extends State<ExampleControlDuration> {
             ElevatedButton(
               onPressed: () {
                 // this will add 10 minutes to the remaining duration
-                _streamDuration.add(const Duration(minutes: 10));
+                _streamDuration.add(
+                  const Duration(minutes: 10),
+                );
               },
               child: const Text('Add Duration'),
             ),
