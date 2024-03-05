@@ -40,6 +40,8 @@ Farhan The author of this package is available for hiring as Flutter Engineer. S
   )
 ```
 <!-- Output -->
+<img src="https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/basic_slide_countdown_separatedd.png" width="400" alt="basic slidecountdown separated">
+</img>
 
 ### Custom time unit
 Set the time unit you want to display with this params
