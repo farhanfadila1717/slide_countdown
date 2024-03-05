@@ -30,6 +30,10 @@ Farhan The author of this package is available for hiring as Flutter Engineer. S
   )
 ```
 <!-- Output -->
+<img src="https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/basic_slide_countdown.png" width="400" alt="basic slidecountdown">
+</img>
+
+
 ```dart
   SlideCountdownSeparated(
     duration: Duration(days: 2),
@@ -50,6 +54,11 @@ Set the time unit you want to display with this params
 ```
 <!-- Output -->
 
+### Control duration
+You can control duration e.g play, pause, resume, add, subtract duration. See example [here](example/control_duration.dart)
+
+<img src="https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/control_duration.png" width="400" alt="contoll duration">
+</img>
 
 ---
 
