@@ -1,3 +1,6 @@
+## 2.0.0-dev+1
+- refactor duration
+
 ## 1.5.2
 
 - update README
