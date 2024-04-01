@@ -95,6 +95,14 @@ class _RawDigitItemState extends State<RawDigitItem>
 
   int minMax(int value) {
     if (widget.countUp) {
+      if (value == maxDigit && !currentAndNextIsSame) {
+        return 0;
+      }
+
+      if (currentAndNextIsSame) {
+        return value;
+      }
+
       return value + 1;
     }
 
