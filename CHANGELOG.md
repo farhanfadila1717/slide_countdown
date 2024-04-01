@@ -1,3 +1,6 @@
+## 1.6.0
+- fix issue [#61](https://github.com/farhanfadila1717/slide_countdown/issues/61) count up min max digit. thanks to [clayzx](https://github.com/clayzx)
+
 ## 1.5.2
 
 - update README
