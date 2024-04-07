@@ -1,3 +1,6 @@
+## 1.6.1
+- Fix RTL digit position [#63](https://github.com/farhanfadila1717/slide_countdown/pull/63). thanks to [F2had](https://github.com/F2had)
+
 ## 1.6.0
 - fix issue [#61](https://github.com/farhanfadila1717/slide_countdown/issues/61) count up min max digit. thanks to [clayzx](https://github.com/clayzx)
 
