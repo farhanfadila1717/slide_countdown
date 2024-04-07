@@ -66,9 +66,7 @@ class DigitItem extends BaseDigits {
         RawDigitItem(
           duration: duration,
           timeUnit: timeUnit,
-          digitType: TextDirection.rtl == textDirection
-              ? DigitType.second
-              : DigitType.first,
+          digitType: textDirection.isRtl ? DigitType.second : DigitType.first,
           countUp: countUp,
           style: style,
           slideDirection: slideDirection,
@@ -77,9 +75,7 @@ class DigitItem extends BaseDigits {
         RawDigitItem(
           duration: duration,
           timeUnit: timeUnit,
-          digitType: TextDirection.rtl == textDirection
-              ? DigitType.first
-              : DigitType.second,
+          digitType: textDirection.isRtl ? DigitType.first : DigitType.second,
           countUp: countUp,
           style: style,
           slideDirection: slideDirection,
