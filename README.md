@@ -5,7 +5,7 @@ A Flutter package to create easy slide animation countdown / countup timer
 [![flutter][]][web flutter] [![badge paypal][]][paypal account] [![badge linktree][]][linktree account] <br>
 
 - ⏱️ Support Count down and Count up
-- ⏯️ Controll duration with [StreamDuration](https://pub.dev/packages/stream_duration) package
+- ⏯️ Control duration with [StreamDuration](https://pub.dev/packages/stream_duration) package
 - 🔔 Callback finished
 - 🎨 Easily custom duration layout with `RawSlideCountdown` and `RawDigitItem` widget.
 
@@ -80,8 +80,8 @@ SlideCountdown(
 
 ## 🎨 Full Customize Slidecountdown
 
-You can full customize slidecountdown with `RawSlideCountdown` and `RawDigitItem`
-see example [here](https://github.com/farhanfadila1717/slide_countdown/blob/master/example/example_raw_slide_countdown.dart)
+You can customize slidecountdown with `RawSlideCountdown` and `RawDigitItem`
+See example [here](https://github.com/farhanfadila1717/slide_countdown/blob/master/example/example_raw_slide_countdown.dart)
 
 ## Example Output Customize Slidecountdown
 
