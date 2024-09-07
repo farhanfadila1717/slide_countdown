@@ -1,4 +1,4 @@
-## 2.0.0-dev+2
+## 2.0.0-dev+3
 - fix StreamDuration used after disposed
 
 ## 2.0.0-dev+1
