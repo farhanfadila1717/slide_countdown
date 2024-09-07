@@ -1,3 +1,6 @@
+## 2.0.0-dev+2
+- fix StreamDuration used after disposed
+
 ## 2.0.0-dev+1
 - refactor duration
 
