@@ -71,7 +71,7 @@ class StreamDuration extends ValueNotifier<Duration> {
 
   /// change
   void change(Duration duration) {
-    value = value;
+    value = duration;
     notifyListeners();
   }
 
@@ -85,6 +85,12 @@ class StreamDuration extends ValueNotifier<Duration> {
   void add(Duration duration) {
     value += duration;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 }
 
