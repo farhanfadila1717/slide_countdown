@@ -31,34 +31,34 @@ class DigitItem extends BaseDigits {
 
   @override
   Widget build(BuildContext context) {
-    final digits = <Widget>[];
+    var digits = <Widget>[];
 
     if (timeUnit == TimeUnit.days && duration.inDays > 999) {
-      digits.add(
-        RawDigitItem(
-          duration: duration,
-          timeUnit: timeUnit,
-          digitType: DigitType.daysThousand,
-          countUp: countUp,
-          style: style,
-          slideDirection: slideDirection,
-          digitsNumber: digitsNumber,
-        ),
+      final daysThousand = RawDigitItem(
+        duration: duration,
+        timeUnit: timeUnit,
+        digitType: DigitType.daysThousand,
+        countUp: countUp,
+        style: style,
+        slideDirection: slideDirection,
+        digitsNumber: digitsNumber,
       );
+
+      digits.add(daysThousand);
     }
 
     if (timeUnit == TimeUnit.days && duration.inDays > 99) {
-      digits.add(
-        RawDigitItem(
-          duration: duration,
-          timeUnit: timeUnit,
-          digitType: DigitType.daysHundred,
-          countUp: countUp,
-          style: style,
-          slideDirection: slideDirection,
-          digitsNumber: digitsNumber,
-        ),
+      final dayHundred = RawDigitItem(
+        duration: duration,
+        timeUnit: timeUnit,
+        digitType: DigitType.daysHundred,
+        countUp: countUp,
+        style: style,
+        slideDirection: slideDirection,
+        digitsNumber: digitsNumber,
       );
+
+      digits.add(dayHundred);
     }
 
     digits.addAll(
@@ -83,6 +83,10 @@ class DigitItem extends BaseDigits {
         ),
       ],
     );
+
+    if (textDirection.isRtl) {
+      digits = digits.reversed.toList();
+    }
 
     final separatorWidget = showSeparator
         ? Separator(
