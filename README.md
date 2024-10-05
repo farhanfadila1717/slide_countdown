@@ -23,6 +23,7 @@ Farhan The author of this package is available for hiring as Flutter Engineer. S
 
 ## Example
 
+
 ### Basic Usange
 ```dart
   SlideCountdown(
@@ -57,7 +58,7 @@ Set the time unit you want to display with this params
 <!-- Output -->
 
 ### Control duration
-You can control duration e.g play, pause, resume, add, subtract duration. See example [here](example/control_duration.dart)
+You can control duration e.g play, pause, resume, seek, add, subtract duration. See example [here](example/control_duration.dart)
 
 <img src="https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/control_duration.png" width="400" alt="contoll duration">
 </img>
