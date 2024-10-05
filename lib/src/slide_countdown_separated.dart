@@ -68,7 +68,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
     super.didUpdateWidget(oldWidget);
     if (widget.streamDuration == null) {
       if (widget.duration != oldWidget.duration) {
-        _streamDuration.change(widget.duration!);
+        _streamDuration.seek(widget.duration!);
       }
     }
   }
