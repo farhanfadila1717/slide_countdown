@@ -1,13 +1,14 @@
-## [![cover][]][pubdev]
 # ⏱️ Slide Countdown
 A Flutter package to create easy slide animation countdown / countup timer
 
 [![flutter][]][web flutter] [![badge paypal][]][paypal account] [![badge linktree][]][linktree account] <br>
 
 - ⏱️ Support Count down and Count up
-- ⏯️ Controll duration with [StreamDuration](https://pub.dev/packages/stream_duration) package
+- ⏯️ Control duration
 - 🔔 Callback finished
 - 🎨 Easily custom duration layout with `RawSlideCountdown` and `RawDigitItem` widget.
+
+Thanks to [pausable_timer](https://pub.dev/packages/pausable_timer), this package use [pausable_timer](https://pub.dev/packages/pausable_timer) for helping control duration.
 
 <img src="https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/likes_card.png" width="400" alt="likes card">
 </img>
@@ -22,89 +23,45 @@ Farhan The author of this package is available for hiring as Flutter Engineer. S
 
 ## Example
 
-### Slidecountdown(Default)
 
+### Basic Usange
 ```dart
-SlideCountdown(
-  duration: const Duration(days: 2),
-)
+  SlideCountdown(
+    duration: Duration(days: 2),
+  )
 ```
-
-### Output SlideCountdown(Default)
-
-[![slidecountdown][]][slidecountdown]
-
-### SlideCountdownSeparated(Default)
-
-```dart
-SlideCountdownSeparated(
-  duration: const Duration(days: 2),
-)
-```
-
-### Output SlideCountdownSeparated(Default)
-
-[![slidecountdown separated][]][slidecountdown separated]
-
-### CountUp is True
-
-When the countup value is the same as the duration, it will call onDone. If you do not set a duration, the countup will continue infinitely and onDone will never be called.
-
-```dart
-SlideCountdown(
-  duration: const Duration(days: 2),
-  countUp: true,
-)
-```
-
-### Output Slidecountdown countUp
-
-[![slidecountdown countup][]][slidecountdown countup]
-
-
-### Slidecountdown sparatorType.title
-
-```dart
-SlideCountdown(
-  duration: const Duration(days: 2),
-  separatorType: SeparatorType.title,
-  slideDirection: SlideDirection.up,
-)
-```
-
-### Output Slidecountdown sparatorType.title
-
-[![slidecountdown separatortype][]][slidecountdown separatortype]
-
----
-
-## 🎨 Full Customize Slidecountdown
-
-You can full customize slidecountdown with `RawSlideCountdown` and `RawDigitItem`
-see example [here](https://github.com/farhanfadila1717/slide_countdown/blob/master/example/example_raw_slide_countdown.dart)
-
-## Example Output Customize Slidecountdown
-
-<img src="https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/raw_slide_countdown.png" width="300" alt="paypal farhan fadila">
+<!-- Output -->
+<img src="https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/basic_slide_countdown.png" width="400" alt="basic slidecountdown">
 </img>
 
-## Example control duration
-
-If you want to control duration more advanced, you can override property `StreamDuration`. <br>
-You can `play`, `pause`, `change`, `add`, `subtract` duration.
-
-> If you override/custom `StreamDuration` duration property has no effect anymore. <br>
-> See Full example control duration [here](https://github.com/farhanfadila1717/slide_countdown/blob/master/example/example.dart#L111).
 
 ```dart
-final streamDuration = StreamDuration(const Duration(hours: 2));
-
-SlideCountdown(
-  // This duration no effect if you customize stream duration
-  duration: const Duration(seconds: 10),
-  streamDuration: streamDuration,
-),
+  SlideCountdownSeparated(
+    duration: Duration(days: 2),
+  )
 ```
+<!-- Output -->
+<img src="https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/basic_slide_countdown_separatedd.png" width="400" alt="basic slidecountdown separated">
+</img>
+
+### Custom time unit
+Set the time unit you want to display with this params
+`shouldShowDays`, `shouldShowHours`, `shouldShowMinutes`, `shouldShowSeconds`.
+
+```dart
+  SlideCountdown(
+    duration: Duration(days: 2),
+    // Will show seconds only if duration in days is zero
+    shouldShowMinutes: (duration) => duration.inDays == 0,
+  )
+```
+<!-- Output -->
+
+### Control duration
+You can control duration e.g play, pause, resume, seek, add, subtract duration. See example [here](example/control_duration.dart)
+
+<img src="https://raw.githubusercontent.com/farhanfadila1717/flutter_package/master/display/slide_coutdown/control_duration.png" width="400" alt="contoll duration">
+</img>
 
 ---
 

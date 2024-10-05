@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:slide_countdown/src/models/duration_title.dart';
+import 'package:slide_countdown/slide_countdown.dart';
 import 'package:slide_countdown/src/models/slide_countdown_base.dart';
-import 'package:slide_countdown/src/utils/enum.dart';
 import 'package:slide_countdown/src/utils/extensions.dart';
 import 'package:slide_countdown/src/utils/utils.dart';
 import 'package:slide_countdown/src/widgets/digit_item.dart';
-import 'package:slide_countdown/src/widgets/raw_slide_countdown.dart';
-import 'package:stream_duration/stream_duration.dart';
 
 /// {@template slide_countdown}
 /// The SlideCountdownSeparated is a StatefulWidget that
@@ -70,7 +67,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
     super.didUpdateWidget(oldWidget);
     if (widget.streamDuration == null) {
       if (widget.duration != oldWidget.duration) {
-        _streamDuration.change(widget.duration!);
+        _streamDuration.seek(widget.duration!);
       }
     }
   }
@@ -95,9 +92,9 @@ class _SlideCountdownState extends State<SlideCountdown> {
         );
 
     if (widget.onChanged != null) {
-      _streamDuration.durationLeft.listen(
-        (event) => widget.onChanged?.call(event),
-      );
+      _streamDuration.addListener(() {
+        widget.onChanged?.call(_streamDuration.value);
+      });
     }
   }
 
@@ -125,7 +122,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
 
     return RawSlideCountdown(
       streamDuration: _streamDuration,
-      builder: (_, duration, __) {
+      builder: (_, duration) {
         if (duration.inSeconds <= 0 && widget.replacement != null) {
           return widget.replacement!;
         }

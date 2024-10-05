@@ -68,7 +68,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
     super.didUpdateWidget(oldWidget);
     if (widget.streamDuration == null) {
       if (widget.duration != oldWidget.duration) {
-        _streamDuration.change(widget.duration!);
+        _streamDuration.seek(widget.duration!);
       }
     }
   }
@@ -93,9 +93,9 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
         );
 
     if (widget.onChanged != null) {
-      _streamDuration.durationLeft.listen(
-        (event) => widget.onChanged?.call(event),
-      );
+      _streamDuration.addListener(() {
+        widget.onChanged?.call(_streamDuration.value);
+      });
     }
   }
 
@@ -123,7 +123,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
 
     return RawSlideCountdown(
       streamDuration: _streamDuration,
-      builder: (_, duration, __) {
+      builder: (_, duration) {
         if (duration.inSeconds <= 0 && widget.replacement != null) {
           return widget.replacement!;
         }

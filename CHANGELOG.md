@@ -1,3 +1,6 @@
+## 2.0.0
+- refactor stream duration to use [pausable_timer](https://pub.dev/packages/pausable_timer) package
+
 ## 1.6.1
 - Fix RTL digit position [#63](https://github.com/farhanfadila1717/slide_countdown/pull/63). thanks to [F2had](https://github.com/F2had)
 

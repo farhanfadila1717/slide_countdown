@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(
+      const MyApp(),
+    );
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -57,7 +57,8 @@ class _ExampleRawSlideCountdownState extends State<ExampleRawSlideCountdown> {
           children: [
             RawSlideCountdown(
               streamDuration: streamDuration,
-              builder: (context, duration, countUp) {
+              builder: (context, duration) {
+                final countUp = streamDuration.isCountUp;
                 return Row(
                   children: [
                     RawDigitItem(
