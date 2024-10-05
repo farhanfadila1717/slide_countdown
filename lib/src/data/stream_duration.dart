@@ -70,7 +70,14 @@ class StreamDuration extends ValueNotifier<Duration> {
   void resume() => _timer?.start();
 
   /// change
+  @Deprecated('use seek instead')
   void change(Duration duration) {
+    value = duration;
+    notifyListeners();
+  }
+
+  /// seek to
+  void seek(Duration duration) {
     value = duration;
     notifyListeners();
   }
