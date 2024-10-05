@@ -1,8 +1,5 @@
-## 2.0.0-dev+3
-- fix StreamDuration used after disposed
-
-## 2.0.0-dev+1
-- refactor duration
+## 2.0.0
+- refactor stream duration to use [pausable_timer](https://pub.dev/packages/pausable_timer) package
 
 ## 1.5.2
 
