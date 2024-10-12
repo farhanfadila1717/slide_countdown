@@ -11,7 +11,6 @@ import 'package:slide_countdown/src/utils/utils.dart';
 abstract class BaseDigits extends StatelessWidget {
   /// {@macro base_digits}
   const BaseDigits({
-    Key? key,
     required this.duration,
     required this.timeUnit,
     required this.padding,
@@ -19,12 +18,11 @@ abstract class BaseDigits extends StatelessWidget {
     required this.style,
     required this.separatorStyle,
     required this.slideDirection,
-    required this.curve,
     required this.countUp,
-    required this.slideAnimationDuration,
     required this.separator,
     required this.showSeparator,
     required this.textDirection,
+    super.key,
     this.separatorPadding,
     this.digitsNumber,
   });
@@ -50,14 +48,8 @@ abstract class BaseDigits extends StatelessWidget {
   /// The direction in which the digits should slide during the animation.
   final SlideDirection slideDirection;
 
-  ///  The curve to use for the animation.
-  final Curve curve;
-
   /// Whether to animate the digits counting up or down.
   final bool countUp;
-
-  /// The duration of the animation.
-  final Duration slideAnimationDuration;
 
   /// The string to use as the separator.
   final String separator;

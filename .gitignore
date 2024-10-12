@@ -76,3 +76,6 @@ build/
 
 # ignore coverage
 /coverage/
+
+# FVM
+.fvm

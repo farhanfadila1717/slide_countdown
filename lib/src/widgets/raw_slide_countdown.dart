@@ -22,7 +22,7 @@ typedef RawSlideCountdownBuilder = Widget Function(
 /// {@template raw_slide_countdown}
 /// A widget that displays a countdown based on a [StreamDuration].
 ///
-/// The [RawSlideCountdown] widget listens to the [streamDuration.durationLeft]
+/// The [RawSlideCountdown] widget listens to the streamDuration.durationLeft
 /// stream and updates its display based on the received duration values.
 ///
 /// The [builder] function is used to build the widget based on the current
@@ -38,7 +38,7 @@ typedef RawSlideCountdownBuilder = Widget Function(
 ///         duration: remainingDuration,
 ///         timeUnit: TimeUnit.seconds,
 ///         digitType: DigitType.second,
-///         countUp: false,
+///         countUp: myStreamDuration.isCountUp,
 ///     );
 ///   },
 /// )
@@ -57,9 +57,9 @@ typedef RawSlideCountdownBuilder = Widget Function(
 class RawSlideCountdown extends StatelessWidget {
   /// {@macro raw_slide_countdown}
   const RawSlideCountdown({
-    super.key,
     required this.streamDuration,
     required this.builder,
+    super.key,
   });
 
   /// The [StreamDuration] that provides the countdown duration.
@@ -72,15 +72,9 @@ class RawSlideCountdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RepaintBoundary(
-      child: StreamBuilder<Duration>(
-        stream: streamDuration.durationLeft,
-        builder: (_, snapshoot) {
-          if (snapshoot.hasData) {
-            return builder(context, snapshoot.data!);
-          }
-
-          return SizedBox.shrink();
-        },
+      child: ValueListenableBuilder(
+        valueListenable: streamDuration,
+        builder: (_, duration, __) => builder(context, duration),
       ),
     );
   }

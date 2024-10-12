@@ -9,10 +9,10 @@ import 'package:flutter/widgets.dart';
 class BoxSeparated extends StatelessWidget {
   /// {$macro box_separated}
   const BoxSeparated({
-    super.key,
     required this.padding,
     required this.decoration,
     required this.child,
+    super.key,
   });
 
   /// The padding of the container.

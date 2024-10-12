@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:slide_countdown/src/utils/clip_digit.dart';
 import 'package:slide_countdown/src/utils/enum.dart';
 import 'package:slide_countdown/src/utils/extensions.dart';
 import 'package:slide_countdown/src/utils/utils.dart';
@@ -23,159 +22,258 @@ const _kDefaultAnimationDuration = Duration(milliseconds: 250);
 /// ```
 /// {@endtemplate}
 class RawDigitItem extends StatefulWidget {
+  /// {@macro raw_digit_item}
   const RawDigitItem({
-    super.key,
     required this.duration,
     required this.timeUnit,
     required this.digitType,
     required this.countUp,
+    super.key,
     this.slideDirection = SlideDirection.down,
-    this.slideAnimationDuration,
     this.digitsNumber,
     this.style,
-    this.curve,
   });
 
+  /// The duration of the digit.
   final Duration duration;
+
+  /// The time unit of the digit.
   final TimeUnit timeUnit;
+
+  /// The digit type of the digit.
   final DigitType digitType;
+
+  /// The SlideDirection animation of the digit.
   final SlideDirection slideDirection;
+
+  /// Whether to count up or down.
   final bool countUp;
+
+  /// The style of the digit.
   final TextStyle? style;
-  final Duration? slideAnimationDuration;
+
+  /// The custom numbers of digits to display.
   final OverrideDigits? digitsNumber;
-  final Curve? curve;
 
   @override
   State<RawDigitItem> createState() => _RawDigitItemState();
 }
 
 class _RawDigitItemState extends State<RawDigitItem>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  late final Animation<Offset> _offsetAnimationOne;
-  late final Animation<Offset> _offsetAnimationTwo;
+    with TickerProviderStateMixin {
+  late final AnimationController _controllerOne;
+  late final AnimationController _controllerTwo;
+  late Animation<Offset> _offsetAnimationOne;
+  late Animation<Offset> _offsetAnimationTwo;
 
-  int _currentValue = 0;
+  bool _isOneFirstPlaying = false;
+  int _value = 0;
+  int _nextValue = 1;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+    initOffsetAnimation();
+    listenAnimation();
+    initValue();
+    playAnimation(
+      force: true,
+    );
+  }
+
+  void initValue() {
+    _value = digitValue();
+    _nextValue = minMax(_value);
+
+    setState(() {});
+  }
+
+  int get maxDigit =>
+      widget.digitType == DigitType.first && widget.timeUnit != TimeUnit.days
+          ? 5
+          : 9;
+
+  int minMax(int value) {
+    if (widget.countUp) {
+      if (value == maxDigit && !currentAndNextIsSame) {
+        return 0;
+      }
+
+      if (currentAndNextIsSame) {
+        return value;
+      }
+
+      return value + 1;
+    }
+
+    if (value == 0 && !currentAndNextIsSame) {
+      return maxDigit;
+    }
+
+    if (currentAndNextIsSame) {
+      return value;
+    }
+
+    return max(value - 1, 0);
+  }
+
+  void initOffsetAnimation() {
+    _controllerOne = AnimationController(
       vsync: this,
-      duration: widget.slideAnimationDuration ?? _kDefaultAnimationDuration,
+      duration: _kDefaultAnimationDuration,
       debugLabel:
-          'RawDigitItem-${widget.timeUnit.name}-${widget.digitType.name}',
+          'RawDigitItem-One-${widget.timeUnit.name}-${widget.digitType.name}',
+    );
+    _controllerTwo = AnimationController(
+      vsync: this,
+      duration: _kDefaultAnimationDuration,
+      debugLabel:
+          'RawDigitItem-Two-${widget.timeUnit.name}-${widget.digitType.name}',
     );
 
     _offsetAnimationOne = Tween<Offset>(
-      begin: const Offset(0.0, -1.0),
-      end: const Offset(0.0, 0.0),
+      begin: isDirectionUp ? const Offset(0, 1) : const Offset(0, -1),
+      end: isDirectionUp ? const Offset(0, -1) : const Offset(0, 1),
     ).animate(
       CurvedAnimation(
-        parent: _controller,
-        curve: widget.curve ?? Curves.linear,
+        parent: _controllerOne,
+        curve: Curves.linear,
       ),
     );
 
     _offsetAnimationTwo = Tween<Offset>(
-      begin: const Offset(0.0, 0.0),
-      end: const Offset(0.0, 1.0),
+      begin: isDirectionUp ? const Offset(0, 1) : const Offset(0, -1),
+      end: isDirectionUp ? const Offset(0, -1) : const Offset(0, 1),
     ).animate(
       CurvedAnimation(
-        parent: _controller,
-        curve: widget.curve ?? Curves.linear,
+        parent: _controllerTwo,
+        curve: Curves.linear,
       ),
     );
+  }
 
-    initValue();
-    listenAnimation();
+  void playAnimation({
+    bool force = false,
+  }) {
+    if (currentAndNextIsSame && !force) return;
+
+    final halfController = halfPlayController();
+
+    _isOneFirstPlaying = _value.isOdd;
+
+    if (halfController != null) {
+      playNextHalfController(halfController);
+    }
+
+    if (_isOneFirstPlaying) {
+      playHalfController(_controllerOne);
+    } else {
+      playHalfController(_controllerTwo);
+    }
   }
 
   void listenAnimation() {
-    _controller.forward();
-    _controller.addStatusListener((status) {
-      if (_controller.isAnimating) return;
+    _controllerOne.addStatusListener((status) {
+      final value = _controllerOne.value;
+      if (status == AnimationStatus.completed && value == 1.0) {
+        _controllerOne.reset();
+      }
+    });
 
-      if (_controller.isCompleted) {
-        _controller.reset();
-        initValue();
+    _controllerTwo.addStatusListener((status) {
+      final value = _controllerTwo.value;
+      if (status == AnimationStatus.completed && value == 1.0) {
+        _controllerTwo.reset();
       }
     });
   }
 
-  int get digitValue {
-    int value = 0;
+  AnimationController? halfPlayController() {
+    final one = _controllerOne.value;
+    final two = _controllerTwo.value;
+
+    if (one == 0.5) return _controllerOne;
+    if (two == 0.5) return _controllerTwo;
+
+    return null;
+  }
+
+  void playHalfController(
+    AnimationController controller,
+  ) {
+    if (!mounted) return;
+
+    controller.animateTo(
+      0.5,
+      duration: const Duration(milliseconds: 250),
+    );
+
+    return;
+  }
+
+  void playNextHalfController(
+    AnimationController controller,
+  ) {
+    if (!mounted) return;
+
+    controller.animateTo(
+      1,
+      duration: const Duration(milliseconds: 250),
+    );
+
+    return;
+  }
+
+  Duration get duration => widget.duration;
+
+  int digitValue([Duration? forceDuration]) {
+    var value = 0;
     final record = (widget.timeUnit, widget.digitType);
 
     switch (record) {
       case (TimeUnit.days, DigitType.daysThousand):
-        value = widget.duration.daysThousandDigit;
-        break;
+        value = (forceDuration ?? duration).daysThousandDigit;
       case (TimeUnit.days, DigitType.daysHundred):
-        value = widget.duration.daysHundredDigit;
-        break;
+        value = (forceDuration ?? duration).daysHundredDigit;
       case (TimeUnit.days, DigitType.first):
-        value = widget.duration.daysFirstDigit;
-        break;
+        value = (forceDuration ?? duration).daysFirstDigit;
       case (TimeUnit.days, DigitType.second):
-        value = widget.duration.daysLastDigit;
-        break;
+        value = (forceDuration ?? duration).daysLastDigit;
       case (TimeUnit.hours, DigitType.first):
-        value = widget.duration.hoursFirstDigit;
-        break;
+        value = (forceDuration ?? duration).hoursFirstDigit;
       case (TimeUnit.hours, DigitType.second):
-        value = widget.duration.hoursSecondDigit;
-        break;
+        value = (forceDuration ?? duration).hoursSecondDigit;
       case (TimeUnit.minutes, DigitType.first):
-        value = widget.duration.minutesFirstDigit;
-        break;
+        value = (forceDuration ?? duration).minutesFirstDigit;
       case (TimeUnit.minutes, DigitType.second):
-        value = widget.duration.minutesSecondDigit;
-        break;
+        value = (forceDuration ?? duration).minutesSecondDigit;
       case (TimeUnit.seconds, DigitType.first):
-        value = widget.duration.secondsFirstDigit;
-        break;
+        value = (forceDuration ?? duration).secondsFirstDigit;
       case (TimeUnit.seconds, DigitType.second):
-        value = widget.duration.secondsSecondDigit;
-        break;
+        value = (forceDuration ?? duration).secondsSecondDigit;
       default:
     }
 
     return value;
   }
 
-  void initValue() => _currentValue = digitValue;
-
-  int get _nextValue {
-    int _correction = 1;
-    final animationValue = _controller.value;
-    final tollerance =
-        ((widget.slideAnimationDuration ?? _kDefaultAnimationDuration)
-                    .inMilliseconds /
-                1000)
-            .clamp(0.0, 1.0);
-
-    if (animationValue <= tollerance) {
-      _correction = 2;
-    }
-
-    if (widget.countUp) {
-      if (_currentValue > 0) {
-        return max(0, _currentValue + _correction);
-      }
-      return 0;
-    }
-    if (_currentValue == 9) {
-      return 0;
-    }
-
-    return max(0, _currentValue - _correction);
-  }
-
   bool get isDirectionUp => widget.slideDirection == SlideDirection.up;
 
   bool get isWithoutAnimation => widget.slideDirection == SlideDirection.none;
+
+  bool get currentAndNextIsSame {
+    if (widget.countUp) {
+      return digitValue() ==
+          digitValue(
+            widget.duration + const Duration(seconds: 1),
+          );
+    }
+
+    return digitValue() ==
+        digitValue(
+          widget.duration - const Duration(seconds: 1),
+        );
+  }
 
   String digit(int value) =>
       widget.digitsNumber != null ? widget.digitsNumber![value] : '$value';
@@ -183,77 +281,90 @@ class _RawDigitItemState extends State<RawDigitItem>
   @override
   void didUpdateWidget(covariant RawDigitItem oldWidget) {
     super.didUpdateWidget(oldWidget);
-
-    if (widget.duration != oldWidget.duration) {
-      playAnimation();
-    }
+    trigerAnimation(oldWidget);
   }
 
-  void playAnimation() {
-    if (_currentValue != digitValue) {
-      _controller.forward();
-    }
+  void trigerAnimation(RawDigitItem oldWidget) {
+    final duration = widget.duration;
+    final oldDuration = oldWidget.duration;
+
+    if (duration == oldDuration) return;
+
+    initValue();
+
+    playAnimation();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controllerOne.dispose();
+    _controllerTwo.dispose();
     super.dispose();
+  }
+
+  int swapAWB({required bool swap, required int a, required int b}) {
+    if (swap) return b;
+    return a;
   }
 
   @override
   Widget build(BuildContext context) {
     if (isWithoutAnimation) {
       return Text(
-        digit(_currentValue),
+        digit(_value),
         style: widget.style,
       );
     }
 
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (_, __) {
-        var currentValueOffset = _offsetAnimationTwo.value;
-        var nextValueOffset = _offsetAnimationOne.value;
+    return ClipRRect(
+      child: Stack(
+        children: [
+          AnimatedBuilder(
+            animation: _controllerTwo,
+            builder: (_, __) {
+              final translation = _offsetAnimationTwo.value;
+              final countUpValue = !_isOneFirstPlaying ? _nextValue : _value;
+              final countDownValue = !_isOneFirstPlaying ? _nextValue : _value;
 
-        if (isDirectionUp) {
-          currentValueOffset = -currentValueOffset;
-          nextValueOffset = -nextValueOffset;
-        }
-
-        return Stack(
-          children: [
-            FractionalTranslation(
-              translation: nextValueOffset,
-              child: ClipRect(
-                clipper: ClipHalfRect(
-                  isUp: true,
-                  percentage: nextValueOffset.dy,
-                  slideDirection: widget.slideDirection,
-                ),
+              return FractionalTranslation(
+                translation: translation,
                 child: Text(
-                  digit(_nextValue),
+                  digit(
+                    swapAWB(
+                      swap: widget.countUp,
+                      a: countDownValue,
+                      b: countUpValue,
+                    ),
+                  ),
                   style: widget.style,
                 ),
-              ),
-            ),
-            FractionalTranslation(
-              translation: currentValueOffset,
-              child: ClipRect(
-                clipper: ClipHalfRect(
-                  isUp: false,
-                  percentage: currentValueOffset.dy,
-                  slideDirection: widget.slideDirection,
-                ),
+              );
+            },
+          ),
+          AnimatedBuilder(
+            animation: _controllerOne,
+            builder: (_, __) {
+              final translation = _offsetAnimationOne.value;
+              final countUpValue = _isOneFirstPlaying ? _nextValue : _value;
+              final countDownValue = _isOneFirstPlaying ? _nextValue : _value;
+
+              return FractionalTranslation(
+                translation: translation,
                 child: Text(
-                  digit(_currentValue),
+                  digit(
+                    swapAWB(
+                      swap: widget.countUp,
+                      a: countDownValue,
+                      b: countUpValue,
+                    ),
+                  ),
                   style: widget.style,
                 ),
-              ),
-            ),
-          ],
-        );
-      },
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

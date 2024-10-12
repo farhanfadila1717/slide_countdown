@@ -1,15 +1,18 @@
 import 'package:flutter/widgets.dart';
+import 'package:slide_countdown/slide_countdown.dart';
 import 'package:slide_countdown/src/models/base_digit.dart';
-import 'package:slide_countdown/src/utils/enum.dart';
 import 'package:slide_countdown/src/utils/extensions.dart';
+import 'package:slide_countdown/src/widgets/box_separated.dart';
+import 'package:slide_countdown/src/widgets/separator.dart';
 
-import 'box_separated.dart';
-import 'raw_digit_item.dart';
-import 'separator.dart';
-
+/// {@template digit_separated_item}
+/// A widget that displays a digit item with a separator inside a box.
+///
+/// Inherits all the properties of the [BaseDigits] class.
+/// {@endtemplate}
 class DigitSeparatedItem extends BaseDigits {
+  /// {@macro digit_separated_item}
   const DigitSeparatedItem({
-    super.key,
     required super.duration,
     required super.timeUnit,
     required super.padding,
@@ -17,19 +20,18 @@ class DigitSeparatedItem extends BaseDigits {
     required super.style,
     required super.separatorStyle,
     required super.slideDirection,
-    required super.curve,
     required super.countUp,
-    required super.slideAnimationDuration,
     required super.separator,
     required super.textDirection,
     required super.showSeparator,
+    super.key,
     super.separatorPadding,
     super.digitsNumber,
   });
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> digits = [];
+    final digits = <Widget>[];
 
     if (timeUnit == TimeUnit.days && duration.inDays > 999) {
       digits.add(
@@ -40,9 +42,7 @@ class DigitSeparatedItem extends BaseDigits {
           countUp: countUp,
           style: style,
           slideDirection: slideDirection,
-          slideAnimationDuration: slideAnimationDuration,
           digitsNumber: digitsNumber,
-          curve: curve,
         ),
       );
     }
@@ -56,39 +56,32 @@ class DigitSeparatedItem extends BaseDigits {
           countUp: countUp,
           style: style,
           slideDirection: slideDirection,
-          slideAnimationDuration: slideAnimationDuration,
           digitsNumber: digitsNumber,
-          curve: curve,
         ),
       );
     }
 
-    digits.add(
-      RawDigitItem(
-        duration: duration,
-        timeUnit: timeUnit,
-        digitType: DigitType.first,
-        countUp: countUp,
-        style: style,
-        slideDirection: slideDirection,
-        slideAnimationDuration: slideAnimationDuration,
-        digitsNumber: digitsNumber,
-        curve: curve,
-      ),
-    );
-
-    digits.add(
-      RawDigitItem(
-        duration: duration,
-        timeUnit: timeUnit,
-        digitType: DigitType.second,
-        countUp: countUp,
-        style: style,
-        slideDirection: slideDirection,
-        slideAnimationDuration: slideAnimationDuration,
-        digitsNumber: digitsNumber,
-        curve: curve,
-      ),
+    digits.addAll(
+      [
+        RawDigitItem(
+          duration: duration,
+          timeUnit: timeUnit,
+          digitType: DigitType.first,
+          countUp: countUp,
+          style: style,
+          slideDirection: slideDirection,
+          digitsNumber: digitsNumber,
+        ),
+        RawDigitItem(
+          duration: duration,
+          timeUnit: timeUnit,
+          digitType: DigitType.second,
+          countUp: countUp,
+          style: style,
+          slideDirection: slideDirection,
+          digitsNumber: digitsNumber,
+        ),
+      ],
     );
 
     final separatorWidget = showSeparator
@@ -98,7 +91,7 @@ class DigitSeparatedItem extends BaseDigits {
             separator: separator,
             style: separatorStyle,
           )
-        : SizedBox.shrink();
+        : const SizedBox.shrink();
 
     final box = BoxSeparated(
       padding: padding,
@@ -110,10 +103,13 @@ class DigitSeparatedItem extends BaseDigits {
       ),
     );
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children:
-          textDirection.isRtl ? [separatorWidget, box] : [box, separatorWidget],
+    return ExcludeSemantics(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: textDirection.isRtl
+            ? [separatorWidget, box]
+            : [box, separatorWidget],
+      ),
     );
   }
 }
