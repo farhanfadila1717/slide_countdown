@@ -27,6 +27,7 @@ class DigitSeparatedItem extends BaseDigits {
     super.key,
     super.separatorPadding,
     super.digitsNumber,
+    super.slideAnimationDuration,
   });
 
   @override
@@ -43,6 +44,7 @@ class DigitSeparatedItem extends BaseDigits {
           style: style,
           slideDirection: slideDirection,
           digitsNumber: digitsNumber,
+          slideAnimationDuration: slideAnimationDuration,
         ),
       );
     }
@@ -57,6 +59,7 @@ class DigitSeparatedItem extends BaseDigits {
           style: style,
           slideDirection: slideDirection,
           digitsNumber: digitsNumber,
+          slideAnimationDuration: slideAnimationDuration,
         ),
       );
     }
@@ -71,6 +74,7 @@ class DigitSeparatedItem extends BaseDigits {
           style: style,
           slideDirection: slideDirection,
           digitsNumber: digitsNumber,
+          slideAnimationDuration: slideAnimationDuration,
         ),
         RawDigitItem(
           duration: duration,
@@ -80,6 +84,7 @@ class DigitSeparatedItem extends BaseDigits {
           style: style,
           slideDirection: slideDirection,
           digitsNumber: digitsNumber,
+          slideAnimationDuration: slideAnimationDuration,
         ),
       ],
     );
