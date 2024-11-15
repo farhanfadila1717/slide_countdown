@@ -129,15 +129,18 @@ class _RawDigitItemState extends State<RawDigitItem>
   }
 
   void initOffsetAnimation() {
+    final slideAnimationDuration =
+        widget.slideAnimationDuration ?? kDefaultSlideAnimationDuration;
+
     _controllerOne = AnimationController(
       vsync: this,
-      duration: widget.slideAnimationDuration ?? kDefaultSlideAnimationDuration,
+      duration: slideAnimationDuration,
       debugLabel:
           'RawDigitItem-One-${widget.timeUnit.name}-${widget.digitType.name}',
     );
     _controllerTwo = AnimationController(
       vsync: this,
-      duration: widget.slideAnimationDuration ?? kDefaultSlideAnimationDuration,
+      duration: slideAnimationDuration,
       debugLabel:
           'RawDigitItem-Two-${widget.timeUnit.name}-${widget.digitType.name}',
     );
@@ -227,9 +230,12 @@ class _RawDigitItemState extends State<RawDigitItem>
   ) {
     if (!mounted) return;
 
+    final slideAnimationDuration =
+        widget.slideAnimationDuration ?? kDefaultSlideAnimationDuration;
+
     controller.animateTo(
       1,
-      duration: const Duration(milliseconds: 250),
+      duration: slideAnimationDuration,
     );
 
     return;
