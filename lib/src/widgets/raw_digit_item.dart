@@ -5,7 +5,8 @@ import 'package:slide_countdown/src/utils/enum.dart';
 import 'package:slide_countdown/src/utils/extensions.dart';
 import 'package:slide_countdown/src/utils/utils.dart';
 
-const _kDefaultAnimationDuration = Duration(milliseconds: 250);
+/// The default slide animation duration.
+const kDefaultSlideAnimationDuration = Duration(milliseconds: 250);
 
 /// {@template raw_digit_item}
 /// Represents an animated digit item that can count up or down
@@ -28,11 +29,17 @@ class RawDigitItem extends StatefulWidget {
     required this.timeUnit,
     required this.digitType,
     required this.countUp,
-    super.key,
     this.slideDirection = SlideDirection.down,
     this.digitsNumber,
     this.style,
-  });
+    this.slideAnimationDuration,
+    super.key,
+  }) : assert(
+          slideAnimationDuration == null ||
+              slideAnimationDuration <= const Duration(milliseconds: 500),
+          '''
+slideAnimationDuration must be less than or equal to 500 milliseconds''',
+        );
 
   /// The duration of the digit.
   final Duration duration;
@@ -54,6 +61,10 @@ class RawDigitItem extends StatefulWidget {
 
   /// The custom numbers of digits to display.
   final OverrideDigits? digitsNumber;
+
+  /// The duration of the slide animation.
+  /// Defaults to 250 milliseconds.
+  final Duration? slideAnimationDuration;
 
   @override
   State<RawDigitItem> createState() => _RawDigitItemState();
@@ -118,15 +129,18 @@ class _RawDigitItemState extends State<RawDigitItem>
   }
 
   void initOffsetAnimation() {
+    final slideAnimationDuration =
+        widget.slideAnimationDuration ?? kDefaultSlideAnimationDuration;
+
     _controllerOne = AnimationController(
       vsync: this,
-      duration: _kDefaultAnimationDuration,
+      duration: slideAnimationDuration,
       debugLabel:
           'RawDigitItem-One-${widget.timeUnit.name}-${widget.digitType.name}',
     );
     _controllerTwo = AnimationController(
       vsync: this,
-      duration: _kDefaultAnimationDuration,
+      duration: slideAnimationDuration,
       debugLabel:
           'RawDigitItem-Two-${widget.timeUnit.name}-${widget.digitType.name}',
     );
@@ -216,9 +230,12 @@ class _RawDigitItemState extends State<RawDigitItem>
   ) {
     if (!mounted) return;
 
+    final slideAnimationDuration =
+        widget.slideAnimationDuration ?? kDefaultSlideAnimationDuration;
+
     controller.animateTo(
       1,
-      duration: const Duration(milliseconds: 250),
+      duration: slideAnimationDuration,
     );
 
     return;

@@ -25,6 +25,7 @@ abstract class BaseDigits extends StatelessWidget {
     super.key,
     this.separatorPadding,
     this.digitsNumber,
+    this.slideAnimationDuration,
   });
 
   /// The duration of widget.
@@ -65,4 +66,8 @@ abstract class BaseDigits extends StatelessWidget {
 
   /// {@macro override_digits}
   final OverrideDigits? digitsNumber;
+
+  /// The duration of the slide animation.
+  /// Defaults to 250 milliseconds.
+  final Duration? slideAnimationDuration;
 }

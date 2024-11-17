@@ -34,6 +34,7 @@ abstract class SlideCountdownBase extends StatefulWidget {
     required this.shouldShowMinutes,
     required this.shouldShowSeconds,
     required this.countUpAtDuration,
+    required this.slideAnimationDuration,
     super.key,
   }) : assert(
           duration != null || streamDuration != null,
@@ -154,4 +155,8 @@ abstract class SlideCountdownBase extends StatefulWidget {
   /// if null and [showZeroValue] is false
   /// when duration in seconds is zero it will return false
   final ShouldShowItems? shouldShowSeconds;
+
+  /// The duration of the slide animation.
+  /// Defaults to 250 milliseconds.
+  final Duration? slideAnimationDuration;
 }
