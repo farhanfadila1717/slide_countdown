@@ -26,6 +26,7 @@ abstract class BaseDigits extends StatelessWidget {
     this.separatorPadding,
     this.digitsNumber,
     this.slideAnimationDuration,
+    this.slideAnimationCurve,
   });
 
   /// The duration of widget.
@@ -70,4 +71,8 @@ abstract class BaseDigits extends StatelessWidget {
   /// The duration of the slide animation.
   /// Defaults to 250 milliseconds.
   final Duration? slideAnimationDuration;
+
+  /// The curve to use for the slide animation.
+  /// Defaults to [Curves.linear].
+  final Curve? slideAnimationCurve;
 }

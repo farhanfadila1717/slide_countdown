@@ -28,6 +28,7 @@ class DigitItem extends BaseDigits {
     super.separatorPadding,
     super.digitsNumber,
     super.slideAnimationDuration,
+    super.slideAnimationCurve,
   });
 
   @override
@@ -43,6 +44,8 @@ class DigitItem extends BaseDigits {
         style: style,
         slideDirection: slideDirection,
         digitsNumber: digitsNumber,
+        slideAnimationDuration: slideAnimationDuration,
+        slideAnimationCurve: slideAnimationCurve,
       );
 
       digits.add(daysThousand);
@@ -58,6 +61,7 @@ class DigitItem extends BaseDigits {
         slideDirection: slideDirection,
         digitsNumber: digitsNumber,
         slideAnimationDuration: slideAnimationDuration,
+        slideAnimationCurve: slideAnimationCurve,
       );
 
       digits.add(dayHundred);
@@ -74,6 +78,7 @@ class DigitItem extends BaseDigits {
           slideDirection: slideDirection,
           digitsNumber: digitsNumber,
           slideAnimationDuration: slideAnimationDuration,
+          slideAnimationCurve: slideAnimationCurve,
         ),
         RawDigitItem(
           duration: duration,
@@ -84,6 +89,7 @@ class DigitItem extends BaseDigits {
           slideDirection: slideDirection,
           digitsNumber: digitsNumber,
           slideAnimationDuration: slideAnimationDuration,
+          slideAnimationCurve: slideAnimationCurve,
         ),
       ],
     );

@@ -33,6 +33,7 @@ class RawDigitItem extends StatefulWidget {
     this.digitsNumber,
     this.style,
     this.slideAnimationDuration,
+    this.slideAnimationCurve,
     super.key,
   }) : assert(
           slideAnimationDuration == null ||
@@ -65,6 +66,10 @@ slideAnimationDuration must be less than or equal to 500 milliseconds''',
   /// The duration of the slide animation.
   /// Defaults to 250 milliseconds.
   final Duration? slideAnimationDuration;
+
+  /// The curve to use for the slide animation.
+  /// Defaults to [Curves.linear].
+  final Curve? slideAnimationCurve;
 
   @override
   State<RawDigitItem> createState() => _RawDigitItemState();
@@ -149,20 +154,14 @@ class _RawDigitItemState extends State<RawDigitItem>
       begin: isDirectionUp ? const Offset(0, 1) : const Offset(0, -1),
       end: isDirectionUp ? const Offset(0, -1) : const Offset(0, 1),
     ).animate(
-      CurvedAnimation(
-        parent: _controllerOne,
-        curve: Curves.linear,
-      ),
+      _controllerOne,
     );
 
     _offsetAnimationTwo = Tween<Offset>(
       begin: isDirectionUp ? const Offset(0, 1) : const Offset(0, -1),
       end: isDirectionUp ? const Offset(0, -1) : const Offset(0, 1),
     ).animate(
-      CurvedAnimation(
-        parent: _controllerTwo,
-        curve: Curves.linear,
-      ),
+      _controllerTwo,
     );
   }
 
@@ -219,7 +218,8 @@ class _RawDigitItemState extends State<RawDigitItem>
 
     controller.animateTo(
       0.5,
-      duration: const Duration(milliseconds: 250),
+      curve: Curves.ease,
+      duration: widget.slideAnimationDuration,
     );
 
     return;
@@ -235,6 +235,7 @@ class _RawDigitItemState extends State<RawDigitItem>
 
     controller.animateTo(
       1,
+      curve: Curves.ease,
       duration: slideAnimationDuration,
     );
 
