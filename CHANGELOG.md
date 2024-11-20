@@ -1,14 +1,9 @@
-## 2.0.1-dev+4
-- [feat: add custom slide animation curve](https://github.com/farhanfadila1717/slide_countdown/commit/8e92023e81b81435eaabbf85d046e7067e5ab4ff)
+## 2.0.1
 
-## 2.0.1-dev+3
-- [feat: add custom slide animation curve](https://github.com/farhanfadila1717/slide_countdown/commit/97ce310b08c74b4aa5b63d119b392406523eca3c)
-
-## 2.0.1-dev+2
-- [fix: slideAnimationDuration](https://github.com/farhanfadila1717/slide_countdown/commit/7dd2503d25de94bd873276f06c2a3aa1655579a6)
-
-## 2.0.1-dev+1
 - [feat: ability to custom slide animation duration](https://github.com/farhanfadila1717/slide_countdown/commit/a8898b505b0b0c2848a0ed9b91030e754c99e7d2)
+
+
+- [feat: add custom slide animation curve](https://github.com/farhanfadila1717/slide_countdown/commit/97ce310b08c74b4aa5b63d119b392406523eca3c)
 
 ## 2.0.0
 - refactor stream duration to use [pausable_timer](https://pub.dev/packages/pausable_timer) package
