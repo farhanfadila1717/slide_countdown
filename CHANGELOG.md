@@ -1,3 +1,6 @@
+## 2.0.1-dev+4
+- [feat: add custom slide animation curve](https://github.com/farhanfadila1717/slide_countdown/commit/8e92023e81b81435eaabbf85d046e7067e5ab4ff)
+
 ## 2.0.1-dev+3
 - [feat: add custom slide animation curve](https://github.com/farhanfadila1717/slide_countdown/commit/97ce310b08c74b4aa5b63d119b392406523eca3c)
 
