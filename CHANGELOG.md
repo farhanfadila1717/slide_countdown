@@ -1,3 +1,8 @@
+## 2.0.2
+
+- docs: readme update
+
+
 ## 2.0.1
 
 - [feat: ability to custom slide animation duration](https://github.com/farhanfadila1717/slide_countdown/commit/a8898b505b0b0c2848a0ed9b91030e754c99e7d2)
