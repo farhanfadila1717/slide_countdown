@@ -15,12 +15,6 @@ Thanks to [pausable_timer](https://pub.dev/packages/pausable_timer), this packag
 
 ---
 
-## 🌟 Open To Work
-
-Farhan The author of this package is available for hiring as Flutter Engineer. See portofolio website [here](https://farhanfadila.site/).
-
----
-
 ## Example
 
 
