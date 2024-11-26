@@ -49,6 +49,7 @@ class SlideCountdown extends SlideCountdownBase {
     super.shouldShowSeconds,
     super.slideAnimationDuration,
     super.slideAnimationCurve,
+    super.shouldDispose = true,
   });
 
   @override
@@ -84,10 +85,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
               duration: widget.duration!,
             ),
             countUpConfig: CountUpConfig(
-              initialDuration:
-                  widget.countUpAtDuration != null && widget.countUpAtDuration!
-                      ? widget.duration!
-                      : Duration.zero,
+              initialDuration: widget.countUpAtDuration != null && widget.countUpAtDuration! ? widget.duration! : Duration.zero,
               maxDuration: widget.infinityCountUp ? null : widget.duration,
             ),
           ),
@@ -102,7 +100,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
 
   @override
   void dispose() {
-    _streamDuration.dispose();
+    if (widget.shouldDispose) _streamDuration.dispose();
     super.dispose();
   }
 
@@ -130,25 +128,14 @@ class _SlideCountdownState extends State<SlideCountdown> {
         }
 
         final defaultShowDays = !(duration.inDays < 1 && !widget.showZeroValue);
-        final defaultShowHours =
-            !(duration.inHours < 1 && !widget.showZeroValue);
-        final defaultShowMinutes =
-            !(duration.inMinutes < 1 && !widget.showZeroValue);
-        final defaultShowSeconds =
-            !(duration.inSeconds < 1 && !widget.showZeroValue);
+        final defaultShowHours = !(duration.inHours < 1 && !widget.showZeroValue);
+        final defaultShowMinutes = !(duration.inMinutes < 1 && !widget.showZeroValue);
+        final defaultShowSeconds = !(duration.inSeconds < 1 && !widget.showZeroValue);
 
-        final showDays = widget.shouldShowDays != null
-            ? widget.shouldShowDays!(duration)
-            : defaultShowDays;
-        final showHours = widget.shouldShowHours != null
-            ? widget.shouldShowHours!(duration)
-            : defaultShowHours;
-        final showMinutes = widget.shouldShowMinutes != null
-            ? widget.shouldShowMinutes!(duration)
-            : defaultShowMinutes;
-        final showSeconds = widget.shouldShowSeconds != null
-            ? widget.shouldShowSeconds!(duration)
-            : defaultShowSeconds;
+        final showDays = widget.shouldShowDays != null ? widget.shouldShowDays!(duration) : defaultShowDays;
+        final showHours = widget.shouldShowHours != null ? widget.shouldShowHours!(duration) : defaultShowHours;
+        final showMinutes = widget.shouldShowMinutes != null ? widget.shouldShowMinutes!(duration) : defaultShowMinutes;
+        final showSeconds = widget.shouldShowSeconds != null ? widget.shouldShowSeconds!(duration) : defaultShowSeconds;
         final isSeparatorTitle = widget.separatorType == SeparatorType.title;
 
         final days = DigitItem(
@@ -160,14 +147,11 @@ class _SlideCountdownState extends State<SlideCountdown> {
           style: widget.style,
           slideDirection: widget.slideDirection,
           countUp: widget.countUp,
-          separator: widget.separatorType == SeparatorType.title
-              ? durationTitle.days
-              : separator,
+          separator: widget.separatorType == SeparatorType.title ? durationTitle.days : separator,
           separatorPadding: widget.separatorPadding,
           textDirection: textDirection,
           digitsNumber: widget.digitsNumber,
-          showSeparator: (showHours || showMinutes || showSeconds) ||
-              (isSeparatorTitle && showDays),
+          showSeparator: (showHours || showMinutes || showSeconds) || (isSeparatorTitle && showDays),
           slideAnimationDuration: widget.slideAnimationDuration,
           slideAnimationCurve: widget.slideAnimationCurve,
         );
@@ -181,14 +165,11 @@ class _SlideCountdownState extends State<SlideCountdown> {
           separatorStyle: widget.separatorStyle,
           slideDirection: widget.slideDirection,
           countUp: widget.countUp,
-          separator: widget.separatorType == SeparatorType.title
-              ? durationTitle.hours
-              : separator,
+          separator: widget.separatorType == SeparatorType.title ? durationTitle.hours : separator,
           separatorPadding: widget.separatorPadding,
           textDirection: textDirection,
           digitsNumber: widget.digitsNumber,
-          showSeparator:
-              showMinutes || showSeconds || (isSeparatorTitle && showHours),
+          showSeparator: showMinutes || showSeconds || (isSeparatorTitle && showHours),
           slideAnimationDuration: widget.slideAnimationDuration,
           slideAnimationCurve: widget.slideAnimationCurve,
         );
@@ -202,9 +183,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
           separatorStyle: widget.separatorStyle,
           slideDirection: widget.slideDirection,
           countUp: widget.countUp,
-          separator: widget.separatorType == SeparatorType.title
-              ? durationTitle.minutes
-              : separator,
+          separator: widget.separatorType == SeparatorType.title ? durationTitle.minutes : separator,
           separatorPadding: widget.separatorPadding,
           textDirection: textDirection,
           digitsNumber: widget.digitsNumber,
@@ -222,9 +201,7 @@ class _SlideCountdownState extends State<SlideCountdown> {
           separatorStyle: widget.separatorStyle,
           slideDirection: widget.slideDirection,
           countUp: widget.countUp,
-          separator: widget.separatorType == SeparatorType.title
-              ? durationTitle.seconds
-              : separator,
+          separator: widget.separatorType == SeparatorType.title ? durationTitle.seconds : separator,
           separatorPadding: widget.separatorPadding,
           textDirection: textDirection,
           digitsNumber: widget.digitsNumber,
