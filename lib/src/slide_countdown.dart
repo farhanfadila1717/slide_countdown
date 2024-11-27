@@ -58,6 +58,7 @@ class SlideCountdown extends SlideCountdownBase {
 
 class _SlideCountdownState extends State<SlideCountdown> {
   late final StreamDuration _streamDuration;
+  bool isDisposed = false;
 
   @override
   void initState() {
@@ -68,10 +69,8 @@ class _SlideCountdownState extends State<SlideCountdown> {
   @override
   void didUpdateWidget(covariant SlideCountdown oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.streamDuration == null) {
-      if (widget.duration != oldWidget.duration) {
-        _streamDuration.seek(widget.duration!);
-      }
+    if (widget.streamDuration == null && widget.duration != oldWidget.duration) {
+      _streamDuration.seek(widget.duration!);
     }
   }
 
@@ -80,7 +79,11 @@ class _SlideCountdownState extends State<SlideCountdown> {
         StreamDuration(
           config: StreamDurationConfig(
             isCountUp: widget.countUp,
-            onDone: widget.onDone,
+            onDone: () {
+              if (!isDisposed && mounted) {
+                widget.onDone?.call();
+              }
+            },
             countDownConfig: CountDownConfig(
               duration: widget.duration!,
             ),
@@ -93,14 +96,19 @@ class _SlideCountdownState extends State<SlideCountdown> {
 
     if (widget.onChanged != null) {
       _streamDuration.addListener(() {
-        widget.onChanged?.call(_streamDuration.value);
+        if (!isDisposed && mounted) {
+          widget.onChanged?.call(_streamDuration.value);
+        }
       });
     }
   }
 
   @override
   void dispose() {
-    if (widget.shouldDispose) _streamDuration.dispose();
+    isDisposed = true; // Mark the widget as disposed.
+    if (widget.shouldDispose) {
+      _streamDuration.dispose();
+    }
     super.dispose();
   }
 
@@ -211,11 +219,8 @@ class _SlideCountdownState extends State<SlideCountdown> {
         );
 
         final daysWidget = showDays ? days : const SizedBox.shrink();
-
         final hoursWidget = showHours ? hours : const SizedBox.shrink();
-
         final minutesWidget = showMinutes ? minutes : const SizedBox.shrink();
-
         final secondsWidget = showSeconds ? seconds : const SizedBox.shrink();
 
         final countdown = Padding(
@@ -223,24 +228,11 @@ class _SlideCountdownState extends State<SlideCountdown> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: textDirection.isRtl
-                ? [
-                    suffixIcon,
-                    secondsWidget,
-                    minutesWidget,
-                    hoursWidget,
-                    daysWidget,
-                    leadingIcon,
-                  ]
-                : [
-                    leadingIcon,
-                    daysWidget,
-                    hoursWidget,
-                    minutesWidget,
-                    secondsWidget,
-                    suffixIcon,
-                  ],
+                ? [suffixIcon, secondsWidget, minutesWidget, hoursWidget, daysWidget, leadingIcon]
+                : [leadingIcon, daysWidget, hoursWidget, minutesWidget, secondsWidget, suffixIcon],
           ),
         );
+
         return Semantics(
           label: '$duration'.replaceAll('.000000', ''),
           container: true,
