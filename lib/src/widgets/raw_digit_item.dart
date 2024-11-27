@@ -218,7 +218,7 @@ class _RawDigitItemState extends State<RawDigitItem>
 
     controller.animateTo(
       0.5,
-      curve: Curves.ease,
+      curve: widget.slideAnimationCurve ?? Curves.linear,
       duration: widget.slideAnimationDuration,
     );
 
@@ -235,7 +235,7 @@ class _RawDigitItemState extends State<RawDigitItem>
 
     controller.animateTo(
       1,
-      curve: Curves.ease,
+      curve: widget.slideAnimationCurve ?? Curves.linear,
       duration: slideAnimationDuration,
     );
 
