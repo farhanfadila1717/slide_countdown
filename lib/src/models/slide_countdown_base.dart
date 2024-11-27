@@ -36,6 +36,7 @@ abstract class SlideCountdownBase extends StatefulWidget {
     required this.countUpAtDuration,
     required this.slideAnimationDuration,
     required this.slideAnimationCurve,
+    required this.shouldDispose,
     super.key,
   }) : assert(
           duration != null || streamDuration != null,
@@ -164,4 +165,11 @@ abstract class SlideCountdownBase extends StatefulWidget {
   /// The curve to use for the slide animation.
   /// Defaults to [Curves.linear].
   final Curve? slideAnimationCurve;
+
+  /// The `shouldDispose` parameter determines the behavior of the
+  /// [StreamDuration] when the widget is disposed.
+  /// - If set to `true` (default), the [StreamDuration] will be disposed.
+  /// - If set to `false`, the [StreamDuration] will not be disposed, allowing
+  /// it to be preserved or managed as needed.
+  final bool shouldDispose;
 }
