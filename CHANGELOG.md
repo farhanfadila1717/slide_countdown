@@ -1,4 +1,4 @@
-## 2.0.4-dev.1
+## 2.0.3-dev.2
 
 - [feat: Add separatorPosition](https://github.com/farhanfadila1717/slide_countdown/pull/81). Thanks to [AHED200](https://github.com/AHED200)
 
