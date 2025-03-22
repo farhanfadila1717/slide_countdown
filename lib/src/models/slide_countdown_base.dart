@@ -36,6 +36,7 @@ abstract class SlideCountdownBase extends StatefulWidget {
     required this.countUpAtDuration,
     required this.slideAnimationDuration,
     required this.slideAnimationCurve,
+    required this.separatorPosition,
     super.key,
   }) : assert(
           duration != null || streamDuration != null,
@@ -164,4 +165,8 @@ abstract class SlideCountdownBase extends StatefulWidget {
   /// The curve to use for the slide animation.
   /// Defaults to [Curves.linear].
   final Curve? slideAnimationCurve;
+
+  
+  /// The position of the separator.
+  final SeparatorPosition separatorPosition;
 }

@@ -24,6 +24,7 @@ class DigitSeparatedItem extends BaseDigits {
     required super.separator,
     required super.textDirection,
     required super.showSeparator,
+    required super.separatorPosition,
     super.key,
     super.separatorPadding,
     super.digitsNumber,
@@ -113,13 +114,30 @@ class DigitSeparatedItem extends BaseDigits {
       ),
     );
 
+    Widget buildRow() {
+      switch (separatorPosition) {
+        case SeparatorPosition.top:
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [separatorWidget, box],
+          );
+        case SeparatorPosition.bottom:
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [box, separatorWidget],
+          );
+        case SeparatorPosition.middle:
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: textDirection.isRtl
+                ? [separatorWidget, box]
+                : [box, separatorWidget],
+          );
+      }
+    }
+
     return ExcludeSemantics(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: textDirection.isRtl
-            ? [separatorWidget, box]
-            : [box, separatorWidget],
-      ),
+      child: buildRow(),
     );
   }
 }

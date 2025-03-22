@@ -56,3 +56,19 @@ enum DigitType {
   /// Represents the second digit.
   second,
 }
+
+
+
+/// {@template separator_position}
+/// An enum class to represent different positions of a separator.
+/// {@endtemplate}
+enum SeparatorPosition {
+  /// Represents the separator in the middle position.
+  middle,
+
+  /// Represents the separator in the top position.
+  top,
+
+  /// Represents the separator in the bottom position.
+  bottom,
+}
