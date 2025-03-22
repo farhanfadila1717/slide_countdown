@@ -1,3 +1,6 @@
+## 2.0.3-dev.1
+- [feat: add shouldDispose parameter to manage StreamDuration disposal](https://github.com/farhanfadila1717/slide_countdown/pull/76). Thanks to [ColtonDevAcc](https://github.com/ColtonDevAcc)
+
 ## 2.0.2
 
 - docs: readme update

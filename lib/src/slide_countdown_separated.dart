@@ -51,6 +51,7 @@ class SlideCountdownSeparated extends SlideCountdownBase {
     super.slideAnimationDuration,
     super.slideAnimationCurve,
     super.separatorPosition = SeparatorPosition.middle,
+    super.shouldDispose = true,
   });
 
   @override
@@ -104,7 +105,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
 
   @override
   void dispose() {
-    _streamDuration.dispose();
+    if (widget.shouldDispose) _streamDuration.dispose();
     super.dispose();
   }
 
