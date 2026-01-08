@@ -115,6 +115,25 @@ class SlideCountdownController extends ChangeNotifier
   /// Current state of the controller.
   SlideCountdownState _state;
 
+  /// Notifier for state changes.
+  final ValueNotifier<SlideCountdownState> _stateNotifier =
+      ValueNotifier(SlideCountdownState.notStarted);
+
+  /// Returns a [ValueListenable] for the current state.
+  ///
+  /// Use this with [ValueListenableBuilder] to react to state changes:
+  /// ```dart
+  /// ValueListenableBuilder<SlideCountdownState>(
+  ///   valueListenable: controller.stateNotifier,
+  ///   builder: (context, state, child) {
+  ///     return Icon(state == SlideCountdownState.running
+  ///         ? Icons.pause
+  ///         : Icons.play_arrow);
+  ///   },
+  /// )
+  /// ```
+  ValueListenable<SlideCountdownState> get stateNotifier => _stateNotifier;
+
   /// Returns the current duration value.
   @override
   Duration get value => _value;
@@ -147,6 +166,13 @@ class SlideCountdownController extends ChangeNotifier
   /// The duration of the countdown.
   Duration get duration => _duration;
 
+  void _setState(SlideCountdownState newState) {
+    if (_state != newState) {
+      _state = newState;
+      _stateNotifier.value = newState;
+    }
+  }
+
   /// Starts the countdown timer.
   ///
   /// If the timer was previously stopped or has not been started yet,
@@ -160,7 +186,7 @@ class SlideCountdownController extends ChangeNotifier
       _onTick,
     );
     _timer?.start();
-    _state = SlideCountdownState.running;
+    _setState(SlideCountdownState.running);
     notifyListeners();
   }
 
@@ -178,7 +204,7 @@ class SlideCountdownController extends ChangeNotifier
 
   void _onDone() {
     _timer?.pause();
-    _state = SlideCountdownState.completed;
+    _setState(SlideCountdownState.completed);
     onDone?.call();
     notifyListeners();
   }
@@ -190,7 +216,7 @@ class SlideCountdownController extends ChangeNotifier
     if (_state != SlideCountdownState.running) return;
 
     _timer?.pause();
-    _state = SlideCountdownState.paused;
+    _setState(SlideCountdownState.paused);
     notifyListeners();
   }
 
@@ -209,7 +235,7 @@ class SlideCountdownController extends ChangeNotifier
 
     // State is paused
     _timer?.start();
-    _state = SlideCountdownState.running;
+    _setState(SlideCountdownState.running);
     notifyListeners();
   }
 
@@ -220,7 +246,7 @@ class SlideCountdownController extends ChangeNotifier
     _timer?.cancel();
     _timer = null;
     _reset();
-    _state = SlideCountdownState.notStarted;
+    _setState(SlideCountdownState.notStarted);
     notifyListeners();
   }
 
@@ -233,9 +259,9 @@ class SlideCountdownController extends ChangeNotifier
     _reset();
 
     if (wasRunning) {
-      _state = SlideCountdownState.running;
+      _setState(SlideCountdownState.running);
     } else if (_state == SlideCountdownState.completed) {
-      _state = SlideCountdownState.notStarted;
+      _setState(SlideCountdownState.notStarted);
     }
 
     notifyListeners();
@@ -294,6 +320,7 @@ class SlideCountdownController extends ChangeNotifier
   @override
   void dispose() {
     _timer?.cancel();
+    _stateNotifier.dispose();
     super.dispose();
   }
 }
