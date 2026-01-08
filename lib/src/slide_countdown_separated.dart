@@ -1,6 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:slide_countdown/slide_countdown.dart';
-
 import 'package:slide_countdown/src/models/slide_countdown_base.dart';
 import 'package:slide_countdown/src/utils/extensions.dart';
 import 'package:slide_countdown/src/utils/utils.dart';
@@ -17,6 +17,22 @@ import 'package:slide_countdown/src/widgets/digit_separated_item.dart';
 /// SlideCountdownSeparated(
 ///   duration: const Duration(days: 2),
 /// );
+/// ```
+///
+/// With controller:
+///
+/// ```dart
+/// final controller = SlideCountdownController();
+///
+/// SlideCountdownSeparated(
+///   controller: controller,
+///   duration: const Duration(days: 2),
+/// );
+///
+/// // Control the countdown
+/// controller.start();
+/// controller.pause();
+/// controller.reset();
 /// ```
 /// {@endtemplate}
 class SlideCountdownSeparated extends SlideCountdownBase {
@@ -42,7 +58,8 @@ class SlideCountdownSeparated extends SlideCountdownBase {
     super.infinityCountUp = false,
     super.countUpAtDuration,
     super.digitsNumber,
-    super.streamDuration,
+    @Deprecated('Use controller instead') super.streamDuration,
+    super.controller,
     super.onChanged,
     super.shouldShowDays,
     super.shouldShowHours,
@@ -59,53 +76,93 @@ class SlideCountdownSeparated extends SlideCountdownBase {
 }
 
 class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
-  late final StreamDuration _streamDuration;
+  late final ValueListenable<Duration> _durationNotifier;
+  bool _isInternalController = false;
+  bool isDisposed = false;
 
   @override
   void initState() {
     super.initState();
-    _streamDurationListener();
+    _initDurationNotifier();
   }
 
   @override
   void didUpdateWidget(covariant SlideCountdownSeparated oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.streamDuration == null) {
+    // ignore: deprecated_member_use_from_same_package
+    if (widget.controller == null && widget.streamDuration == null) {
       if (widget.duration != oldWidget.duration) {
-        _streamDuration.seek(widget.duration!);
+        if (_durationNotifier is SlideCountdownController) {
+          (_durationNotifier as SlideCountdownController)
+              .setDuration(widget.duration!);
+        } else if (_durationNotifier is StreamDuration) {
+          (_durationNotifier as StreamDuration).seek(widget.duration!);
+        }
       }
     }
   }
 
-  void _streamDurationListener() {
-    _streamDuration = widget.streamDuration ??
-        StreamDuration(
-          config: StreamDurationConfig(
-            isCountUp: widget.countUp,
-            onDone: widget.onDone,
-            countDownConfig: CountDownConfig(
-              duration: widget.duration!,
-            ),
-            countUpConfig: CountUpConfig(
-              initialDuration:
-                  widget.countUpAtDuration != null && widget.countUpAtDuration!
-                      ? widget.duration!
-                      : Duration.zero,
-              maxDuration: widget.infinityCountUp ? null : widget.duration,
-            ),
-          ),
-        );
+  void _initDurationNotifier() {
+    // Priority: controller > streamDuration > internal controller
+    if (widget.controller != null) {
+      _durationNotifier = widget.controller!;
+      _isInternalController = false;
+      // ignore: deprecated_member_use_from_same_package
+    } else if (widget.streamDuration != null) {
+      // ignore: deprecated_member_use_from_same_package
+      _durationNotifier = widget.streamDuration!;
+      _isInternalController = false;
+    } else {
+      // Create internal controller
+      final controller = SlideCountdownController(
+        duration: widget.duration!,
+        countUp: widget.countUp,
+        maxDuration: widget.infinityCountUp ? null : widget.duration,
+        initialDuration:
+            (widget.countUpAtDuration ?? false) ? widget.duration : null,
+        onDone: () {
+          if (!isDisposed && mounted) {
+            widget.onDone?.call();
+          }
+        },
+      );
+      _durationNotifier = controller;
+      _isInternalController = true;
+    }
 
     if (widget.onChanged != null) {
-      _streamDuration.addListener(() {
-        widget.onChanged?.call(_streamDuration.value);
-      });
+      _durationNotifier.addListener(_onDurationChanged);
     }
+  }
+
+  void _onDurationChanged() {
+    if (!isDisposed && mounted) {
+      widget.onChanged?.call(_durationNotifier.value);
+    }
+  }
+
+  bool get _isCountUp {
+    if (widget.controller != null) {
+      return widget.controller!.isCountUp;
+    }
+    // ignore: deprecated_member_use_from_same_package
+    if (widget.streamDuration != null) {
+      // ignore: deprecated_member_use_from_same_package
+      return widget.streamDuration!.isCountUp;
+    }
+    return widget.countUp;
   }
 
   @override
   void dispose() {
-    if (widget.shouldDispose) _streamDuration.dispose();
+    isDisposed = true;
+    if (widget.shouldDispose && _isInternalController) {
+      if (_durationNotifier is SlideCountdownController) {
+        (_durationNotifier as SlideCountdownController).dispose();
+      } else if (_durationNotifier is StreamDuration) {
+        (_durationNotifier as StreamDuration).dispose();
+      }
+    }
     super.dispose();
   }
 
@@ -125,151 +182,154 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
       child: widget.suffixIcon ?? const SizedBox.shrink(),
     );
 
-    return RawSlideCountdown(
-      streamDuration: _streamDuration,
-      builder: (_, duration) {
-        if (duration.inSeconds <= 0 && widget.replacement != null) {
-          return widget.replacement!;
-        }
+    return RepaintBoundary(
+      child: ValueListenableBuilder<Duration>(
+        valueListenable: _durationNotifier,
+        builder: (context, duration, __) {
+          if (duration.inSeconds <= 0 && widget.replacement != null) {
+            return widget.replacement!;
+          }
 
-        final defaultShowDays = !(duration.inDays < 1 && !widget.showZeroValue);
-        final defaultShowHours =
-            !(duration.inHours < 1 && !widget.showZeroValue);
-        final defaultShowMinutes =
-            !(duration.inMinutes < 1 && !widget.showZeroValue);
-        final defaultShowSeconds =
-            !(duration.inSeconds < 1 && !widget.showZeroValue);
+          final defaultShowDays =
+              !(duration.inDays < 1 && !widget.showZeroValue);
+          final defaultShowHours =
+              !(duration.inHours < 1 && !widget.showZeroValue);
+          final defaultShowMinutes =
+              !(duration.inMinutes < 1 && !widget.showZeroValue);
+          final defaultShowSeconds =
+              !(duration.inSeconds < 1 && !widget.showZeroValue);
 
-        final showDays = widget.shouldShowDays != null
-            ? widget.shouldShowDays!(duration)
-            : defaultShowDays;
-        final showHours = widget.shouldShowHours != null
-            ? widget.shouldShowHours!(duration)
-            : defaultShowHours;
-        final showMinutes = widget.shouldShowMinutes != null
-            ? widget.shouldShowMinutes!(duration)
-            : defaultShowMinutes;
-        final showSeconds = widget.shouldShowSeconds != null
-            ? widget.shouldShowSeconds!(duration)
-            : defaultShowSeconds;
+          final showDays = widget.shouldShowDays != null
+              ? widget.shouldShowDays!(duration)
+              : defaultShowDays;
+          final showHours = widget.shouldShowHours != null
+              ? widget.shouldShowHours!(duration)
+              : defaultShowHours;
+          final showMinutes = widget.shouldShowMinutes != null
+              ? widget.shouldShowMinutes!(duration)
+              : defaultShowMinutes;
+          final showSeconds = widget.shouldShowSeconds != null
+              ? widget.shouldShowSeconds!(duration)
+              : defaultShowSeconds;
 
-        final isSeparatorTitle = widget.separatorType == SeparatorType.title;
+          final isSeparatorTitle = widget.separatorType == SeparatorType.title;
 
-        final days = DigitSeparatedItem(
-          duration: duration,
-          timeUnit: TimeUnit.days,
-          padding: widget.padding,
-          decoration: widget.decoration,
-          style: widget.style,
-          separatorStyle: widget.separatorStyle,
-          slideDirection: widget.slideDirection,
-          countUp: widget.countUp,
-          separatorPadding: widget.separatorPadding,
-          separator: widget.separatorType == SeparatorType.title
-              ? durationTitle.days
-              : separator,
-          textDirection: textDirection,
-          digitsNumber: widget.digitsNumber,
-          showSeparator: (showHours || showMinutes || showSeconds) ||
-              (isSeparatorTitle && showDays),
-          slideAnimationDuration: widget.slideAnimationDuration,
-          slideAnimationCurve: widget.slideAnimationCurve,
-          separatorPosition: widget.separatorPosition,
-        );
+          final days = DigitSeparatedItem(
+            duration: duration,
+            timeUnit: TimeUnit.days,
+            padding: widget.padding,
+            decoration: widget.decoration,
+            style: widget.style,
+            separatorStyle: widget.separatorStyle,
+            slideDirection: widget.slideDirection,
+            countUp: _isCountUp,
+            separatorPadding: widget.separatorPadding,
+            separator: widget.separatorType == SeparatorType.title
+                ? durationTitle.days
+                : separator,
+            textDirection: textDirection,
+            digitsNumber: widget.digitsNumber,
+            showSeparator: (showHours || showMinutes || showSeconds) ||
+                (isSeparatorTitle && showDays),
+            slideAnimationDuration: widget.slideAnimationDuration,
+            slideAnimationCurve: widget.slideAnimationCurve,
+            separatorPosition: widget.separatorPosition,
+          );
 
-        final hours = DigitSeparatedItem(
-          duration: duration,
-          timeUnit: TimeUnit.hours,
-          padding: widget.padding,
-          decoration: widget.decoration,
-          style: widget.style,
-          separatorStyle: widget.separatorStyle,
-          slideDirection: widget.slideDirection,
-          countUp: widget.countUp,
-          separatorPadding: widget.separatorPadding,
-          separator: widget.separatorType == SeparatorType.title
-              ? durationTitle.hours
-              : separator,
-          textDirection: textDirection,
-          digitsNumber: widget.digitsNumber,
-          showSeparator:
-              showMinutes || showSeconds || (isSeparatorTitle && showHours),
-          slideAnimationDuration: widget.slideAnimationDuration,
-          slideAnimationCurve: widget.slideAnimationCurve,
-          separatorPosition: widget.separatorPosition,
-        );
+          final hours = DigitSeparatedItem(
+            duration: duration,
+            timeUnit: TimeUnit.hours,
+            padding: widget.padding,
+            decoration: widget.decoration,
+            style: widget.style,
+            separatorStyle: widget.separatorStyle,
+            slideDirection: widget.slideDirection,
+            countUp: _isCountUp,
+            separatorPadding: widget.separatorPadding,
+            separator: widget.separatorType == SeparatorType.title
+                ? durationTitle.hours
+                : separator,
+            textDirection: textDirection,
+            digitsNumber: widget.digitsNumber,
+            showSeparator:
+                showMinutes || showSeconds || (isSeparatorTitle && showHours),
+            slideAnimationDuration: widget.slideAnimationDuration,
+            slideAnimationCurve: widget.slideAnimationCurve,
+            separatorPosition: widget.separatorPosition,
+          );
 
-        final minutes = DigitSeparatedItem(
-          duration: duration,
-          timeUnit: TimeUnit.minutes,
-          padding: widget.padding,
-          decoration: widget.decoration,
-          style: widget.style,
-          separatorStyle: widget.separatorStyle,
-          slideDirection: widget.slideDirection,
-          countUp: widget.countUp,
-          separatorPadding: widget.separatorPadding,
-          separator: widget.separatorType == SeparatorType.title
-              ? durationTitle.minutes
-              : separator,
-          textDirection: textDirection,
-          digitsNumber: widget.digitsNumber,
-          showSeparator: showSeconds || (isSeparatorTitle && showMinutes),
-          slideAnimationDuration: widget.slideAnimationDuration,
-          slideAnimationCurve: widget.slideAnimationCurve,
-          separatorPosition: widget.separatorPosition,
-        );
+          final minutes = DigitSeparatedItem(
+            duration: duration,
+            timeUnit: TimeUnit.minutes,
+            padding: widget.padding,
+            decoration: widget.decoration,
+            style: widget.style,
+            separatorStyle: widget.separatorStyle,
+            slideDirection: widget.slideDirection,
+            countUp: _isCountUp,
+            separatorPadding: widget.separatorPadding,
+            separator: widget.separatorType == SeparatorType.title
+                ? durationTitle.minutes
+                : separator,
+            textDirection: textDirection,
+            digitsNumber: widget.digitsNumber,
+            showSeparator: showSeconds || (isSeparatorTitle && showMinutes),
+            slideAnimationDuration: widget.slideAnimationDuration,
+            slideAnimationCurve: widget.slideAnimationCurve,
+            separatorPosition: widget.separatorPosition,
+          );
 
-        final seconds = DigitSeparatedItem(
-          duration: duration,
-          timeUnit: TimeUnit.seconds,
-          padding: widget.padding,
-          decoration: widget.decoration,
-          style: widget.style,
-          separatorStyle: widget.separatorStyle,
-          slideDirection: widget.slideDirection,
-          countUp: widget.countUp,
-          separatorPadding: widget.separatorPadding,
-          separator: widget.separatorType == SeparatorType.title
-              ? durationTitle.seconds
-              : separator,
-          textDirection: textDirection,
-          digitsNumber: widget.digitsNumber,
-          showSeparator: isSeparatorTitle && showSeconds,
-          slideAnimationDuration: widget.slideAnimationDuration,
-          slideAnimationCurve: widget.slideAnimationCurve,
-          separatorPosition: widget.separatorPosition,
-        );
+          final seconds = DigitSeparatedItem(
+            duration: duration,
+            timeUnit: TimeUnit.seconds,
+            padding: widget.padding,
+            decoration: widget.decoration,
+            style: widget.style,
+            separatorStyle: widget.separatorStyle,
+            slideDirection: widget.slideDirection,
+            countUp: _isCountUp,
+            separatorPadding: widget.separatorPadding,
+            separator: widget.separatorType == SeparatorType.title
+                ? durationTitle.seconds
+                : separator,
+            textDirection: textDirection,
+            digitsNumber: widget.digitsNumber,
+            showSeparator: isSeparatorTitle && showSeconds,
+            slideAnimationDuration: widget.slideAnimationDuration,
+            slideAnimationCurve: widget.slideAnimationCurve,
+            separatorPosition: widget.separatorPosition,
+          );
 
-        final daysWidget = showDays ? days : const SizedBox.shrink();
+          final daysWidget = showDays ? days : const SizedBox.shrink();
 
-        final hoursWidget = showHours ? hours : const SizedBox.shrink();
+          final hoursWidget = showHours ? hours : const SizedBox.shrink();
 
-        final minutesWidget = showMinutes ? minutes : const SizedBox.shrink();
+          final minutesWidget = showMinutes ? minutes : const SizedBox.shrink();
 
-        final secondsWidget = showSeconds ? seconds : const SizedBox.shrink();
+          final secondsWidget = showSeconds ? seconds : const SizedBox.shrink();
 
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: textDirection.isRtl
-              ? [
-                  suffixIcon,
-                  secondsWidget,
-                  minutesWidget,
-                  hoursWidget,
-                  daysWidget,
-                  leadingIcon,
-                ]
-              : [
-                  leadingIcon,
-                  daysWidget,
-                  hoursWidget,
-                  minutesWidget,
-                  secondsWidget,
-                  suffixIcon,
-                ],
-        );
-      },
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: textDirection.isRtl
+                ? [
+                    suffixIcon,
+                    secondsWidget,
+                    minutesWidget,
+                    hoursWidget,
+                    daysWidget,
+                    leadingIcon,
+                  ]
+                : [
+                    leadingIcon,
+                    daysWidget,
+                    hoursWidget,
+                    minutesWidget,
+                    secondsWidget,
+                    suffixIcon,
+                  ],
+          );
+        },
+      ),
     );
   }
 }
