@@ -115,7 +115,7 @@ class _SlideCountdownSeparatedState extends State<SlideCountdownSeparated> {
     } else {
       // Create internal controller
       final controller = SlideCountdownController(
-        duration: widget.duration!,
+        duration: widget.duration,
         countUp: widget.countUp,
         maxDuration: widget.infinityCountUp ? null : widget.duration,
         initialDuration:

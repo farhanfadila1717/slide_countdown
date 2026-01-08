@@ -27,6 +27,7 @@ abstract class SlideCountdownBase extends StatefulWidget {
     required this.countUp,
     required this.infinityCountUp,
     required this.digitsNumber,
+    @Deprecated('Deprecated in favor of controller')
     required this.streamDuration,
     required this.controller,
     required this.onChanged,
@@ -126,7 +127,7 @@ abstract class SlideCountdownBase extends StatefulWidget {
   ///
   /// Example you need use function in [StreamDuration]
   /// e.g correct, add, and subtract function
-  @Deprecated('Use controller instead')
+  @Deprecated('Deprecated in favor of controller')
   final StreamDuration? streamDuration; // ignore: deprecated_consistency
 
   /// A controller to control the countdown timer.
