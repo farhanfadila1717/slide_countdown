@@ -13,7 +13,21 @@ enum SlideCountdownState {
   paused,
 
   /// Timer has completed (reached zero for countdown or max for count-up).
-  completed,
+  completed;
+
+  /// A human-readable description of the current state.
+  String get description {
+    switch (this) {
+      case SlideCountdownState.notStarted:
+        return 'Not Started';
+      case SlideCountdownState.running:
+        return 'Running';
+      case SlideCountdownState.paused:
+        return 'Paused';
+      case SlideCountdownState.completed:
+        return 'Completed';
+    }
+  }
 }
 
 /// {@template slide_countdown_controller}
