@@ -135,6 +135,7 @@ class SlideCountdownController extends ChangeNotifier
 
   /// Returns a [ValueListenable] for the current state.
   ///
+  // ignore: comment_references
   /// Use this with [ValueListenableBuilder] to react to state changes:
   /// ```dart
   /// ValueListenableBuilder<SlideCountdownState>(
@@ -239,10 +240,12 @@ class SlideCountdownController extends ChangeNotifier
   /// If the timer was stopped or has not started, this will start it.
   /// If the timer was paused, this will resume from where it left off.
   void resume() {
-    if (_state == SlideCountdownState.running) return;
-
-    if (_state == SlideCountdownState.notStarted ||
+    if (_state == SlideCountdownState.running ||
         _state == SlideCountdownState.completed) {
+      return;
+    }
+
+    if (_state == SlideCountdownState.notStarted) {
       start();
       return;
     }
@@ -306,6 +309,7 @@ class SlideCountdownController extends ChangeNotifier
   }
 
   /// Sets the maximum duration for count-up mode.
+  // ignore: use_setters_to_change_properties
   void setMaxDuration(Duration? maxDuration) {
     _maxDuration = maxDuration;
   }
