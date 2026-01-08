@@ -194,12 +194,20 @@ class SlideCountdownController extends ChangeNotifier
     notifyListeners();
   }
 
-  /// Resumes the countdown timer after being paused.
+  /// Resumes the countdown timer after being paused or stopped.
   ///
-  /// Has no effect if the timer is not paused.
+  /// If the timer was stopped or has not started, this will start it.
+  /// If the timer was paused, this will resume from where it left off.
   void resume() {
-    if (_state != SlideCountdownState.paused) return;
+    if (_state == SlideCountdownState.running) return;
 
+    if (_state == SlideCountdownState.notStarted ||
+        _state == SlideCountdownState.completed) {
+      start();
+      return;
+    }
+
+    // State is paused
     _timer?.start();
     _state = SlideCountdownState.running;
     notifyListeners();
