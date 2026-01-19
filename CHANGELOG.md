@@ -1,6 +1,6 @@
-## 2.0.3-dev.2
+# 3.0.0-dev.1
 
-- [feat: Add separatorPosition](https://github.com/farhanfadila1717/slide_countdown/pull/81). Thanks to [AHED200](https://github.com/AHED200)
+- [feat: Major refactor deprecating streamDuration in favor of using a controller.](https://github.com/farhanfadila1717/slide_countdown/pull/83). Thanks to [nickolasdeluca](https://github.com/nickolasdeluca)
 
 ## 2.0.3-dev.1
 
