@@ -104,10 +104,36 @@ class _RawDigitItemState extends State<RawDigitItem>
     setState(() {});
   }
 
-  int get maxDigit =>
-      widget.digitType == DigitType.first && widget.timeUnit != TimeUnit.days
-          ? 5
-          : 9;
+  int get maxDigit {
+    // For the first digit (tens place)
+    if (widget.digitType == DigitType.first) {
+      switch (widget.timeUnit) {
+        case TimeUnit.days:
+          return 9;
+        case TimeUnit.hours:
+          return 2; // Hours go 00-23, so first digit max is 2
+        case TimeUnit.minutes:
+        case TimeUnit.seconds:
+          return 5; // Minutes/seconds go 00-59, so first digit max is 5
+      }
+    }
+    // For the second digit (units place)
+    if (widget.timeUnit == TimeUnit.hours) {
+      // Hours second digit max depends on the first digit:
+      // - If first digit is 2 (20-23), second digit max is 3
+      // - If first digit is 0 or 1 (00-19), second digit max is 9
+      final hoursFirstDigit = duration.hoursFirstDigit;
+      // When counting down and at 0X hours, next will be 2X, so max is 3
+      // When counting up and at 2X hours, next will be 0X, so max is 3
+      if (widget.countUp) {
+        return hoursFirstDigit == 2 ? 3 : 9;
+      } else {
+        // Counting down: if first digit is 0, we'll roll to 23, so max is 3
+        return hoursFirstDigit == 0 ? 3 : 9;
+      }
+    }
+    return 9;
+  }
 
   int minMax(int value) {
     if (widget.countUp) {

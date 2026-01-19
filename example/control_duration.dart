@@ -24,23 +24,19 @@ class SlideCountdownPage extends StatefulWidget {
 }
 
 class _SlideCountdownPageState extends State<SlideCountdownPage> {
-  late final StreamDuration _streamDuration;
+  late final SlideCountdownController _controller;
 
   @override
   void initState() {
     super.initState();
-    _streamDuration = StreamDuration(
-      config: const StreamDurationConfig(
-        countDownConfig: CountDownConfig(
-          duration: Duration(days: 2),
-        ),
-      ),
+    _controller = SlideCountdownController(
+      duration: const Duration(days: 2),
     );
   }
 
   @override
   void dispose() {
-    _streamDuration.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -69,7 +65,7 @@ class _SlideCountdownPageState extends State<SlideCountdownPage> {
               const Text('Control Duration'),
               const SizedBox(height: 10),
               SlideCountdown(
-                streamDuration: _streamDuration,
+                controller: _controller,
                 decoration: BoxDecoration(
                   color: theme.buttonTheme.colorScheme?.primary,
                   borderRadius: BorderRadius.circular(5),
@@ -81,7 +77,7 @@ class _SlideCountdownPageState extends State<SlideCountdownPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
-                    onPressed: () => _streamDuration.subtract(
+                    onPressed: () => _controller.subtract(
                       const Duration(seconds: 10),
                     ),
                     child: const Text('- 10 seconds'),
@@ -90,23 +86,38 @@ class _SlideCountdownPageState extends State<SlideCountdownPage> {
                     width: 10,
                   ),
                   FloatingActionButton.small(
+                    child: const Icon(Icons.stop_rounded),
+                    onPressed: () => _controller.stop(),
+                  ),
+                  FloatingActionButton.small(
                     child: const Icon(Icons.pause_rounded),
-                    onPressed: () => _streamDuration.pause(),
+                    onPressed: () => _controller.pause(),
                   ),
                   FloatingActionButton.small(
                     child: const Icon(Icons.play_arrow_rounded),
-                    onPressed: () => _streamDuration.resume(),
+                    onPressed: () => _controller.resume(),
+                  ),
+                  FloatingActionButton.small(
+                    child: const Icon(Icons.refresh_rounded),
+                    onPressed: () => _controller.reset(),
                   ),
                   const SizedBox(
                     width: 10,
                   ),
                   TextButton(
-                    onPressed: () => _streamDuration.add(
+                    onPressed: () => _controller.add(
                       const Duration(seconds: 10),
                     ),
                     child: const Text('+ 10 seconds'),
                   ),
                 ],
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => _controller.setDuration(
+                  const Duration(hours: 1),
+                ),
+                child: const Text('Set Duration to 1 Hour'),
               ),
             ],
           ),
