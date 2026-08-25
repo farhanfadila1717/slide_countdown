@@ -1,3 +1,9 @@
+## 2.0.3
+
+- fix issue [#71](https://github.com/farhanfadila1717/slide_countdown/issues/71) incorrect UI display when count up
+- bump `pausable_timer` to `3.1.1+4`
+
+
 ## 2.0.2
 
 - docs: readme update
