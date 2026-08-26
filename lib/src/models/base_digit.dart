@@ -22,6 +22,7 @@ abstract class BaseDigits extends StatelessWidget {
     required this.separator,
     required this.showSeparator,
     required this.textDirection,
+    required this.separatorPosition,
     super.key,
     this.separatorPadding,
     this.digitsNumber,
@@ -75,4 +76,7 @@ abstract class BaseDigits extends StatelessWidget {
   /// The curve to use for the slide animation.
   /// Defaults to [Curves.linear].
   final Curve? slideAnimationCurve;
+  
+  /// The position of the separator.
+  final SeparatorPosition separatorPosition;
 }

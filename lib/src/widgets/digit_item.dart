@@ -24,6 +24,7 @@ class DigitItem extends BaseDigits {
     required super.separator,
     required super.textDirection,
     required super.showSeparator,
+    required super.separatorPosition,
     super.key,
     super.separatorPadding,
     super.digitsNumber,

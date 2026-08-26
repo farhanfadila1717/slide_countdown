@@ -1,28 +1,33 @@
-## 2.0.3
+## 3.0.0-dev.2
 
+- [feat: Major refactor deprecating streamDuration in favor of using a controller.](https://github.com/farhanfadila1717/slide_countdown/pull/83). Thanks to [nickolasdeluca](https://github.com/nickolasdeluca)
 - fix issue [#71](https://github.com/farhanfadila1717/slide_countdown/issues/71) incorrect UI display when count up
 - bump `pausable_timer` to `3.1.1+4`
 
+## 2.0.3-dev.1
+
+- [feat: add shouldDispose parameter to manage StreamDuration disposal](https://github.com/farhanfadila1717/slide_countdown/pull/76). Thanks to [ColtonDevAcc](https://github.com/ColtonDevAcc)
 
 ## 2.0.2
 
 - docs: readme update
 
-
 ## 2.0.1
 
 - [feat: ability to custom slide animation duration](https://github.com/farhanfadila1717/slide_countdown/commit/a8898b505b0b0c2848a0ed9b91030e754c99e7d2)
 
-
 - [feat: add custom slide animation curve](https://github.com/farhanfadila1717/slide_countdown/commit/97ce310b08c74b4aa5b63d119b392406523eca3c)
 
 ## 2.0.0
+
 - refactor stream duration to use [pausable_timer](https://pub.dev/packages/pausable_timer) package
 
 ## 1.6.1
+
 - Fix RTL digit position [#63](https://github.com/farhanfadila1717/slide_countdown/pull/63). thanks to [F2had](https://github.com/F2had)
 
 ## 1.6.0
+
 - fix issue [#61](https://github.com/farhanfadila1717/slide_countdown/issues/61) count up min max digit. thanks to [clayzx](https://github.com/clayzx)
 
 ## 1.5.2

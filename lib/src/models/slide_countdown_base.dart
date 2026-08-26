@@ -27,7 +27,9 @@ abstract class SlideCountdownBase extends StatefulWidget {
     required this.countUp,
     required this.infinityCountUp,
     required this.digitsNumber,
+    @Deprecated('Deprecated in favor of controller')
     required this.streamDuration,
+    required this.controller,
     required this.onChanged,
     required this.shouldShowDays,
     required this.shouldShowHours,
@@ -36,10 +38,12 @@ abstract class SlideCountdownBase extends StatefulWidget {
     required this.countUpAtDuration,
     required this.slideAnimationDuration,
     required this.slideAnimationCurve,
+    required this.separatorPosition,
+    required this.shouldDispose,
     super.key,
   }) : assert(
-          duration != null || streamDuration != null,
-          'Either duration or streamDuration has to be provided',
+          duration != null || streamDuration != null || controller != null,
+          'Either duration, streamDuration, or controller has to be provided',
         );
 
   /// [Duration] is the duration of the countdown slide,
@@ -123,7 +127,28 @@ abstract class SlideCountdownBase extends StatefulWidget {
   ///
   /// Example you need use function in [StreamDuration]
   /// e.g correct, add, and subtract function
-  final StreamDuration? streamDuration;
+  @Deprecated('Deprecated in favor of controller')
+  final StreamDuration? streamDuration; // ignore: deprecated_consistency
+
+  /// A controller to control the countdown timer.
+  ///
+  /// Use this to start, pause, resume, stop, or reset the countdown.
+  /// When a controller is provided, [duration], [countUp], [infinityCountUp],
+  /// and [onDone] properties are ignored.
+  ///
+  /// Example:
+  /// ```dart
+  /// final controller = SlideCountdownController();
+  /// SlideCountdown(
+  ///   controller: controller,
+  ///   duration: const Duration(minutes: 5),
+  /// );
+  ///
+  /// // Control the countdown
+  /// controller.start();
+  /// controller.pause();
+  /// ```
+  final SlideCountdownController? controller;
 
   /// if you need to stream the remaining available duration,
   /// it will be called every time the duration changes.
@@ -164,4 +189,14 @@ abstract class SlideCountdownBase extends StatefulWidget {
   /// The curve to use for the slide animation.
   /// Defaults to [Curves.linear].
   final Curve? slideAnimationCurve;
+
+  /// The position of the separator.
+  final SeparatorPosition separatorPosition;
+
+  /// The `shouldDispose` parameter determines the behavior of the
+  /// [StreamDuration] when the widget is disposed.
+  /// - If set to `true` (default), the [StreamDuration] will be disposed.
+  /// - If set to `false`, the [StreamDuration] will not be disposed, allowing
+  /// it to be preserved or managed as needed.
+  final bool shouldDispose;
 }

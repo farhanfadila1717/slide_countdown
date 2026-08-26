@@ -27,21 +27,19 @@ class ExampleRawSlideCountdown extends StatefulWidget {
 }
 
 class _ExampleRawSlideCountdownState extends State<ExampleRawSlideCountdown> {
-  late final StreamDuration streamDuration;
+  late final SlideCountdownController controller;
 
   @override
   void initState() {
-    streamDuration = StreamDuration(
-      config: const StreamDurationConfig(
-        countDownConfig: CountDownConfig(duration: defaultDuration),
-      ),
+    controller = SlideCountdownController(
+      duration: defaultDuration,
     );
     super.initState();
   }
 
   @override
   void dispose() {
-    streamDuration.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -56,9 +54,9 @@ class _ExampleRawSlideCountdownState extends State<ExampleRawSlideCountdown> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RawSlideCountdown(
-              streamDuration: streamDuration,
+              controller: controller,
               builder: (context, duration) {
-                final countUp = streamDuration.isCountUp;
+                final countUp = controller.isCountUp;
                 return Row(
                   children: [
                     RawDigitItem(

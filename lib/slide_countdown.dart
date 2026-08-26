@@ -1,3 +1,4 @@
+export 'src/controller/slide_countdown_controller.dart';
 export 'src/data/config/config.dart';
 export 'src/data/stream_duration.dart';
 export 'src/models/duration_title.dart';
