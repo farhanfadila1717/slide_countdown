@@ -1,6 +1,8 @@
-# 3.0.0-dev.1
+## 3.0.0-dev.2
 
 - [feat: Major refactor deprecating streamDuration in favor of using a controller.](https://github.com/farhanfadila1717/slide_countdown/pull/83). Thanks to [nickolasdeluca](https://github.com/nickolasdeluca)
+- fix issue [#71](https://github.com/farhanfadila1717/slide_countdown/issues/71) incorrect UI display when count up
+- bump `pausable_timer` to `3.1.1+4`
 
 ## 2.0.3-dev.1
 
